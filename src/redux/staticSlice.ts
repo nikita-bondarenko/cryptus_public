@@ -19,3 +19,4 @@ export const staticSlice = createSlice({
 
 export const {} = staticSlice.actions;
 export default staticSlice.reducer;
+
