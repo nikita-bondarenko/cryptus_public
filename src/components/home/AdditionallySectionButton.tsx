@@ -1,0 +1,38 @@
+import clsx from "clsx";
+import { FC, ReactNode } from "react";
+import Icon from "../helpers/Icon";
+
+const AdditionallySectionButton: FC<{
+  onClick?: () => void;
+  children: ReactNode;
+  arrow?: boolean;
+  arrowPosition?: "top" | "bottom";
+  border?: boolean;
+}> = ({ onClick, children, arrowPosition, arrow, border }) => {
+  return (
+    <button
+      className={clsx(
+        "flex items-center justify-center gap-[5px] w-full h-[50px] bg-white",
+        {
+          "border-top": border,
+        }
+      )}
+      onClick={onClick}
+    >
+      <span className="text-[16px] ">{children}</span>
+      {arrow && (
+        <Icon
+          src="arrow-top.svg"
+          className={clsx(
+            "w-[11px] h-[11px] transition-transform duration-500 translate-y-[3px]",
+            {
+              "rotate-180 [&]:translate-y-[0px]": arrowPosition === "bottom",
+            }
+          )}
+        ></Icon>
+      )}
+    </button>
+  );
+};
+
+export default AdditionallySectionButton

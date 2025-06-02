@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-Variable.woff2") format("woff2");
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-main: "Inter"
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-main);
+  background: #F2F2F2;
+}
+
+.container {
+  @apply mx-auto max-w-[360px] px-[18px]
+}
+
+.header__text {
+  @apply text-[12px] font-medium text-black
+}
+
+button {
+  @apply cursor-pointer hover:opacity-70 transition-opacity duration-500
+}
+
+.home-btn {
+  @apply [&]:h-[38px]
+}
+
+.animation-wave {
+  animation: pingWave 2.4s ease-out infinite
+}
+
+.wave1 {}
+
+.wave2 {
+  animation-delay: 0.4s;
+}
+
+.wave3 {
+  animation-delay: 0.8s;
+}
+
+.border-top {
+  @apply border-t-[1px] border-[#C3C3C3]
+}
+
+.heading {
+  @apply font-medium text-[13px] leading-[107%] mb-[20px]
+}
+
+.story-info {
+  @apply text-[13px] leading-[107%] text-[#828282]
+}
+
+*:focus, *:focus-visible {
+  @apply outline-none
+}
+
+@keyframes pingWave {
+  0% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+
+  60% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
