@@ -16,4 +16,6 @@ const ProfileButton: FC<{ onClick?: () => void }> = memo(({ onClick }) => {
   );
 });
 
+ProfileButton.displayName = "ProfileButton"
+
 export default ProfileButton;

@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import React, {  memo } from "react";
 import StoryCryptoData, { StoryCryptoDataProps } from "./StoryCryptoData";
 import Icon from "../helpers/Icon";
 
@@ -26,5 +26,7 @@ const RequestStoryItem: React.FC<RequestStoryItemProps> = memo(
     );
   }
 );
+
+RequestStoryItem.displayName = ""
 
 export default RequestStoryItem;

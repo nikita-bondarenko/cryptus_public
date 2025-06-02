@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo } from "react";
 import Icon from "./helpers/Icon";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
@@ -16,7 +16,7 @@ export default function Header() {
   const router = useRouter();
   useEffect(() => {
     webApp?.ready();
-  }, []);
+  });
   const onBackButtonClick = () => {
     if (isHome) {
       webApp?.close();

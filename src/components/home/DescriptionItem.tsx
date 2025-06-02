@@ -1,4 +1,4 @@
-import { memo, ReactNode, useRef } from "react";
+import { memo, ReactNode } from "react";
 import Icon from "../helpers/Icon";
 
 const DescriptionItem: React.FunctionComponent<{
@@ -13,5 +13,7 @@ const DescriptionItem: React.FunctionComponent<{
     </li>
   );
 });
+
+DescriptionItem.displayName = "DescriptionItem"
 
 export default DescriptionItem

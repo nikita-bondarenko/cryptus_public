@@ -25,4 +25,6 @@ const RequestStatus: React.FunctionComponent<{
   );
 });
 
+RequestStatus.displayName = "RequestStatus"
+
 export default RequestStatus

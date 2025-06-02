@@ -11,7 +11,7 @@
 
 
 body {
-  font-family: var(--font-main);
+  font-family: var(--font-inter), var(--font-main);
   background: #F2F2F2;
 }
 

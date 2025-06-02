@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { memo, ReactNode, useRef } from "react";
+import React, { memo, ReactNode } from "react";
 
 type ButtonProps = {
   className?: string;
@@ -30,5 +30,5 @@ const Button: React.FC<ButtonProps> = memo(
     );
   }
 );
-
+Button.displayName = "Button"
 export default Button;

@@ -1,6 +1,5 @@
 "use client";
 
-import Icon from "@/components/helpers/Icon";
 import DescriptionItem from "@/components/home/DescriptionItem";
 import ProfileButton from "@/components/home/ProfileButton";
 import RequestStatus from "@/components/home/RequestStatus";
@@ -8,9 +7,6 @@ import AdditionallySectionButton from "@/components/home/AdditionallySectionButt
 import Button from "@/components/ui/Button";
 import clsx from "clsx";
 import {
-  FC,
-  memo,
-  ReactNode,
   useCallback,
   useEffect,
   useRef,
@@ -46,19 +42,19 @@ export default function Home() {
     }
   }, [additionallySectionOpen]);
 
-  const toProfilePage = () => {
+  const toProfilePage = useCallback(() => {
     router.push("/profile");
-  };
+  }, [router]);
 
   const toExchangePage = useCallback(() => {
     router.push("/exchange/type");
-  }, []);
+  }, [router]);
 
    const toFaqPage = useCallback(() => {
     router.push("/faq");
-  }, []);
+  }, [router]);
 
-  const toSupport = useCallback(() => {}, []);
+  // const toSupport = useCallback(() => {}, []);
 
   const additionallySectionListItems = useRef([
     {
@@ -85,7 +81,7 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(setPageName(''))
-  }, [])
+  })
   return (
     <>
       <div className="container">

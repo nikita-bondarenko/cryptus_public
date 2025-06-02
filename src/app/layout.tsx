@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import {  Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/redux/StoreProvider";
 import Header from "@/components/Header";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["cyrillic", "latin"]
 });
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={` antialiased`}>
+      <body className={`${inter.variable} antialiased`}>
         <StoreProvider>
           <Header></Header>
           {children}

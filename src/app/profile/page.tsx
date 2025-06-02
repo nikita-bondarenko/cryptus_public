@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { setPageName } from "@/redux/uiSlice";
 import { formSchema } from "@/schemas/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const story: RequestStoryItemProps[] = [
@@ -42,12 +42,12 @@ const story: RequestStoryItemProps[] = [
   },
 ];
 
-export default function page() {
+export default function Page() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setPageName("Данные профиля"));
-  }, []);
+  });
 
   const methods = useForm({
     resolver: zodResolver(formSchema),
