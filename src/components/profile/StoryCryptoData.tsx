@@ -22,7 +22,7 @@ const StoryCryptoData: React.FC<StoryCryptoDataProps> = ({
           <Icon
             src={icon}
             className={clsx("w-[13px] h-[13px] shrink-0", {
-              "[&]:w-[16px] [&]:h-[16px] [&]:mt-[-1px] [&]:mr-[-3px]":
+              "rotate-[-13.88deg]":
                 icon === "btc.svg",
             })}
           ></Icon>
@@ -35,7 +35,7 @@ const StoryCryptoData: React.FC<StoryCryptoDataProps> = ({
           ></Icon>
         )}
       </div>
-      <span className="text-[13px] leading-[107%] ">{value}</span>
+      <span className="text-[13px] leading-[107%] break-all mr-[20px]">{value}</span>
     </div>
   );
 };

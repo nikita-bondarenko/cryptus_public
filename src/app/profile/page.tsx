@@ -58,7 +58,7 @@ export default function Page() {
   });
 
   return (
-    <div className="container">
+    <div className="container mt-[10px]">
       <div className="mb-[35px]">
         <FormProvider  {...methods}>
           <form onSubmit={onSubmit}>

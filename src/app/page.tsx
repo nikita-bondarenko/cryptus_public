@@ -15,6 +15,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { setPageName } from "@/redux/uiSlice";
+import { callSupport } from "@/helpers/callSupport";
 
 export default function Home() {
   const [additionallySectionOpen, setAdditionallySectionOpen] = useState(false);
@@ -54,7 +55,6 @@ export default function Home() {
     router.push("/faq");
   }, [router]);
 
-  // const toSupport = useCallback(() => {}, []);
 
   const additionallySectionListItems = useRef([
     {
@@ -120,7 +120,7 @@ export default function Home() {
             >
               Начать обмен
             </Button>
-            <Button className="home-btn" type={"secondary"}>
+            <Button onClick={callSupport} className="home-btn" type={"secondary"}>
               Поддержка
             </Button>
           </div>
