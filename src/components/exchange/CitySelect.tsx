@@ -31,7 +31,6 @@ const CitySelect: React.FC<CitySelectProps> = memo(
     const dropdownRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // Закрытие при клике вне (работает в Safari)
     useEffect(() => {
       const handlePointerDown = (event: PointerEvent) => {
         if (

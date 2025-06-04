@@ -35,7 +35,7 @@ const RequestDetails: React.FC<RequestDetailsProps> = memo(
                 <Icon
                   src={currency.icon}
                   className={clsx("w-[24px] h-[24px]", {
-                    "rotate-[-13.88deg]": currency.icon === "btc.svg",
+                 
                   })}
                 ></Icon>
                 <span className="text-[13px] leading-[107%]">

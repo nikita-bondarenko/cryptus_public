@@ -22,8 +22,7 @@ const StoryCryptoData: React.FC<StoryCryptoDataProps> = ({
           <Icon
             src={icon}
             className={clsx("w-[13px] h-[13px] shrink-0", {
-              "rotate-[-13.88deg]":
-                icon === "btc.svg",
+        
             })}
           ></Icon>
           <span className="text-[8px] leading-[107.5%] block">{name}</span>
