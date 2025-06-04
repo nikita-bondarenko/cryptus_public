@@ -82,6 +82,8 @@ export default function Home() {
   useEffect(() => {
     dispatch(setPageName(''))
   })
+
+
   return (
     <>
       <div className="container">

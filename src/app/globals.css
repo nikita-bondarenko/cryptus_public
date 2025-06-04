@@ -24,7 +24,7 @@ body {
 }
 
 button {
-  @apply cursor-pointer hover:opacity-70 transition-opacity duration-500
+  @apply cursor-pointer hover:opacity-70 transition-all duration-500
 }
 
 .home-btn {
@@ -60,6 +60,27 @@ button {
 *:focus, *:focus-visible {
   @apply outline-none
 }
+
+input::placeholder {
+  @apply text-[#CBCBCB]
+}
+
+.simplebar-scrollbar::before {
+  background-color: #999999;
+  border-radius: 6px;
+}
+.simplebar-track.simplebar-vertical {
+  width: 9px !important;
+}
+
+.simplebar-scrollbar::before {
+  background: #999999 !important;
+}
+
+.simplebar-scrollbar.simplebar-visible::before {
+  opacity: 1 !important;
+}
+
 
 @keyframes pingWave {
   0% {

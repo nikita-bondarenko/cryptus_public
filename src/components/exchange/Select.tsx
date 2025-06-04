@@ -1,29 +1,21 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
-import "simplebar-react/dist/simplebar.min.css";
-import Icon from "../helpers/Icon";
+import { CurrencyOption } from "./CurrencySelect";
 
-export type CurrencyOption = {
-  value: string;
-  icon: string;
+export type SelectOption = {
   name: string;
+  value: string;
 };
 
-export type CurrencySelectProps = {
-  options: CurrencyOption[];
-  onChange: (value: CurrencyOption) => void;
-  value: CurrencyOption;
+export type SelectProps = {
+  options: SelectOption[];
+  onChange: (value: SelectOption) => void;
+  value: SelectOption | null | undefined;
+  placeholder: string;
 };
 
-const ButtonDisplay = memo(({ icon, name }: CurrencyOption) => (
-  <span className="flex items-center gap-[6px] overflow-hidden text-ellipsis whitespace-nowrap">
-    <Icon src={icon} className="w-[24px] h-[24px]" />
-    {name}
-  </span>
-));
-
-const CurrencySelect: React.FC<CurrencySelectProps> = memo(
-  ({ options, onChange, value: selected }) => {
+const Select: React.FC<SelectProps> = memo(
+  ({ options, onChange, value: selected, placeholder }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -43,24 +35,20 @@ const CurrencySelect: React.FC<CurrencySelectProps> = memo(
       };
     }, []);
 
-    const handleSelect = (option: CurrencyOption) => {
+    const handleSelect = (option: SelectOption) => {
       onChange(option);
       setIsOpen(false);
     };
     // console.log("select");
 
     return (
-      <div className="relative w-[128px] shrink-0" ref={dropdownRef}>
+      <div className="relative w-full shrink-0 [&_button]:text-[13px]" ref={dropdownRef}>
         <button
           type="button"
-          className="w-full flex items-center justify-between px-[16px] py-[14px] border-l-[1px] border-[#DEDEDE] bg-white text-[13px]"
+          className="w-full flex items-center justify-between px-[16px] py-[15px] rounded-[6px] border-[1px] border-[#DEDEDE] bg-white text-[13px]"
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          {selected ? (
-            <ButtonDisplay {...selected} />
-          ) : (
-            <span className="text-[#999]">Выбрать</span>
-          )}
+          {selected ? selected.name : placeholder}
           <svg
             className={`ml-2 w-[15px] h-[15px] transition-transform ${
               !isOpen ? "rotate-180" : ""
@@ -79,16 +67,16 @@ const CurrencySelect: React.FC<CurrencySelectProps> = memo(
         </button>
 
         {isOpen && (
-          <div className="absolute left-0 top-[120%] mt-1 w-full z-50 bg-white border border-[#DEDEDE] rounded-[6px] max-h-[200px] overflow-hidden">
-            <SimpleBar style={{ maxHeight: 200 }} className="custom-scrollbar">
+          <div className="absolute left-0 top-[105%] mt-1 w-full z-50 bg-white border border-[#DEDEDE] rounded-[6px] max-h-[134px] overflow-hidden">
+            <SimpleBar style={{ maxHeight: 134 }} className="custom-scrollbar">
               <div className="flex flex-col py-[6px] gap-[0px]">
                 {options.map((option) => (
                   <button
-                    className="shrink-0 px-[16px] py-[4px] text-left w-full"
+                    className="shrink-0 px-[18px] py-[9px] text-left w-full not-last:border-b-[1px] not-last:border-[#C3C3C3]"
                     key={option.value}
                     onClick={() => handleSelect(option)}
                   >
-                    <ButtonDisplay {...option} />
+                    {option.name}
                   </button>
                 ))}
               </div>
@@ -100,6 +88,6 @@ const CurrencySelect: React.FC<CurrencySelectProps> = memo(
   }
 );
 
-CurrencySelect.displayName = "CurrencySelect";
+Select.displayName = "Select";
 
-export default CurrencySelect;
+export default Select;

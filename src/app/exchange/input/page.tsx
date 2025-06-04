@@ -1,6 +1,9 @@
 "use client";
+import ExchangeInputCard from "@/components/exchange/ExchangeInputCard";
+import ExchangeInputCash from "@/components/exchange/ExchangeInputCash";
 import ExchangeInputCrypto from "@/components/exchange/ExchangeInputCrypto";
 import ExchangePageLayout from "@/components/exchange/ExchangePageLayout";
+import Button from "@/components/ui/Button";
 import { SectionHeadingProps } from "@/components/ui/SectionHeading";
 import { useAppDispatch } from "@/redux/hooks";
 import { setPageName } from "@/redux/uiSlice";
@@ -37,19 +40,44 @@ export default memo(function Page() {
   useEffect(() => {
     dispatch(setPageName("детали обмена"));
   });
-
+  console.log("page");
   return (
-    <ExchangePageLayout buttonText="Далее" onMainButtonClick={toNextPage}>
-      <div className="flex flex-col gap-[30px]">
+    <div className="container">
+      <div className="flex flex-col gap-[30px] mb-[22px]">
         <ExchangeInputCrypto
+          placeholder={1000}
           {...givenHeadingInfo}
           position="given"
         ></ExchangeInputCrypto>
         <ExchangeInputCrypto
+          placeholder={8092}
           {...receivedHeadingInfo}
           position="received"
         ></ExchangeInputCrypto>
+        <ExchangeInputCard
+          placeholder={8092}
+          {...givenHeadingInfo}
+          position="given"
+        ></ExchangeInputCard>
+        <ExchangeInputCard
+          placeholder={8092}
+          {...receivedHeadingInfo}
+          position="received"
+        ></ExchangeInputCard>
+        <ExchangeInputCash
+          placeholder={8092}
+          {...givenHeadingInfo}
+          position="given"
+        ></ExchangeInputCash>
+        <ExchangeInputCash
+          placeholder={8092}
+          {...receivedHeadingInfo}
+          position="received"
+        ></ExchangeInputCash>
       </div>
-    </ExchangePageLayout>
+      <Button type="primary" onClick={toNextPage}>
+        Далее
+      </Button>
+    </div>
   );
 });

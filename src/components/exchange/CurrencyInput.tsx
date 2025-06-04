@@ -1,38 +1,34 @@
-import React, { memo, useEffect, useState } from "react";
-// import CurrencySelect, { CurrencySelectProps } from "./CurrencySelect";
+import {
+  formatWithSpaces,
+  normalizeInput,
+  valueMask,
+} from "@/helpers/valueMask";
+import React, { memo, ReactNode, useEffect, useState } from "react";
+import CurrencySelect, { CurrencyOption } from "./CurrencySelect";
 
 export type CurrencyInputProps = {
-  // selector: CurrencySelectProps;
-  value: number | null;
-  onChange: (value: number) => void;
-};
-
-const formatWithSpaces = (value: string) => {
-  const [intPart, decPart] = value.split(",");
-  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  return decPart !== undefined ? `${formattedInt},${decPart}` : formattedInt;
-};
-
-const normalizeInput = (val: string) => {
-  return val
-    .replace(/[^\d.,]/g, "") // только цифры, , и .
-    .replace(/[,\.]{2,}/g, "") // убираем подряд идущие ,
-    .replace(/[.]/g, ","); // заменяем точку на запятую
+  inputValue: number | null;
+  onInputChange: (value: number) => void;
+  placeholder: string;
+  onSelectChange: (value: CurrencyOption) => void;
+  options: CurrencyOption[];
+  selectValue: CurrencyOption;
 };
 
 const CurrencyInput: React.FC<CurrencyInputProps> = memo(
   ({
-    //  selector,
-      value: outsideValue, onChange }) => {
+    inputValue: outsideValue,
+    onInputChange,
+    onSelectChange,
+    options,
+    placeholder,
+    selectValue,
+  }) => {
     const [inputValue, setInputValue] = useState<string>("");
 
     useEffect(() => {
-      if (outsideValue && !isNaN(outsideValue) ) {
-        const stringVal = outsideValue.toString().replace(".", ",");
-        setInputValue(formatWithSpaces(stringVal));
-      } else {
-        setInputValue('')
-      }
+      const newValue = valueMask(outsideValue);
+      if (inputValue !== newValue) setInputValue(newValue);
     }, [outsideValue]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,13 +38,14 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
       const intPart = parts[0];
       const decPart = parts[1]?.slice(0, 8); // ограничить до 8 знаков
 
-      const combined = decPart !== undefined ? `${intPart},${decPart}` : intPart;
+      const combined =
+        decPart !== undefined ? `${intPart},${decPart}` : intPart;
       setInputValue(formatWithSpaces(combined));
 
       // Парсинг и вызов onChange
       const numeric = parseFloat(combined.replace(/\s/g, "").replace(",", "."));
       if (!isNaN(numeric)) {
-        onChange(numeric);
+        onInputChange(numeric);
       }
     };
 
@@ -57,25 +54,22 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
       const parts = cleaned.split(",");
       const intPart = parts[0] || "0";
       const decPart = parts[1]?.slice(0, 8);
-      const normalized = decPart !== undefined ? `${intPart},${decPart}` : intPart;
+      const normalized =
+        decPart !== undefined ? `${intPart},${decPart}` : intPart;
 
       const formatted = formatWithSpaces(normalized);
       setInputValue(formatted);
 
-      const numeric = parseFloat(normalized.replace(/\s/g, "").replace(",", "."));
+      const numeric = parseFloat(
+        normalized.replace(/\s/g, "").replace(",", ".")
+      );
       if (!isNaN(numeric)) {
-        onChange(numeric);
+        onInputChange(numeric);
       }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      const allowed = [
-        "Backspace",
-        "Delete",
-        "ArrowLeft",
-        "ArrowRight",
-        "Tab",
-      ];
+      const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
       const isNumber = /^[0-9]$/.test(e.key);
       const isSeparator = e.key === "," || e.key === ".";
 
@@ -84,18 +78,24 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
       }
     };
 
+    // console.log("input");
+
     return (
-      <div className="rounded-[6px] border-[1px] border-[#DEDEDE] bg-white flex items-center">
+      <div className="rounded-[6px] border-[1px] border-[#DEDEDE] min-w-0 bg-white flex items-center">
         <input
           value={inputValue}
           onChange={handleChange}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
-          inputMode="decimal"
+          placeholder={placeholder}
           type="text"
-          className="text-[13px] placeholder:text-[#CCCCCC] leading-[107%] py-[26px] pl-[19px] pr-[5px] flex-grow"
+          className="text-[13px] min-w-0 placeholder:text-[#CCCCCC] leading-[107%] py-[26px] pl-[19px] pr-[5px] flex-grow"
         />
-        {/* <CurrencySelect {...selector} /> */}
+        <CurrencySelect
+          value={selectValue}
+          onChange={onSelectChange}
+          options={options}
+        />
       </div>
     );
   }
