@@ -4,7 +4,7 @@ import ExchangeTypeBlock from "@/components/exchange/ExchangeTypeBlock";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
 import { callSupport } from "@/helpers/callSupport";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setPageName } from "@/redux/uiSlice";
+import { setPageName } from "@/redux/slices/uiSlice";
 import { useRouter } from "next/navigation";
 import React, { memo, useCallback, useEffect, useRef } from "react";
 
@@ -15,8 +15,9 @@ export default memo(function Page() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const toExchangeInputPage = useCallback(() => {
+  const onSubmit = useCallback(() => {
     router.push("/exchange/input");
+
   }, [router]);
   useEffect(() => {
     dispatch(setPageName(""));
@@ -24,7 +25,7 @@ export default memo(function Page() {
 
   const giveOptions = useRef(exchangeTypesButtons)
   return (
-    <ExchangePageLayout onMainButtonClick={toExchangeInputPage} buttonText="Подтвердить выбор">
+    <ExchangePageLayout onMainButtonClick={onSubmit} buttonText="Подтвердить выбор">
        <div className="flex flex-col gap-[12px] justify-between mb-[50px]">
         <ExchangeTypeBlock
           position="given"

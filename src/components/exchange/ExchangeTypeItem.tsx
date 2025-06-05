@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { CurrencyPosition, CurrencyType } from "../request/RequestDetails";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { selectGiveType, selectReceiveType } from "@/redux/exchangeTypeSlice";
+import { selectGiveType, selectReceiveType } from "@/redux/slices/exchangeTypeSlice";
 import clsx from "clsx";
 import Icon from "../helpers/Icon";
 

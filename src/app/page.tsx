@@ -14,7 +14,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
-import { setPageName } from "@/redux/uiSlice";
+import { setPageName } from "@/redux/slices/uiSlice";
 import { callSupport } from "@/helpers/callSupport";
 
 export default function Home() {

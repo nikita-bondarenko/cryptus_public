@@ -42,7 +42,7 @@ const Select: React.FC<SelectProps> = memo(
     // console.log("select");
 
     return (
-      <div className="relative w-full shrink-0 [&_button]:text-[13px]" ref={dropdownRef}>
+      <div className="relative w-full shrink-0 [&_button]:text-[13px] shimmer-on-loading" ref={dropdownRef}>
         <button
           type="button"
           className="w-full flex items-center justify-between px-[16px] py-[15px] rounded-[6px] border-[1px] border-[#DEDEDE] bg-white text-[13px]"

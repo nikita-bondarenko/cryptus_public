@@ -50,7 +50,7 @@ const CurrencySelect: React.FC<CurrencySelectProps> = memo(
     // console.log("select");
 
     return (
-      <div className="relative w-[128px] shrink-0" ref={dropdownRef}>
+      <div className="relative w-[128px] shrink-0 shimmer-on-loading" ref={dropdownRef}>
         <button
           type="button"
           className="w-full flex items-center justify-between px-[16px] py-[14px] border-l-[1px] border-[#DEDEDE] bg-white text-[13px]"

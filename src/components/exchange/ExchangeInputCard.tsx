@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { ExchangeInputProps } from "./ExchangeInputCrypto";
 import { cryptoCurrencyList } from "@/data/cryptoCurrencyList";
 import { cryptoNets } from "@/data/cryptoNets";
@@ -7,18 +7,26 @@ import {
   normalizeInput,
   valueMask,
 } from "@/helpers/valueMask";
-import SectionHeading from "../ui/SectionHeading";
+import SectionHeading, { SectionHeadingProps } from "../ui/SectionHeading";
 import { CryptoNetOption } from "./CryptoNetSelect";
 import CurrencyInput from "./CurrencyInput";
 import { CurrencyOption } from "./CurrencySelect";
 import Select, { SelectOption } from "./Select";
 import { nonCryptoCurrencyList } from "@/data/nonCryptoCurrencyList";
 import { banksList } from "@/data/banksList";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectSectionHeadingProps } from "@/redux/selectors";
+import {
+  setActiveInputType,
+  setCardInput,
+  setCashInput,
+} from "@/redux/slices/exchangeInput/exchangeInputSlice";
+import { usePlaceholder } from "@/hooks/usePlaceholder";
 
 export type ExchangeInputCardProps = ExchangeInputProps;
 
 const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
-  ({ placeholder, position, title, rate, minValue }) => {
+  ({ position }) => {
     const [value, setValue] = useState<number | null>(null);
     const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(
       nonCryptoCurrencyList[0]
@@ -29,6 +37,8 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
       setSelectedCurrency(option);
     }, []);
     const onInputChange = useCallback((value: number | null) => {
+      dispatch(setActiveInputType("card"));
+
       setValue(value);
     }, []);
 
@@ -46,26 +56,66 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
       setCardNumber(formatWithSpacesCardNumber(raw));
     };
 
+    const memoizedSelector = useMemo(
+      () => selectSectionHeadingProps(position),
+      [position]
+    );
+    const sectionHeadingProps = useAppSelector(memoizedSelector);
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+      dispatch(
+        setCardInput({
+          amountValue: value,
+          currency: selectedCurrency,
+          bankValue: bank,
+          cardNumberValue: cardNumber,
+        })
+      );
+    }, [value, selectedCurrency, bank, cardNumber]);
+
+    const currencyOptions = useAppSelector(
+      (state) => state.exchangeInput.options.nonCryptoCurrencyOptions
+    );
+
+    useEffect(() => {
+      setSelectedCurrency(currencyOptions[0]);
+    }, [currencyOptions]);
+
+    const bankOptions = useAppSelector(
+      (state) => state.exchangeInput.options.bankOptions
+    );
+    useEffect(() => {
+      setBank(null);
+    }, [bankOptions]);
+
+    const globalStateValue = useAppSelector(
+      (state) => state.exchangeInput.cardInput.amount.value
+    );
+
+    useEffect(() => {
+      setValue(globalStateValue);
+    }, [globalStateValue]);
+
+    const placeholder = usePlaceholder(position);
+
     return (
       <div className="flex flex-col gap-[12px]">
         <div className="">
-          <SectionHeading
-            title={title}
-            rate={rate}
-            minValue={minValue}
-          ></SectionHeading>
+          <SectionHeading {...sectionHeadingProps}></SectionHeading>
           <CurrencyInput
-            placeholder={valueMask(placeholder)}
-            inputValue={value}
+            placeholder={placeholder}
+            inputValue={globalStateValue}
             onInputChange={onInputChange}
             onSelectChange={onSelectChange}
             selectValue={selectedCurrency}
-            options={nonCryptoCurrencyList}
+            options={currencyOptions}
           ></CurrencyInput>
         </div>
         <Select
           value={bank}
-          options={banksList}
+          options={bankOptions}
           onChange={setBank}
           placeholder="Выберите банк получения"
         ></Select>
@@ -75,7 +125,7 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
             onKeyDown={handleKeyDown}
             value={cardNumber}
             type="text"
-            className="border-[1px] border-[#dedede] rounded-[6px] bg-white text-[13px] leading-[107%] px-[18px] py-[15px] w-full"
+            className="shimmer-on-loading border-[1px] border-[#dedede] rounded-[6px] bg-white text-[13px] leading-[107%] px-[18px] py-[15px] w-full"
             placeholder="Номер  карты"
           />
         )}

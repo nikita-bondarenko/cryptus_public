@@ -81,7 +81,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
     // console.log("input");
 
     return (
-      <div className="rounded-[6px] border-[1px] border-[#DEDEDE] min-w-0 bg-white flex items-center">
+      <div className="shimmer-on-loading rounded-[6px] border-[1px] border-[#DEDEDE] min-w-0 bg-white flex items-center">
         <input
           value={inputValue}
           onChange={handleChange}

@@ -5,7 +5,7 @@ import RequestStoryItem, {
 import Button from "@/components/ui/Button";
 import { InputField } from "@/components/ui/InputField";
 import { useAppDispatch } from "@/redux/hooks";
-import { setPageName } from "@/redux/uiSlice";
+import { setPageName } from "@/redux/slices/uiSlice";
 import { formSchema } from "@/schemas/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
