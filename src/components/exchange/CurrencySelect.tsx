@@ -29,7 +29,7 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
     const { options, onChange, value: selected } = props;
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-
+    console.log(ref);
     useEffect(() => {
       const handlePointerDown = (event: PointerEvent) => {
         if (
@@ -52,7 +52,10 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
     };
 
     return (
-      <div className="relative w-[128px] shrink-0 shimmer-on-loading" ref={dropdownRef}>
+      <div
+        className="relative w-[128px] shrink-0 shimmer-on-loading"
+        ref={dropdownRef}
+      >
         <button
           type="button"
           className="w-full flex items-center justify-between px-[16px] py-[14px] border-l-[1px] border-[#DEDEDE] bg-white text-[16px]"
