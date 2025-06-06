@@ -4,9 +4,24 @@ import {
   setCardInput,
   setCashInput,
   setCryptoInput,
+  setCryptoAmountError,
+  setCryptoNetError,
+  setCryptoWalletAddressError,
+  setCashAmountError,
+  setCashCityError,
+  setCardAmountError,
+  setCardBankError,
+  setCardNumberError,
+  setAreErrors,
 } from "../slices/exchangeInput/exchangeInputSlice";
 import { RootState } from "../store";
-import { dispatchNonCrypto, dispatchCrypto, getCurrencyTypeFromAction } from "../helpers";
+import {
+  dispatchNonCrypto,
+  dispatchCrypto,
+  getCurrencyTypeFromAction,
+  validateExchangeInput,
+} from "../helpers";
+import { CurrencyPosition } from "@/components/request/RequestDetails";
 
 export const exchangeInputValueChangingListener = createListenerMiddleware();
 
@@ -19,39 +34,158 @@ exchangeInputValueChangingListener.startListening({
     const { selectedGiveType, selectedReceieveType } = state.exchangeType;
     const rate = state.exchangeInput.rate;
     const { amountValue: value } = action.payload as { amountValue: number };
+    const minValue = state.exchangeInput.minValue;
 
     const activeInputType = state.exchangeInput.activeInputType;
-    const sourseType = getCurrencyTypeFromAction(action.type);   
+    const sourseType = getCurrencyTypeFromAction(action.type);
+    console.log('hi')
 
-    if (activeInputType !== sourseType) return
+    if (activeInputType !== sourseType) return;
+    console.log('hi2')
 
-    if (rate.from.value === null || rate.to.value === null) {
-      console.error("Rate is not set");
-      return;
-    }
+    // Validate only if the input type is currently selected
+    const isGiveType = selectedGiveType === sourseType;
+    const isReceiveType = selectedReceieveType === sourseType;
+    if (!isGiveType && !isReceiveType) return;
 
-    if (value === null) {
-      console.error("Value is not number");
-      return;
-    }
-    const coifficient = rate.from.value / rate.to.value;
+    const position: CurrencyPosition = isGiveType ? "given" : "received";
 
+    let hasErrors = false;
+
+    // Validate fields based on input type
     if (action.type === setCryptoInput.type) {
+      const { netValue, walletAddressValue } = action.payload as {
+        netValue: any;
+        walletAddressValue: string;
+      };
+
+
+      // Validate amount only for given position
+      const amountError =
+        position === "given"
+          ? validateExchangeInput({
+              value,
+              inputType: "amount",
+              position,
+              minValue,
+            })
+          : null;
+
+
+
+      // Validate crypto specific fields
+      const walletAddressError = validateExchangeInput({
+        value: walletAddressValue,
+        inputType: "walletAddress",
+        position,
+        minValue,
+      });
+      console.log( amountError, walletAddressError);
+
+      // Dispatch errors
+      dispatch(setCryptoAmountError(amountError));
+      dispatch(setCryptoWalletAddressError(walletAddressError));
+
+      hasErrors = !!(amountError || walletAddressError);
+
       dispatchNonCrypto({
         selectedReceiveType: selectedReceieveType,
         selectedGiveType,
         value,
         dispatch,
-        coifficient,
+        rate,
       });
-    } else {
+   
+
+    } else if (action.type === setCardInput.type) {
+      const { bankValue, cardNumberValue } = action.payload as {
+        bankValue: any;
+        cardNumberValue: string;
+      };
+      console.log(bankValue, cardNumberValue);
+      // Validate amount only for given position
+      const amountError =
+        position === "given"
+          ? validateExchangeInput({
+              value,
+              inputType: "amount",
+              position,
+              minValue,
+            })
+          : null;
+
+      // Validate card specific fields
+      const bankError = validateExchangeInput({
+        value: bankValue,
+        inputType: "bank",
+        position,
+        minValue,
+      });
+
+      const cardNumberError = validateExchangeInput({
+        value: cardNumberValue,
+        inputType: "cardNumber",
+        position,
+        minValue,
+      });
+
+      // Dispatch errors
+      dispatch(setCardAmountError(amountError));
+      dispatch(setCardBankError(bankError));
+      dispatch(setCardNumberError(cardNumberError));
+
+      hasErrors = !!(amountError || bankError || cardNumberError);
+
       dispatchCrypto({
         selectedReceiveType: selectedReceieveType,
         selectedGiveType,
         value,
         dispatch,
-        coifficient,
+        rate,
       });
+      console.log(cardNumberError, amountError, bankError);
+      console.log("card");
+
+    } else if (action.type === setCashInput.type) {
+      const { cityValue } = action.payload as { cityValue: string };
+
+      // Validate amount only for given position
+      const amountError =
+        position === "given"
+          ? validateExchangeInput({
+              value,
+              inputType: "amount",
+              position,
+              minValue,
+            })
+          : null;
+
+      // Validate cash specific fields
+      const cityError = validateExchangeInput({
+        value: cityValue,
+        inputType: "city",
+        position,
+        minValue,
+      });
+
+      // Dispatch errors
+      dispatch(setCashAmountError(amountError));
+      dispatch(setCashCityError(cityError));
+
+      hasErrors = !!(amountError || cityError);
+
+      dispatchCrypto({
+        selectedReceiveType: selectedReceieveType,
+        selectedGiveType,
+        value,
+        dispatch,
+        rate,
+      });
+      console.log(amountError, cityError);
+      console.log("cash");
     }
+
+    // Update areErrors state
+    dispatch(setAreErrors(hasErrors));
   },
 });

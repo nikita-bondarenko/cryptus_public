@@ -23,7 +23,7 @@ const RequestStoryItem: React.FC<RequestStoryItemProps> = memo(
           <span className="story-info">{date}</span>
           <span className="story-info">заявка {id}</span>
         </div>
-        <div className="bg-white border-[1px] border-[#DEDEDE] rounded-[6.33px] px-[19px] py-[14px] grid grid-cols-2 relative">
+        <div className="bg-white border-[1px] border-[#E9E9E9] rounded-[6.33px] px-[19px] py-[14px] grid grid-cols-2 relative">
           <StoryCryptoData {...currencyFrom} arrow></StoryCryptoData>
           <StoryCryptoData {...currencyTo}></StoryCryptoData>
           <Icon

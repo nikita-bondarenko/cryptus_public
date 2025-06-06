@@ -20,9 +20,6 @@ export const InputField: React.FC<Props> = ({
     formState: { errors },
   } = useFormContext();
 
-
-
-
   return (
     <div className=" w-full pb-[15px] relative">
       <input

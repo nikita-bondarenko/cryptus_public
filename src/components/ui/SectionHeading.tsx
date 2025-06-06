@@ -2,16 +2,19 @@ import { valueMask } from '@/helpers/valueMask';
 import React, { memo } from 'react';
 import { CurrencyType } from '../request/RequestDetails';
 import { Rate } from '@/redux/slices/exchangeInput/types';
+import clsx from 'clsx';
+import Icon from '../helpers/Icon';
 
 
 
 export type SectionHeadingProps = {
     title: string;
     rate?: Rate | undefined;
-    minValue?: number | undefined
+    minValue?: number | undefined;
+    error?: boolean
 }
 
-const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValue}) => {
+const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValue, error}) => {
   return (
      <div className="flex items-center justify-between mb-[10px] pl-[6px]">
           <h2 className="text-[13px] font-medium leading-[107%] shimmer-on-loading">{title}</h2>
@@ -24,12 +27,17 @@ const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValu
             ></span>
           )}
           {minValue && (
-               <span
-              className="text-[11px] leading-[107%] text-[#B1B1B1] shimmer-on-loading"
+              <span className='relative block'>
+                <Icon src='alert.svg' className={clsx('w-[12px] h-[12px] absolute top-[1px] left-[-17px] opacity-0 transition-opacity duration-500', {"opacity-100": error})}></Icon>
+                 <span
+              className={clsx("block text-[11px] leading-[107%] text-[#B1B1B1] shimmer-on-loading ", {
+                "[&]:text-[#FF6769] [&_span]:text-[#FF6769]": error
+              })}
               dangerouslySetInnerHTML={{
                 __html: `минимальная сумма обмена <span class="text-black">${valueMask(minValue)}</span>`,
               }}
             ></span>
+              </span>
           )}
         </div>
   );

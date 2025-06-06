@@ -4,6 +4,7 @@ import Icon from "./helpers/Icon";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
 import { useTelegramWebApp } from "@/hooks/useTelegramWebApp";
+import { usePrepareExchangeInputPage } from "@/hooks/usePrepareExchangeInputPage";
 
 export default function Header() {
   const webApp = useTelegramWebApp();
@@ -13,7 +14,13 @@ export default function Header() {
     return pathname === "/";
   }, [pathname]);
 
+  const isExchangeResult = useMemo(() => {
+    return pathname === "/exchange/result";
+  }, [pathname]);
+
   const router = useRouter();
+
+
 
   const backButton = useRef<HTMLButtonElement>(null);
   const [rightSideWidth, setRightSideWidth] = useState(48);
@@ -25,6 +32,8 @@ export default function Header() {
   const onBackButtonClick = () => {
     if (isHome) {
       webApp?.close();
+    } if (isExchangeResult) {
+      router.push('/')
     } else {
       router.back();
     }
@@ -48,3 +57,4 @@ export default function Header() {
     </div>
   );
 }
+

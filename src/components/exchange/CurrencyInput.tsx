@@ -3,16 +3,18 @@ import {
   normalizeInput,
   valueMask,
 } from "@/helpers/valueMask";
-import React, { memo, ReactNode, useEffect, useState } from "react";
+import React, { memo, ReactNode, useEffect, useState, useCallback } from "react";
 import CurrencySelect, { CurrencyOption } from "./CurrencySelect";
+import clsx from "clsx";
 
 export type CurrencyInputProps = {
   inputValue: number | null;
-  onInputChange: (value: number) => void;
+  onInputChange: (value: number | null) => void;
   placeholder: string;
   onSelectChange: (value: CurrencyOption) => void;
   options: CurrencyOption[];
   selectValue: CurrencyOption;
+  error?: boolean
 };
 
 const CurrencyInput: React.FC<CurrencyInputProps> = memo(
@@ -23,52 +25,65 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
     options,
     placeholder,
     selectValue,
+    error
   }) => {
     const [inputValue, setInputValue] = useState<string>("");
 
+    // Обработка внешнего значения
     useEffect(() => {
       const newValue = valueMask(outsideValue);
-      if (inputValue !== newValue) setInputValue(newValue);
+
+      if (outsideValue === null) {
+        newValue !== "" && setInputValue("");
+        return;
+      }
+      console.log(outsideValue, newValue, inputValue)
+      if (newValue !== inputValue) {
+        setInputValue(newValue);
+      }
     }, [outsideValue]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = normalizeInput(e.target.value);
+      
+      if (!raw) {
+        setInputValue("");
+        onInputChange(null);
+        return;
+      }
 
       const parts = raw.split(",");
       const intPart = parts[0];
-      const decPart = parts[1]?.slice(0, 8); // ограничить до 8 знаков
+      const decPart = parts[1]?.slice(0, 8);
 
-      const combined =
-        decPart !== undefined ? `${intPart},${decPart}` : intPart;
-      setInputValue(formatWithSpaces(combined));
+      const combined = decPart !== undefined ? `${intPart},${decPart}` : intPart;
+      const formatted = formatWithSpaces(combined);
+      setInputValue(formatted);
 
-      // Парсинг и вызов onChange
       const numeric = parseFloat(combined.replace(/\s/g, "").replace(",", "."));
-      if (!isNaN(numeric)) {
-        onInputChange(numeric);
-      }
-    };
+      onInputChange(!isNaN(numeric) ? numeric : null);
+    }, [onInputChange]);
 
-    const handleBlur = () => {
+    const handleBlur = useCallback(() => {
+      if (!inputValue) {
+        onInputChange(null);
+        return;
+      }
+
       const cleaned = inputValue.replace(/[^\d,]/g, "").replace(/[,.]$/, "");
       const parts = cleaned.split(",");
       const intPart = parts[0] || "0";
       const decPart = parts[1]?.slice(0, 8);
-      const normalized =
-        decPart !== undefined ? `${intPart},${decPart}` : intPart;
+      const normalized = decPart !== undefined ? `${intPart},${decPart}` : intPart;
 
       const formatted = formatWithSpaces(normalized);
       setInputValue(formatted);
 
-      const numeric = parseFloat(
-        normalized.replace(/\s/g, "").replace(",", ".")
-      );
-      if (!isNaN(numeric)) {
-        onInputChange(numeric);
-      }
-    };
+      const numeric = parseFloat(normalized.replace(/\s/g, "").replace(",", "."));
+      onInputChange(!isNaN(numeric) ? numeric : null);
+    }, [inputValue, onInputChange]);
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
       const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
       const isNumber = /^[0-9]$/.test(e.key);
       const isSeparator = e.key === "," || e.key === ".";
@@ -76,12 +91,10 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
       if (!isNumber && !allowed.includes(e.key) && !isSeparator) {
         e.preventDefault();
       }
-    };
-
-    // console.log("input");
+    }, []);
 
     return (
-      <div className="shimmer-on-loading rounded-[6px] border-[1px] border-[#DEDEDE] min-w-0 bg-white flex items-center">
+      <div className={clsx("shimmer-on-loading rounded-[6px] border-[1px] border-[#E9E9E9] min-w-0 bg-white flex items-center ", {"[&]:border-[#FF6769]": error})}>
         <input
           value={inputValue}
           onChange={handleChange}

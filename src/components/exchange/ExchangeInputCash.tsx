@@ -21,6 +21,7 @@ import { title } from "process";
 import { selectSectionHeadingProps } from "@/redux/selectors";
 import { setCashInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { usePlaceholder } from "@/hooks/usePlaceholder";
+import { setActiveInputType } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 
 export type ExchangeInputCashProps = ExchangeInputProps;
 
@@ -31,12 +32,26 @@ const ExchangeInputCash: React.FC<ExchangeInputCashProps> = memo(
       nonCryptoCurrencyList[0]
     );
     const [city, setCity] = useState<string>("");
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
+    const dispatch = useAppDispatch();
+
+    const { selectedGiveType, selectedReceieveType } = useAppSelector(
+      (state) => state.exchangeType
+    );
+
+    useEffect(() => {
+      setIsInitialLoad(true);
+    }, [selectedGiveType, selectedReceieveType]);
+
     const onSelectChange = useCallback((option: CurrencyOption) => {
+      dispatch(setActiveInputType("cash"));
       setSelectedCurrency(option);
-    }, []);
+    }, [dispatch]);
+
     const onInputChange = useCallback((value: number | null) => {
+      dispatch(setActiveInputType("cash"));
       setValue(value);
-    }, []);
+    }, [dispatch]);
 
     const memoizedSelector = useMemo(
       () => selectSectionHeadingProps(position),
@@ -44,9 +59,12 @@ const ExchangeInputCash: React.FC<ExchangeInputCashProps> = memo(
     );
     const sectionHeadingProps = useAppSelector(memoizedSelector);
 
-    const dispatch = useAppDispatch();
-
     useEffect(() => {
+      if (isInitialLoad) {
+        setIsInitialLoad(false);
+        return;
+      }
+
       dispatch(
         setCashInput({
           amountValue: value,
@@ -54,7 +72,13 @@ const ExchangeInputCash: React.FC<ExchangeInputCashProps> = memo(
           cityValue: city,
         })
       );
-    }, [value, selectedCurrency, city]);
+    }, [value, selectedCurrency, city, isInitialLoad]);
+
+    useEffect(() => {
+      return () => {
+        setIsInitialLoad(true);
+      };
+    }, []);
 
     const currencyOptions = useAppSelector(
       (state) => state.exchangeInput.options.nonCryptoCurrencyOptions
@@ -80,12 +104,27 @@ const ExchangeInputCash: React.FC<ExchangeInputCashProps> = memo(
       setValue(globalStateValue);
     }, [globalStateValue]);
 
+    const valueError = useAppSelector(
+      (state) => state.exchangeInput.cashInput.amount.error
+    );
+
+    const cityError = useAppSelector(
+      (state) => state.exchangeInput.cashInput.city.error
+    );
+
+    const areErrorsVisible = useAppSelector(
+      (state) => state.exchangeInput.areErrorsVisible
+    );
+
     const placeholder = usePlaceholder(position);
 
     return (
       <div className="flex flex-col gap-[12px]">
         <div className="">
-          <SectionHeading {...sectionHeadingProps}></SectionHeading>
+          <SectionHeading
+            {...sectionHeadingProps}
+            error={!!valueError && areErrorsVisible}
+          ></SectionHeading>
           <CurrencyInput
             placeholder={placeholder}
             inputValue={globalStateValue}
@@ -93,14 +132,19 @@ const ExchangeInputCash: React.FC<ExchangeInputCashProps> = memo(
             onSelectChange={onSelectChange}
             selectValue={selectedCurrency}
             options={currencyOptions}
+            error={!!valueError && areErrorsVisible}
           ></CurrencyInput>
         </div>
         <CitySelect
           value={city}
           options={cityOptions}
-          onChange={setCity}
+          onChange={(option) => {
+            dispatch(setActiveInputType("cash"));
+            setCity(option);
+          }}
           placeholder="Выберите город получения"
           placeholderFocused="Введите название города"
+          error={cityError && areErrorsVisible ? cityError : null}
         ></CitySelect>
       </div>
     );

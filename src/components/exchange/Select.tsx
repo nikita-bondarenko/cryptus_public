@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import { CurrencyOption } from "./CurrencySelect";
+import clsx from "clsx";
 
 export type SelectOption = {
   name: string;
@@ -12,10 +13,11 @@ export type SelectProps = {
   onChange: (value: SelectOption) => void;
   value: SelectOption | null | undefined;
   placeholder: string;
+  error?: string | null
 };
 
 const Select: React.FC<SelectProps> = memo(
-  ({ options, onChange, value: selected, placeholder }) => {
+  ({ options, onChange, value: selected, placeholder, error }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -39,13 +41,17 @@ const Select: React.FC<SelectProps> = memo(
       onChange(option);
       setIsOpen(false);
     };
-    // console.log("select");
 
     return (
-      <div className="relative w-full shrink-0 [&_button]:text-[13px] shimmer-on-loading" ref={dropdownRef}>
+      <div className="relative w-full shrink-0 [&_button]:text-[13px] shimmer-on-loading pb-[14px] mb-[-14px]" ref={dropdownRef}>
+           {!!error && (
+          <p className="absolute left-0 text-[#FF676A] text-[10px] bottom-0">
+            {error}
+          </p>
+        )}
         <button
           type="button"
-          className="w-full flex items-center justify-between px-[16px] py-[15px] rounded-[6px] border-[1px] border-[#DEDEDE] bg-white text-[13px]"
+          className={clsx("w-full flex items-center justify-between px-[16px] py-[15px] rounded-[6px] border-[1px] border-[#DEDEDE] bg-white text-[13px]",  { "[&]:border-[#FF6769]": !!error })}
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {selected ? selected.name : placeholder}
@@ -67,7 +73,7 @@ const Select: React.FC<SelectProps> = memo(
         </button>
 
         {isOpen && (
-          <div className="absolute left-0 top-[105%] mt-1 w-full z-50 bg-white border border-[#DEDEDE] rounded-[6px] max-h-[134px] overflow-hidden">
+          <div className="absolute left-0 top-[59px] mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-[6px] max-h-[134px] overflow-hidden">
             <SimpleBar style={{ maxHeight: 134 }} className="custom-scrollbar">
               <div className="flex flex-col py-[6px] gap-[0px]">
                 {options.map((option) => (

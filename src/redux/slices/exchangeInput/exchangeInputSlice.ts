@@ -6,11 +6,22 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Options } from "next/dist/server/base-server";
 import {
   InputOptions,
+  SetActiveInputTypeAction,
+  SetAreErrorsAction,
+  SetAreErrorsVisibleAction,
   SetCardActionInput,
   SetCashInputAction,
   SetCryptoActionInput,
   SetFetchedDataAction,
   SetInputAmountValueActionPayload,
+  SetCryptoAmountErrorAction,
+  SetCryptoNetErrorAction,
+  SetCryptoWalletAddressErrorAction,
+  SetCashAmountErrorAction,
+  SetCashCityErrorAction,
+  SetCardAmountErrorAction,
+  SetCardBankErrorAction,
+  SetCardNumberErrorAction,
 } from "./types";
 import { initialState } from "./initValues";
 import { CurrencyType } from "@/components/request/RequestDetails";
@@ -19,6 +30,10 @@ export const exchangeInputSlice = createSlice({
   name: "exchangeInput",
   initialState,
   reducers: {
+    resetExchangeInput: (state) => {
+   console.log('resetExchangeInput')
+          state = initialState;
+    },
     setFetchedData(state, action: SetFetchedDataAction) {
       state.rate = action.payload.rate;
       const options = action.payload.options;
@@ -58,13 +73,50 @@ export const exchangeInputSlice = createSlice({
     setCashInputAmountValue(state, action: SetInputAmountValueActionPayload) {
       state.cashInput.amount.value = action.payload;
     },
-    setActiveInputType: (state, action: PayloadAction<CurrencyType | null>) => {
+    setActiveInputType: (state, action: SetActiveInputTypeAction) => {
       state.activeInputType = action.payload;
+    },
+    setAreErrorsVisible: (state, action: SetAreErrorsVisibleAction) => {
+      state.areErrorsVisible = action.payload;
+    },
+    setAreErrors: (state, action: SetAreErrorsAction) => {
+      state.areErrors = action.payload;
+    },
+    
+    // Crypto Input Error Reducers
+    setCryptoAmountError: (state, action: SetCryptoAmountErrorAction) => {
+      state.cryptoInput.amount.error = action.payload;
+    },
+    setCryptoNetError: (state, action: SetCryptoNetErrorAction) => {
+      state.cryptoInput.net.error = action.payload;
+    },
+    setCryptoWalletAddressError: (state, action: SetCryptoWalletAddressErrorAction) => {
+      state.cryptoInput.walletAddress.error = action.payload;
+    },
+
+    // Cash Input Error Reducers
+    setCashAmountError: (state, action: SetCashAmountErrorAction) => {
+      state.cashInput.amount.error = action.payload;
+    },
+    setCashCityError: (state, action: SetCashCityErrorAction) => {
+      state.cashInput.city.error = action.payload;
+    },
+
+    // Card Input Error Reducers
+    setCardAmountError: (state, action: SetCardAmountErrorAction) => {
+      state.cardInput.amount.error = action.payload;
+    },
+    setCardBankError: (state, action: SetCardBankErrorAction) => {
+      state.cardInput.bank.error = action.payload;
+    },
+    setCardNumberError: (state, action: SetCardNumberErrorAction) => {
+      state.cardInput.cardNumber.error = action.payload;
     },
   },
 });
 
 export const {
+  resetExchangeInput,
   setFetchedData,
   setCardInput,
   setCashInput,
@@ -72,6 +124,19 @@ export const {
   setCardInputAmountValue,
   setCashInputAmountValue,
   setCryptoInputAmountValue,
-  setActiveInputType
+  setActiveInputType,
+  setAreErrors,
+  setAreErrorsVisible,
+  // Crypto Input Error Actions
+  setCryptoAmountError,
+  setCryptoNetError,
+  setCryptoWalletAddressError,
+  // Cash Input Error Actions
+  setCashAmountError,
+  setCashCityError,
+  // Card Input Error Actions
+  setCardAmountError,
+  setCardBankError,
+  setCardNumberError,
 } = exchangeInputSlice.actions;
 export default exchangeInputSlice.reducer;

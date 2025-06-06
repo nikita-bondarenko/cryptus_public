@@ -8,6 +8,9 @@ import {
   Rate,
   RateSide,
 } from "./types";
+import { CurrencyOption } from "@/components/exchange/CurrencySelect";
+import { SelectOption } from "@/components/exchange/Select";
+import { CurrencyType } from "@/components/request/RequestDetails";
 
 export const initInput: Input<any> = {
   value: null,
@@ -27,24 +30,47 @@ export const initRate: Rate = {
 
 export const initCryptoInput: CryptoInput = {
   currency: null,
-  amount: initInput,
+  amount: {
+    value: null,
+    error: "Введите сумму",
+  },
   amountPlaceholder: null,
-  net: initInput,
-  walletAddress: initInput,
+  net: {
+    value: null,
+    error: null,
+  },
+  walletAddress: {
+    value: "",
+    error: "Введите адрес кошелька",
+  },
 };
 export const initCashInput: CashInput = {
   currency: null,
-  amount: initInput,
+  amount: {
+    value: null,
+    error: "Введите сумму",
+  },
   amountPlaceholder: null,
-
-  city: initInput,
+  city: {
+    value: "",
+    error: "Выберите город",
+  },
 };
 export const initCardInput: CardInput = {
   currency: null,
-  amount: initInput,
+  amount: {
+    value: null,
+    error: "Введите сумму",
+  },
   amountPlaceholder: null,
-  bank: initInput,
-  cardNumber: initInput,
+  bank: {
+    value: null,
+    error: "Выберите банк",
+  },
+  cardNumber: {
+    value: "",
+    error: "Введите номер карты",
+  },
 };
 
 export const initOptions: InputOptions = {
@@ -56,6 +82,8 @@ export const initOptions: InputOptions = {
 };
 
 export const initialState: ExchangeInputState = {
+  areErrorsVisible: false,
+  areErrors: true,
   activeInputType: null,
   minValue: 100,
   rate: initRate,

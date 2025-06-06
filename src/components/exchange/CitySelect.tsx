@@ -21,10 +21,11 @@ export type CitySelectProps = {
   value: string;
   placeholder: string;
   placeholderFocused?: string;
+  error?: string | null;
 };
 
 const CitySelect: React.FC<CitySelectProps> = memo(
-  ({ options, onChange, value, placeholder, placeholderFocused }) => {
+  ({ options, onChange, value, placeholder, placeholderFocused, error }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [focused, setFocused] = useState(false);
     const [searchValue, setSearchValue] = useState(value);
@@ -75,10 +76,20 @@ const CitySelect: React.FC<CitySelectProps> = memo(
 
     return (
       <div
-        className="relative w-full shrink-0 [&_button]:text-[13px] shimmer-on-loading"
+        className="relative w-full shrink-0 [&_button]:text-[13px] shimmer-on-loading pb-[14px] mb-[-14px]"
         ref={dropdownRef}
       >
-        <div className="relative w-full flex items-center justify-between px-[16px] py-[15px] rounded-[6px] border-[1px] border-[#DEDEDE] bg-white text-[13px]">
+        {!!error && (
+          <p className="absolute left-0 text-[#FF676A] text-[10px] bottom-0">
+            {error}
+          </p>
+        )}
+        <div
+          className={clsx(
+            "relative w-full flex items-center justify-between px-[16px] py-[15px] rounded-[6px] border-[1px] border-[#DEDEDE] bg-white text-[13px] transition-all duration-500",
+            { "[&]:border-[#FF6769]": !!error }
+          )}
+        >
           {showCustomPlaceholder && (
             <div
               className={clsx(
@@ -89,6 +100,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
               {focused ? placeholderFocused : placeholder}
             </div>
           )}
+
           <input
             ref={inputRef}
             type="text"
@@ -121,7 +133,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
         </div>
 
         {isOpen && (
-          <div className="absolute left-0 top-[105%] mt-1 w-full z-50 bg-white border border-[#DEDEDE] rounded-[6px] max-h-[134px] overflow-hidden">
+          <div className="absolute left-0 top-[59px] mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-[6px] max-h-[134px] overflow-hidden">
             <SimpleBar style={{ maxHeight: 134 }} className="custom-scrollbar">
               <div className="flex flex-col py-[6px] gap-[0px]">
                 {filteredOptions.length === 0 ? (

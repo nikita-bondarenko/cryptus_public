@@ -12,35 +12,35 @@ import { SectionHeadingProps } from "@/components/ui/SectionHeading";
 import { usePrepareExchangeInputPage } from "@/hooks/usePrepareExchangeInputPage";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectCurrencyTypes } from "@/redux/selectors";
+import { setAreErrorsVisible } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { setPageName } from "@/redux/slices/uiSlice";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { memo, useCallback, useEffect, useMemo } from "react";
+import { store } from "@/redux/store";
 
 export default memo(function Page() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [isLoading] = usePrepareExchangeInputPage();
-  const { cardInput, cashInput, cryptoInput } = useAppSelector(
-    (state) => state.exchangeInput
-  );
 
-  useEffect(() => {
-    console.log(cryptoInput);
-  }, [cryptoInput]);
-  useEffect(() => {
-    console.log(cardInput);
-  }, [cardInput]);
-  useEffect(() => {
-    console.log(cashInput);
-  }, [cashInput]);
-
+  console.log("page");
   const onSubmit = useCallback(() => {
-    // console.log(cardInput, cashInput, cryptoInput);
-    return;
-    router.push("/exchange/");
-  }, [router, cardInput, cashInput, cryptoInput]);
+    dispatch(setAreErrorsVisible(true));
+    
+    // Проверяем наличие ошибок
+    const state = store.getState();
+    const areErrors = state.exchangeInput.areErrors;
+    
+    // Если есть ошибки, не переходим дальше
+    if (areErrors) {
+      return;
+    }
+    
+   router.push("/exchange/details");
+    console.log("ошибок нет")
+  }, [dispatch, router]);
 
   const memoizedSelector = useMemo(() => selectCurrencyTypes(), []);
   const { givenCurrencyType, receivedCurrencyType } =
@@ -48,6 +48,10 @@ export default memo(function Page() {
 
   useEffect(() => {
     dispatch(setPageName("детали обмена"));
+    console.log(store.getState().exchangeInput)
+    return () => {
+      dispatch(setAreErrorsVisible(false));
+    };
   });
 
   const getCurrencyInput = (
@@ -58,7 +62,6 @@ export default memo(function Page() {
       case "crypto": {
         return (
           <ExchangeInputCrypto
-            placeholder={8092}
             position={position}
           ></ExchangeInputCrypto>
         );
@@ -66,7 +69,6 @@ export default memo(function Page() {
       case "card": {
         return (
           <ExchangeInputCard
-            placeholder={8092}
             position={position}
           ></ExchangeInputCard>
         );
@@ -74,7 +76,6 @@ export default memo(function Page() {
       case "cash": {
         return (
           <ExchangeInputCash
-            placeholder={8092}
             position={position}
           ></ExchangeInputCash>
         );

@@ -22,6 +22,9 @@ import {
   setCashInput,
 } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { usePlaceholder } from "@/hooks/usePlaceholder";
+import Icon from "../helpers/Icon";
+import clsx from "clsx";
+import BaseInput from '../common/BaseInput';
 
 export type ExchangeInputCardProps = ExchangeInputProps;
 
@@ -33,14 +36,26 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
     );
     const [bank, setBank] = useState<SelectOption | null>(null);
     const [cardNumber, setCardNumber] = useState<string>("");
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
+    const dispatch = useAppDispatch();
+
+    const { selectedGiveType, selectedReceieveType } = useAppSelector(
+      (state) => state.exchangeType
+    );
+
+    useEffect(() => {
+      setIsInitialLoad(true);
+    }, [selectedGiveType, selectedReceieveType]);
+
     const onSelectChange = useCallback((option: CurrencyOption) => {
+      dispatch(setActiveInputType("card"));
       setSelectedCurrency(option);
-    }, []);
+    }, [dispatch]);
+
     const onInputChange = useCallback((value: number | null) => {
       dispatch(setActiveInputType("card"));
-
       setValue(value);
-    }, []);
+    }, [dispatch]);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
@@ -52,6 +67,7 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
     };
 
     const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(setActiveInputType("card"));
       const raw = normalizeInput(e.target.value);
       setCardNumber(formatWithSpacesCardNumber(raw));
     };
@@ -62,9 +78,12 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
     );
     const sectionHeadingProps = useAppSelector(memoizedSelector);
 
-    const dispatch = useAppDispatch();
-
     useEffect(() => {
+      if (isInitialLoad) {
+        setIsInitialLoad(false);
+        return;
+      }
+
       dispatch(
         setCardInput({
           amountValue: value,
@@ -73,7 +92,13 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
           cardNumberValue: cardNumber,
         })
       );
-    }, [value, selectedCurrency, bank, cardNumber]);
+    }, [value, selectedCurrency, bank, cardNumber, isInitialLoad]);
+
+    useEffect(() => {
+      return () => {
+        setIsInitialLoad(true);
+      };
+    }, []);
 
     const currencyOptions = useAppSelector(
       (state) => state.exchangeInput.options.nonCryptoCurrencyOptions
@@ -88,6 +113,7 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
     );
     useEffect(() => {
       setBank(null);
+      console.log('bankOptions',bankOptions)
     }, [bankOptions]);
 
     const globalStateValue = useAppSelector(
@@ -98,12 +124,35 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
       setValue(globalStateValue);
     }, [globalStateValue]);
 
+    const valueError = useAppSelector(
+      (state) => state.exchangeInput.cardInput.amount.error
+    );
+
+    const bankError = useAppSelector(
+      (state) => state.exchangeInput.cardInput.bank.error
+    );
+
+    const cardNumberError = useAppSelector(
+      (state) => state.exchangeInput.cardInput.cardNumber.error
+    );
+
+    const areErrorsVisible = useAppSelector(
+      (state) => state.exchangeInput.areErrorsVisible
+    );
+
     const placeholder = usePlaceholder(position);
+
+    useEffect(() => {
+      console.log(bankError, areErrorsVisible);
+    }, [bankError, areErrorsVisible]);
 
     return (
       <div className="flex flex-col gap-[12px]">
         <div className="">
-          <SectionHeading {...sectionHeadingProps}></SectionHeading>
+          <SectionHeading
+            {...sectionHeadingProps}
+            error={!!valueError && areErrorsVisible}
+          ></SectionHeading>
           <CurrencyInput
             placeholder={placeholder}
             inputValue={globalStateValue}
@@ -111,23 +160,29 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
             onSelectChange={onSelectChange}
             selectValue={selectedCurrency}
             options={currencyOptions}
+            error={!!valueError && areErrorsVisible && position === "given"}
           ></CurrencyInput>
         </div>
         <Select
           value={bank}
           options={bankOptions}
-          onChange={setBank}
+          onChange={(option) => {
+            dispatch(setActiveInputType("card"));
+            setBank(option);
+          }}
           placeholder="Выберите банк получения"
+          error={bankError && areErrorsVisible ? bankError : null}
         ></Select>
         {position === "received" && (
-          <input
-            onChange={handleCardNumberChange}
-            onKeyDown={handleKeyDown}
-            value={cardNumber}
-            type="text"
-            className="shimmer-on-loading border-[1px] border-[#dedede] rounded-[6px] bg-white text-[13px] leading-[107%] px-[18px] py-[15px] w-full"
-            placeholder="Номер  карты"
-          />
+          <div className="relative pb-[14px] mb-[-14px] mt-[20px]">
+            <BaseInput
+              value={cardNumber}
+              onChange={handleCardNumberChange}
+              placeholder="Номер карты"
+              error={cardNumberError}
+              areErrorsVisible={areErrorsVisible}
+            />
+          </div>
         )}
       </div>
     );

@@ -1,18 +1,21 @@
 // src/lib/store.ts
 import { configureStore } from "@reduxjs/toolkit";
-import uiReducer from "./slices/uiSlice";
-import exchangeTypeReducer from "./slices/exchangeTypeSlice";
 import exchangeInputReducer from "./slices/exchangeInput/exchangeInputSlice";
+import exchangeTypeReducer from "./slices/exchangeTypeSlice";
+import uiReducer from "./slices/uiSlice";
 import { exchangeInputValueChangingListener } from "./listeners/exchangeInputValueChangingListener";
+import { exchangeTypeChangingListener } from "./listeners/exchangeTypeChangingListener";
+
 export const store = configureStore({
   reducer: {
-    ui: uiReducer,
-    exchangeType: exchangeTypeReducer,
     exchangeInput: exchangeInputReducer,
+    exchangeType: exchangeTypeReducer,
+    ui: uiReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(
-      exchangeInputValueChangingListener.middleware
+      exchangeInputValueChangingListener.middleware,
+      // exchangeTypeChangingListener.middleware
     ),
   devTools: process.env.NODE_ENV !== "production",
 });

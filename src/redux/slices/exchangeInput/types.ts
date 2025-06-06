@@ -52,6 +52,8 @@ export type InputOptions = {
 };
 
 export interface ExchangeInputState {
+  areErrorsVisible: boolean;
+  areErrors: boolean;
   activeInputType: CurrencyType | null;
   minValue: number;
   rate: Rate;
@@ -85,6 +87,24 @@ export type SetCashInputActionPayload = {
 } & InputActionPayload;
 export type SetCashInputAction = PayloadAction<SetCashInputActionPayload>;
 
-export type SetInputAmountValuePayload = number | null;
-export type SetInputAmountValueActionPayload =
-  PayloadAction<SetInputAmountValuePayload>;
+export type SetInputAmountValueActionPayload = PayloadAction<number | null>;
+
+export type SetActiveInputTypeAction = PayloadAction<CurrencyType | null>;
+
+export type SetAreErrorsVisibleAction = PayloadAction<boolean>;
+export type SetAreErrorsAction = PayloadAction<boolean>;
+
+// Crypto Input Error Actions
+export type SetCryptoAmountErrorAction = PayloadAction<string | null>;
+export type SetCryptoNetErrorAction = PayloadAction<string | null>;
+export type SetCryptoWalletAddressErrorAction = PayloadAction<string | null>;
+
+// Cash Input Error Actions
+export type SetCashAmountErrorAction = PayloadAction<string | null>;
+export type SetCashCityErrorAction = PayloadAction<string | null>;
+
+// Card Input Error Actions
+export type SetCardAmountErrorAction = PayloadAction<string | null>;
+export type SetCardBankErrorAction = PayloadAction<string | null>;
+export type SetCardNumberErrorAction = PayloadAction<string | null>;
+

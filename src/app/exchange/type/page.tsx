@@ -3,8 +3,11 @@ import ExchangePageLayout from "@/components/exchange/ExchangePageLayout";
 import ExchangeTypeBlock from "@/components/exchange/ExchangeTypeBlock";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
 import { callSupport } from "@/helpers/callSupport";
+import { validateAllFields } from "@/redux/helpers";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { setPageName } from "@/redux/slices/uiSlice";
+import { store, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import React, { memo, useCallback, useEffect, useRef } from "react";
 
@@ -12,21 +15,27 @@ export default memo(function Page() {
   const recieveOptions = useAppSelector(
     (state) => state.exchangeType.receiveOptions
   );
+  
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   const onSubmit = useCallback(() => {
     router.push("/exchange/input");
-
   }, [router]);
+
   useEffect(() => {
     dispatch(setPageName(""));
-  });
+    const state = store.getState() as RootState;
 
-  const giveOptions = useRef(exchangeTypesButtons)
+    dispatch(resetExchangeInput());
+
+    validateAllFields(state, dispatch);
+  },[]);
+
+  const giveOptions = useRef(exchangeTypesButtons);
   return (
     <ExchangePageLayout onMainButtonClick={onSubmit} buttonText="Подтвердить выбор">
-       <div className="flex flex-col gap-[12px] justify-between mb-[50px]">
+      <div className="flex flex-col gap-[12px] justify-between mb-[50px]">
         <ExchangeTypeBlock
           position="given"
           title="Я отдаю"
