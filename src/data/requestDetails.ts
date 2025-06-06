@@ -5,12 +5,14 @@ export const requestDetails: RequestDetailsProps[] = [
     title: "Я отдал",
     rate: {
       from: {
-        value: "1",
+        value: 1,
         name: "USDT",
+        type: "crypto",
       },
       to: {
-        value: "81,69",
+        value: 81.69,
         name: "RUB",
+        type: "cash",
       },
     },
     currency: {
@@ -41,12 +43,14 @@ export const requestDetails: RequestDetailsProps[] = [
     title: "Я отдал",
     rate: {
       from: {
-        value: "1",
+        value: 1,
         name: "USDT",
+        type: "crypto",
       },
       to: {
-        value: "81,69",
+        value: 81.69,
         name: "RUB",
+        type: "cash",
       },
     },
     currency: {
@@ -77,12 +81,14 @@ export const requestDetails: RequestDetailsProps[] = [
     title: "Я отдал",
     rate: {
       from: {
-        value: "1",
-        name: "RUB",
+        value: 1,
+        name: "USDT",
+        type: "crypto",
       },
       to: {
-        value: "0,013",
-        name: "USDT",
+        value: 81.69,
+        name: "RUB",
+        type: "cash",
       },
     },
    currency: {
@@ -117,12 +123,14 @@ export const requestDetails: RequestDetailsProps[] = [
     title: "Я отдал",
     rate: {
       from: {
-        value: "1",
-        name: "RUB",
+        value: 1,
+        name: "USDT",
+        type: "crypto",
       },
       to: {
-        value: "0,013",
-        name: "USDT",
+        value: 81.69,
+        name: "RUB",
+        type: "cash",
       },
     },
    currency: {
