@@ -151,15 +151,14 @@ export default function Header() {
               "w-[20px] h-[20px] border-[2px] border-[#4FC3FF]  rounded-full flex items-center justify-center relative shrink-0",
               {
                 "bg-[#4FC3FF] ": currentStep === 3,
-                "delay-500": currentStep === 3,
               }
             )}
           >
             <Icon
               src="white-sign.svg"
               className={clsx(
-                "w-[10px] h-[10px] opacity-0 absolute top-[5px] left-[50%] translate-x-[-50%] ",
-                { "[&]:opacity-100": currentStep === 3, "delay-500": currentStep === 3, }
+                "w-[10px] h-[10px] opacity-0 absolute top-[5px] left-[50%] translate-x-[-50%] delay-500",
+                { "[&]:opacity-100": currentStep === 3 }
               )}
             ></Icon>
           </div>
