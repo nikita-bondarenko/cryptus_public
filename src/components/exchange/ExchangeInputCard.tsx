@@ -17,6 +17,7 @@ import { usePlaceholder } from "@/hooks/usePlaceholder";
 import Icon from "../helpers/Icon";
 import clsx from "clsx";
 import { nonCryptoCurrencyList } from "@/data/nonCryptoCurrencyList";
+import SectionHeading from "../ui/SectionHeading";
 
 export type ExchangeInputCardProps = ExchangeInputProps;
 
@@ -82,7 +83,7 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
           cardNumberValue: cardNumber,
         })
       );
-    }, [value, selectedCurrency, bank, cardNumber, isInitialLoad]);
+    }, [value, selectedCurrency, bank, cardNumber, isInitialLoad, dispatch]);
 
     useEffect(() => {
       return () => {
@@ -96,7 +97,7 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
 
     useEffect(() => {
       setSelectedCurrency(currencyOptions[0]);
-    }, [currencyOptions, dispatch]);
+    }, [currencyOptions]);
 
     const bankOptions = useAppSelector(
       (state) => state.exchangeInput.options.bankOptions

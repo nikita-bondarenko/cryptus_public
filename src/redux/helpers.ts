@@ -148,7 +148,7 @@ type ValidatorOptions = {
 };
 
 // Define the type for a validator function
-type Validator = (value: any, options?: ValidatorOptions) => string | null;
+type Validator = (value: unknown, options?: ValidatorOptions) => string | null;
 
 // --- Individual Validator Functions ---
 
@@ -193,7 +193,7 @@ const validateCardNumber: Validator = (value, options) => {
   return null;
 };
 
-const validateBank: Validator = (value, options) => {
+const validateBank: Validator = (value) => {
   // Bank is required for both positions
   if (!value) {
     return "Выберите банк";
@@ -201,7 +201,7 @@ const validateBank: Validator = (value, options) => {
   return null;
 };
 
-const validateCity: Validator = (value, options) => {
+const validateCity: Validator = (value) => {
   // City is required for both positions
   if (!value || typeof value !== 'string' || value.trim() === '') {
     return "Выберите город";
@@ -222,7 +222,7 @@ const validators: Record<ValidatedField, Validator> = {
 // --- Main Validation Function ---
 
 export type ValidateExchangeInput = (props: {
-  value: any;
+  value: unknown;
   inputType: ValidatedField;
   position: CurrencyPosition;
   minValue: number;

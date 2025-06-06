@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
-import { CurrencyOption } from "./CurrencySelect";
 import clsx from "clsx";
 
 export type SelectOption = {

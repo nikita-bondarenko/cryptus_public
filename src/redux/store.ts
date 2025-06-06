@@ -4,7 +4,6 @@ import exchangeInputReducer from "./slices/exchangeInput/exchangeInputSlice";
 import exchangeTypeReducer from "./slices/exchangeTypeSlice";
 import uiReducer from "./slices/uiSlice";
 import { exchangeInputValueChangingListener } from "./listeners/exchangeInputValueChangingListener";
-import { exchangeTypeChangingListener } from "./listeners/exchangeTypeChangingListener";
 
 export const store = configureStore({
   reducer: {

@@ -1,18 +1,11 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { ExchangeInputProps } from "./ExchangeInputCrypto";
-import {
-  formatWithSpacesCardNumber,
-  normalizeInput,
-  valueMask,
-} from "@/helpers/valueMask";
-import SectionHeading, { SectionHeadingProps } from "../ui/SectionHeading";
-import { CryptoNetOption } from "./CryptoNetSelect";
+
+import SectionHeading from "../ui/SectionHeading";
 import CurrencyInput from "./CurrencyInput";
 import { CurrencyOption } from "./CurrencySelect";
-import Select, { SelectOption } from "./Select";
 import { nonCryptoCurrencyList } from "@/data/nonCryptoCurrencyList";
-import { banksList } from "@/data/banksList";
-import { cityList } from "@/data/cityList";
+
 import CitySelect from "./CitySelect";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectSectionHeadingProps } from "@/redux/selectors";
@@ -69,7 +62,7 @@ const ExchangeInputCash: React.FC<ExchangeInputCashProps> = memo(
           cityValue: city,
         })
       );
-    }, [value, selectedCurrency, city, isInitialLoad]);
+    }, [value, selectedCurrency, city, isInitialLoad, dispatch]);
 
     useEffect(() => {
       return () => {

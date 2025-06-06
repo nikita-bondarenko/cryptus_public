@@ -34,13 +34,16 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
       const newValue = valueMask(outsideValue);
 
       if (outsideValue === null) {
-        newValue !== "" && setInputValue("");
+        if (newValue !== "") {
+          setInputValue("");
+        }
+         
         return;
       }
       if (newValue !== inputValue) {
         setInputValue(newValue);
       }
-    }, [outsideValue]);
+    }, [outsideValue, inputValue]);
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = normalizeInput(e.target.value);

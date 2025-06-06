@@ -1,11 +1,8 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { CurrencyPosition } from "../request/RequestDetails";
-import SectionHeading, { SectionHeadingProps } from "../ui/SectionHeading";
 import CurrencyInput from "./CurrencyInput";
-import CurrencySelect, { CurrencyOption } from "./CurrencySelect";
-import { cryptoCurrencyList } from "@/data/cryptoCurrencyList";
-import { valueMask } from "@/helpers/valueMask";
 import CryptoNetSelect, { CryptoNetOption } from "./CryptoNetSelect";
+import { cryptoCurrencyList } from "@/data/cryptoCurrencyList";
 import { cryptoNets } from "@/data/cryptoNets";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectSectionHeadingProps } from "@/redux/selectors";
@@ -16,6 +13,8 @@ import {
 import { usePlaceholder } from "@/hooks/usePlaceholder";
 import Icon from "../helpers/Icon";
 import clsx from "clsx";
+import { CurrencyOption } from "./CurrencySelect";
+import SectionHeading from "../ui/SectionHeading";
 
 export type ExchangeInputProps = {
   position: CurrencyPosition;
@@ -75,7 +74,7 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
           walletAddressValue: walletAddress,
         })
       );
-    }, [value, walletAddress, selectedCurrency, selectedNet, isInitialLoad]);
+    }, [value, walletAddress, selectedCurrency, selectedNet, isInitialLoad, dispatch]);
 
     useEffect(() => {
       return () => {
@@ -94,10 +93,6 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
     const netsOptions = useAppSelector(
       (state) => state.exchangeInput.options.netsOptions
     );
-
-    useEffect(() => {
-      setSelectedCurrency(currencyOptions[0]);
-    }, [currencyOptions]);
 
     useEffect(() => {
       setSelectedNet(netsOptions[0]);

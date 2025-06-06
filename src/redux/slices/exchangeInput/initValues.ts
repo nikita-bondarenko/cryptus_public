@@ -8,11 +8,8 @@ import {
   Rate,
   RateSide,
 } from "./types";
-import { CurrencyOption } from "@/components/exchange/CurrencySelect";
-import { SelectOption } from "@/components/exchange/Select";
-import { CurrencyType } from "@/components/request/RequestDetails";
 
-export const initInput: Input<any> = {
+export const initInput: Input<unknown> = {
   value: null,
   error: null,
 };

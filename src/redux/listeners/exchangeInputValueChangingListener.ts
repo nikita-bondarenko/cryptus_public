@@ -5,7 +5,6 @@ import {
   setCashInput,
   setCryptoInput,
   setCryptoAmountError,
-  setCryptoNetError,
   setCryptoWalletAddressError,
   setCashAmountError,
   setCashCityError,
@@ -52,8 +51,7 @@ exchangeInputValueChangingListener.startListening({
 
     // Validate fields based on input type
     if (action.type === setCryptoInput.type) {
-      const { netValue, walletAddressValue } = action.payload as {
-        netValue: any;
+      const { walletAddressValue } = action.payload as {
         walletAddressValue: string;
       };
 
@@ -83,7 +81,7 @@ exchangeInputValueChangingListener.startListening({
       hasErrors = !!(amountError || walletAddressError);
     } else if (action.type === setCardInput.type) {
       const { bankValue, cardNumberValue } = action.payload as {
-        bankValue: any;
+        bankValue: unknown;
         cardNumberValue: string;
       };
 

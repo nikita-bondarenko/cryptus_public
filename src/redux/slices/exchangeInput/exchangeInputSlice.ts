@@ -1,11 +1,5 @@
-import { CryptoNetOption } from "@/components/exchange/CryptoNetSelect";
-import { CurrencyOption } from "@/components/exchange/CurrencySelect";
-import { ExchangeInputProps } from "@/components/exchange/ExchangeInputCrypto";
-import { SelectOption } from "@/components/exchange/Select";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Options } from "next/dist/server/base-server";
+import { createSlice } from "@reduxjs/toolkit";
 import {
-  InputOptions,
   SetActiveInputTypeAction,
   SetAreErrorsAction,
   SetAreErrorsVisibleAction,
@@ -24,14 +18,13 @@ import {
   SetCardNumberErrorAction,
 } from "./types";
 import { initialState } from "./initValues";
-import { CurrencyType } from "@/components/request/RequestDetails";
 
 export const exchangeInputSlice = createSlice({
   name: "exchangeInput",
   initialState,
   reducers: {
     resetExchangeInput: (state) => {
-      state = initialState;
+      Object.assign(state, initialState);
     },
     setFetchedData(state, action: SetFetchedDataAction) {
       state.rate = action.payload.rate;

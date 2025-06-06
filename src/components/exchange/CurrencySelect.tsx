@@ -22,10 +22,11 @@ const ButtonDisplay = memo(({ icon, name }: CurrencyOption) => (
   </span>
 ));
 
+ButtonDisplay.displayName = "ButtonDisplay";
+
 const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
-  (
-    { options, onChange, value: selected }
-  ) => {
+  (props, ref) => {
+    const { options, onChange, value: selected } = props;
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 

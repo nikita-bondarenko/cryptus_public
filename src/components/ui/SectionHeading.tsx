@@ -1,6 +1,5 @@
 import { valueMask } from '@/helpers/valueMask';
 import React, { memo } from 'react';
-import { CurrencyType } from '../request/RequestDetails';
 import { Rate } from '@/redux/slices/exchangeInput/types';
 import clsx from 'clsx';
 import Icon from '../helpers/Icon';

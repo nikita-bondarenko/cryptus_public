@@ -37,8 +37,8 @@ export const usePrepareExchangeInputPage = () => {
   useEffect(() => {
     dispatch(setFetchedData(fetchedDataPayload));
     setTimeout(()=> {
-        setIsLoading(false)
-    }, 1000)
-  }, []);
+      setIsLoading(false);
+    }, 200);
+  }, [dispatch]);
   return [isLoading];
 };
