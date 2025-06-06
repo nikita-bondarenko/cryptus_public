@@ -16,11 +16,11 @@ export type SectionHeadingProps = {
 
 const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValue, error}) => {
   return (
-     <div className="flex items-center justify-between mb-[10px] pl-[6px]">
-          <h2 className="text-[13px] font-medium leading-[107%] shimmer-on-loading">{title}</h2>
+     <div className="flex items-end justify-between mb-[10px] pl-[6px]">
+          <h2 className="text-[16px] font-medium leading-[107%] shimmer-on-loading">{title}</h2>
           {rate && (
             <span
-              className="text-[11px] leading-[107%] text-[#B1B1B1] shimmer-on-loading"
+              className="text-[13px] leading-[107%] text-[#B1B1B1] shimmer-on-loading"
               dangerouslySetInnerHTML={{
                 __html: `${valueMask(rate?.from.value)} ${rate?.from.name} = <span class="text-black">${valueMask(rate?.to.value)}</span> ${rate?.to.name}`,
               }}
@@ -30,7 +30,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValu
               <span className='relative block'>
                 <Icon src='alert.svg' className={clsx('w-[12px] h-[12px] absolute top-[1px] left-[-17px] opacity-0 transition-opacity duration-500', {"opacity-100": error})}></Icon>
                  <span
-              className={clsx("block text-[11px] leading-[107%] text-[#B1B1B1] shimmer-on-loading ", {
+              className={clsx("block text-[13px] leading-[107%] text-[#B1B1B1] shimmer-on-loading ", {
                 "[&]:text-[#FF6769] [&_span]:text-[#FF6769]": error
               })}
               dangerouslySetInnerHTML={{

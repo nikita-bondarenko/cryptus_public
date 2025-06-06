@@ -30,7 +30,7 @@ const RequestDetails: React.FC<RequestDetailsProps> = memo(
         <SectionHeading title={title} rate={rate}></SectionHeading>
         <div className="bg-white rounded-[6px] px-[20px] py-[24px] flex flex-col gap-[20px]">
           <div>
-            <div className="mb-[11px] flex  items-center justify-between">
+            <div className="mb-[15px] flex  items-center justify-between">
               <div className="flex  items-center gap-[6.33px]">
                 <Icon
                   src={currency.icon}
@@ -38,11 +38,11 @@ const RequestDetails: React.FC<RequestDetailsProps> = memo(
                  
                   })}
                 ></Icon>
-                <span className="text-[13px] leading-[107%]">
+                <span className="text-[16px] leading-[107%]">
                   {currency.name}
                 </span>
               </div>
-              <span className="text-[13px] leading-[107%] text-[#BFBFBF]">
+              <span className="text-[16px] leading-[107%] text-[#BFBFBF]">
                 {currency.typeLabel}
               </span>
             </div>

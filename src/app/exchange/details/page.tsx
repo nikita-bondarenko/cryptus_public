@@ -1,6 +1,5 @@
 "use client";
 import RequestDetails from "@/components/request/RequestDetails";
-import Button from "@/components/ui/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setPageName } from "@/redux/slices/uiSlice";
 import { selectExchangeDetails } from "@/redux/selectors/exchangeDetailsSelector";
@@ -17,9 +16,8 @@ export default function ExchangeDetailsPage() {
   }, [dispatch]);
 
   const onSubmit = useCallback(() => {
-    console.log("onSubmit");
     router.push("/exchange/result");
-  }, []);
+  }, [router]);
 
   return (
     <ExchangePageLayout onMainButtonClick={onSubmit} buttonText="Оставить заявку">

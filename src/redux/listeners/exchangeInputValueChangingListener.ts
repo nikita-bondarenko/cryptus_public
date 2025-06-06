@@ -38,15 +38,13 @@ exchangeInputValueChangingListener.startListening({
 
     const activeInputType = state.exchangeInput.activeInputType;
     const sourseType = getCurrencyTypeFromAction(action.type);
-    console.log('hi')
-
-    if (activeInputType !== sourseType) return;
-    console.log('hi2')
 
     // Validate only if the input type is currently selected
     const isGiveType = selectedGiveType === sourseType;
     const isReceiveType = selectedReceieveType === sourseType;
-    if (!isGiveType && !isReceiveType) return;
+    if (!isGiveType && !isReceiveType) {
+      return;
+    }
 
     const position: CurrencyPosition = isGiveType ? "given" : "received";
 
@@ -59,7 +57,6 @@ exchangeInputValueChangingListener.startListening({
         walletAddressValue: string;
       };
 
-
       // Validate amount only for given position
       const amountError =
         position === "given"
@@ -71,8 +68,6 @@ exchangeInputValueChangingListener.startListening({
             })
           : null;
 
-
-
       // Validate crypto specific fields
       const walletAddressError = validateExchangeInput({
         value: walletAddressValue,
@@ -80,29 +75,18 @@ exchangeInputValueChangingListener.startListening({
         position,
         minValue,
       });
-      console.log( amountError, walletAddressError);
 
       // Dispatch errors
       dispatch(setCryptoAmountError(amountError));
       dispatch(setCryptoWalletAddressError(walletAddressError));
 
       hasErrors = !!(amountError || walletAddressError);
-
-      dispatchNonCrypto({
-        selectedReceiveType: selectedReceieveType,
-        selectedGiveType,
-        value,
-        dispatch,
-        rate,
-      });
-   
-
     } else if (action.type === setCardInput.type) {
       const { bankValue, cardNumberValue } = action.payload as {
         bankValue: any;
         cardNumberValue: string;
       };
-      console.log(bankValue, cardNumberValue);
+
       // Validate amount only for given position
       const amountError =
         position === "given"
@@ -135,17 +119,6 @@ exchangeInputValueChangingListener.startListening({
       dispatch(setCardNumberError(cardNumberError));
 
       hasErrors = !!(amountError || bankError || cardNumberError);
-
-      dispatchCrypto({
-        selectedReceiveType: selectedReceieveType,
-        selectedGiveType,
-        value,
-        dispatch,
-        rate,
-      });
-      console.log(cardNumberError, amountError, bankError);
-      console.log("card");
-
     } else if (action.type === setCashInput.type) {
       const { cityValue } = action.payload as { cityValue: string };
 
@@ -173,7 +146,24 @@ exchangeInputValueChangingListener.startListening({
       dispatch(setCashCityError(cityError));
 
       hasErrors = !!(amountError || cityError);
+    }
 
+    // Update areErrors state
+    dispatch(setAreErrors(hasErrors));
+
+    if (activeInputType !== sourseType) {
+      return;
+    }
+
+    if (action.type === setCryptoInput.type) {
+      dispatchNonCrypto({
+        selectedReceiveType: selectedReceieveType,
+        selectedGiveType,
+        value,
+        dispatch,
+        rate,
+      });
+    } else {
       dispatchCrypto({
         selectedReceiveType: selectedReceieveType,
         selectedGiveType,
@@ -181,11 +171,6 @@ exchangeInputValueChangingListener.startListening({
         dispatch,
         rate,
       });
-      console.log(amountError, cityError);
-      console.log("cash");
     }
-
-    // Update areErrors state
-    dispatch(setAreErrors(hasErrors));
   },
 });

@@ -76,11 +76,11 @@ const CitySelect: React.FC<CitySelectProps> = memo(
 
     return (
       <div
-        className="relative w-full shrink-0 [&_button]:text-[13px] shimmer-on-loading pb-[14px] mb-[-14px]"
+        className="relative w-full shrink-0 [&_button]:text-[16px] shimmer-on-loading pb-[16px] mb-[-16px]"
         ref={dropdownRef}
       >
         {!!error && (
-          <p className="absolute left-0 text-[#FF676A] text-[10px] bottom-0">
+          <p className="absolute left-0 text-[#FF676A] text-[12px] bottom-0">
             {error}
           </p>
         )}
@@ -93,7 +93,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
           {showCustomPlaceholder && (
             <div
               className={clsx(
-                "absolute left-[16px] pointer-events-none transition-colors",
+                "absolute left-[16px] pointer-events-none text-[16px] transition-colors",
                 focused ? "text-[#CCCCCC]" : "text-black"
               )}
             >
@@ -104,7 +104,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
           <input
             ref={inputRef}
             type="text"
-            className="w-full outline-none bg-transparent text-[13px] text-black placeholder:opacity-0"
+            className="w-full outline-none bg-transparent text-[16px] text-black placeholder:opacity-0"
             value={searchValue}
             onChange={handleInputChange}
             onFocus={handleFocus}

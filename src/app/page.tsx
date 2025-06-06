@@ -98,7 +98,7 @@ export default function Home() {
               <h1 className="font-bold text-[32px] mb-[15px] leading-[107.5%]">
                 CRYPTUS EXCHANGE
               </h1>
-              <p className="text-[13px] font-medium mb-[30px]">
+              <p className="text-[16px] font-medium mb-[30px]">
                 Обменник, которым ты всегда хотел пользоваться, но нечего было
                 менять
               </p>

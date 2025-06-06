@@ -36,8 +36,10 @@ const ExchangeTypeItem: React.FC<ExchangeTypeItemProps> = memo(
         onClick={onClick}
       >
         <div className="flex items-center gap-[11px]">
-          <Icon src={icon} className="w-[19px] h-[19px]"></Icon>
-          <span className="text-[13px] leading-[107%]">{name}</span>
+          <Icon src={icon} className={clsx("w-[19px] h-[19px]", {
+            "w-[21px] h-[21px]": icon === 'cash.svg',
+          })}></Icon>
+          <span className="text-[16px] leading-[107%]">{name}</span>
         </div>
         <Icon
           src="sign.svg"

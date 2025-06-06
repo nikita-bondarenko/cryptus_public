@@ -25,16 +25,16 @@ const StoryCryptoData: React.FC<StoryCryptoDataProps> = ({
         
             })}
           ></Icon>
-          <span className="text-[8px] leading-[107.5%] block">{name}</span>
+          <span className="text-[13px] leading-[107.5%] block translate-y-[1px]">{name}</span>
         </div>
         {arrow && (
           <Icon
             src="long-arrow.svg"
-            className="w-[57px] h-[8px] mr-[21px] shrink-0"
+            className="w-[57px] h-[13px] mr-[21px] shrink-0"
           ></Icon>
         )}
       </div>
-      <span className="text-[13px] leading-[107%] break-all mr-[20px]">{value}</span>
+      <span className="text-[16px] leading-[107%] break-all mr-[20px] text-left">{value}</span>
     </div>
   );
 };

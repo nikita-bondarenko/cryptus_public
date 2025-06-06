@@ -1,39 +1,29 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { ExchangeInputProps } from "./ExchangeInputCrypto";
-import { cryptoCurrencyList } from "@/data/cryptoCurrencyList";
-import { cryptoNets } from "@/data/cryptoNets";
 import {
   formatWithSpacesCardNumber,
   normalizeInput,
-  valueMask,
 } from "@/helpers/valueMask";
-import SectionHeading, { SectionHeadingProps } from "../ui/SectionHeading";
-import { CryptoNetOption } from "./CryptoNetSelect";
 import CurrencyInput from "./CurrencyInput";
 import { CurrencyOption } from "./CurrencySelect";
 import Select, { SelectOption } from "./Select";
-import { nonCryptoCurrencyList } from "@/data/nonCryptoCurrencyList";
-import { banksList } from "@/data/banksList";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectSectionHeadingProps } from "@/redux/selectors";
 import {
   setActiveInputType,
   setCardInput,
-  setCashInput,
 } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { usePlaceholder } from "@/hooks/usePlaceholder";
 import Icon from "../helpers/Icon";
 import clsx from "clsx";
-import BaseInput from '../common/BaseInput';
+import { nonCryptoCurrencyList } from "@/data/nonCryptoCurrencyList";
 
 export type ExchangeInputCardProps = ExchangeInputProps;
 
 const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
   ({ position }) => {
     const [value, setValue] = useState<number | null>(null);
-    const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(
-      nonCryptoCurrencyList[0]
-    );
+    const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(nonCryptoCurrencyList[0]);
     const [bank, setBank] = useState<SelectOption | null>(null);
     const [cardNumber, setCardNumber] = useState<string>("");
     const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -87,7 +77,7 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
       dispatch(
         setCardInput({
           amountValue: value,
-          currency: selectedCurrency,
+          currency: selectedCurrency as CurrencyOption,
           bankValue: bank,
           cardNumberValue: cardNumber,
         })
@@ -106,14 +96,13 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
 
     useEffect(() => {
       setSelectedCurrency(currencyOptions[0]);
-    }, [currencyOptions]);
+    }, [currencyOptions, dispatch]);
 
     const bankOptions = useAppSelector(
       (state) => state.exchangeInput.options.bankOptions
     );
     useEffect(() => {
       setBank(null);
-      console.log('bankOptions',bankOptions)
     }, [bankOptions]);
 
     const globalStateValue = useAppSelector(
@@ -142,12 +131,8 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
 
     const placeholder = usePlaceholder(position);
 
-    useEffect(() => {
-      console.log(bankError, areErrorsVisible);
-    }, [bankError, areErrorsVisible]);
-
     return (
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-[13px]">
         <div className="">
           <SectionHeading
             {...sectionHeadingProps}
@@ -174,14 +159,26 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
           error={bankError && areErrorsVisible ? bankError : null}
         ></Select>
         {position === "received" && (
-          <div className="relative pb-[14px] mb-[-14px] mt-[20px]">
-            <BaseInput
-              value={cardNumber}
+          <div className="relative pb-[16px] mb-[-16px]">
+            <input
               onChange={handleCardNumberChange}
-              placeholder="Номер карты"
-              error={cardNumberError}
-              areErrorsVisible={areErrorsVisible}
+              onKeyDown={handleKeyDown}
+              value={cardNumber}
+              type="text"
+              className={clsx("shimmer-on-loading border-[1px] border-[#E9E9E9] rounded-[6px] bg-white text-[16px] leading-[107%] px-[18px] py-[15px] w-full", cardNumberError && areErrorsVisible ? "[&]:border-[#FF676A]" : ""  )}
+              placeholder="Номер  карты"
             />
+            {cardNumberError && areErrorsVisible && (
+              <>
+                <p className="absolute left-0 text-[#FF676A] text-[13px]">
+                  {cardNumberError}
+                </p>
+                <Icon
+                  src="alert.svg"
+                  className="w-[16px] h-[16px] absolute right-[12px] top-[14px]"
+                ></Icon>
+              </>
+            )}
           </div>
         )}
       </div>

@@ -1,7 +1,9 @@
 "use client";
 import Icon from "@/components/helpers/Icon";
 import Button from "@/components/ui/Button";
+import { callSupport } from "@/helpers/callSupport";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const REQUEST_ID = "#151473";
@@ -9,10 +11,20 @@ const REQUEST_ID = "#151473";
 export default function ExchangeResultPage() {
   const [copied, setCopied] = useState(false);
 
+  const router = useRouter();
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(REQUEST_ID);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleGoHome = () => {
+    router.push("/");
+  };
+
+  const handleGoChat = () => {
+    callSupport()
   };
 
   return (
@@ -24,19 +36,19 @@ export default function ExchangeResultPage() {
             Ваша заявка <br />
             принята в работу
           </div>
-          <div className="text-[13px] text-[#BFBFBF] mb-[18px] text-center">
+          <div className="text-[16px] text-[#BFBFBF] mb-[18px] text-center">
             Наш оператор свяжется <br />с вами в течение 15 минут
           </div>
           <div className="w-full h-[1px] bg-[#E8E8E8] mt-[5px] mb-[13px]"></div>
           <div className="flex flex-col items-center gap-[2px]">
-            <div className="text-[12px] text-[#BFBFBF]">номер заявки</div>
+            <div className="text-[16px] text-[#BFBFBF]">номер заявки</div>
             <div className="flex items-center gap-[7px]">
               <button
                 onClick={handleCopy}
                 className="p-1 flex items-center gap-[7px]"
               >
-                <Icon src={"copy.svg"} className="w-[13px] h-[13px]" />
-                <span className="text-[13px] font-medium text-[#BFBFBF] select-all">
+                <Icon src={"copy.svg"} className="w-[15px] h-[15px] translate-y-[1px]" />
+                <span className="text-[16px] font-medium text-[#BFBFBF] select-all">
                   {REQUEST_ID}
                 </span>
               </button>
@@ -47,7 +59,7 @@ export default function ExchangeResultPage() {
           <div>
             <div
               className={clsx(
-                "flex items-center justify-center gap-[8px] text-[13px]  h-[56px] opacity-0 transition-opacity duration-500 bg-white rounded-[6px] border-[1px] border-[#E9E9E9]",
+                "flex items-center justify-center gap-[8px] text-[16px]  h-[56px] opacity-0 transition-opacity duration-500 bg-white rounded-[6px] border-[1px] border-[#E9E9E9]",
                 { "opacity-100": copied }
               )}
             >
@@ -56,10 +68,10 @@ export default function ExchangeResultPage() {
             </div>
           </div>
           <div className="flex flex-col gap-[12px]">
-            <Button type="primary" className="w-full text-[15px] py-[15px]">
+            <Button onClick={handleGoChat} type="primary" className="w-full text-[15px] py-[15px]">
               В чат с оператором
             </Button>
-            <Button type="secondary" className="w-full text-[15px] py-[15px]">
+            <Button onClick={handleGoHome} type="secondary" className="w-full text-[15px] py-[15px]">
               В главное меню
             </Button>
           </div>

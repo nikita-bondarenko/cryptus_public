@@ -3,7 +3,7 @@ import {
   normalizeInput,
   valueMask,
 } from "@/helpers/valueMask";
-import React, { memo, ReactNode, useEffect, useState, useCallback } from "react";
+import React, { memo, useEffect, useState, useCallback } from "react";
 import CurrencySelect, { CurrencyOption } from "./CurrencySelect";
 import clsx from "clsx";
 
@@ -37,7 +37,6 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
         newValue !== "" && setInputValue("");
         return;
       }
-      console.log(outsideValue, newValue, inputValue)
       if (newValue !== inputValue) {
         setInputValue(newValue);
       }
@@ -102,7 +101,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           type="text"
-          className="text-[13px] min-w-0 placeholder:text-[#CCCCCC] leading-[107%] py-[26px] pl-[19px] pr-[5px] flex-grow"
+          className="text-[16px] min-w-0 placeholder:text-[#CCCCCC] leading-[107%] py-[26px] pl-[19px] pr-[5px] flex-grow"
         />
         <CurrencySelect
           value={selectValue}

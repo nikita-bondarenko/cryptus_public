@@ -1,7 +1,5 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { ExchangeInputProps } from "./ExchangeInputCrypto";
-import { cryptoCurrencyList } from "@/data/cryptoCurrencyList";
-import { cryptoNets } from "@/data/cryptoNets";
 import {
   formatWithSpacesCardNumber,
   normalizeInput,
@@ -17,7 +15,6 @@ import { banksList } from "@/data/banksList";
 import { cityList } from "@/data/cityList";
 import CitySelect from "./CitySelect";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { title } from "process";
 import { selectSectionHeadingProps } from "@/redux/selectors";
 import { setCashInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { usePlaceholder } from "@/hooks/usePlaceholder";

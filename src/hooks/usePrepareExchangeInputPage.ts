@@ -35,7 +35,6 @@ export const usePrepareExchangeInputPage = () => {
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-console.log('usePrepareExchangeInputPage')
     dispatch(setFetchedData(fetchedDataPayload));
     setTimeout(()=> {
         setIsLoading(false)

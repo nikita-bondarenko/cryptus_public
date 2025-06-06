@@ -16,25 +16,21 @@ import {
 import { usePlaceholder } from "@/hooks/usePlaceholder";
 import Icon from "../helpers/Icon";
 import clsx from "clsx";
-import BaseInput from '../common/BaseInput';
 
 export type ExchangeInputProps = {
   position: CurrencyPosition;
 };
 
-export type ExchangeInputCryptoProps = ExchangeInputProps & {
-  walletAddress: string;
-  onWalletAddressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  walletAddressError?: boolean;
-  areErrorsVisible?: boolean;
-};
+export type ExchangeInputCryptoProps = ExchangeInputProps;
 
 const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
-  ({ position, walletAddress, onWalletAddressChange, walletAddressError = false, areErrorsVisible = false }) => {
+  ({ position }) => {
     const [value, setValue] = useState<number | null>(null);
     const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(
       cryptoCurrencyList[0]
     );
+    const [walletAddress, setWalletAddress] = useState("");
+
     const [selectedNet, setSelectedNet] = useState<CryptoNetOption>(
       cryptoNets[0]
     );
@@ -119,6 +115,16 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
       (state) => state.exchangeInput.cryptoInput.amount.error
     );
 
+    const walletAddressError = useAppSelector(
+      (state) => state.exchangeInput.cryptoInput.walletAddress.error
+    );
+
+    const areErrorsVisible = useAppSelector(
+      (state) => state.exchangeInput.areErrorsVisible
+    );
+
+    
+
     const placeholder = usePlaceholder(position);
     return (
       <div className="">
@@ -148,15 +154,30 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
             options={netsOptions}
           ></CryptoNetSelect>
         </div>
-        <div className="relative pb-[14px] mb-[-14px] mt-[20px]">
-          <BaseInput
-            value={walletAddress}
-            onChange={onWalletAddressChange}
-            placeholder="Адрес кошелька"
-            error={walletAddressError}
-            areErrorsVisible={areErrorsVisible}
-          />
-        </div>
+        {position === "received" && (
+          <div className="relative pb-[16px] mb-[-16px] mt-[20px]">
+            <input
+              className={clsx("border-[1px] shimmer-on-loading border-[#E9E9E9] rounded-[6px] bg-white text-[16px] leading-[107%] px-[18px] py-[15px] pr-[30px] w-full", walletAddressError && areErrorsVisible ? "[&]:border-[#FF676A]" : ""  )}
+              type="text"
+              onChange={(e) => {
+                dispatch(setActiveInputType("crypto"));
+                setWalletAddress(e.target.value);
+              }}
+              placeholder={`Адрес кошелька в сети ${selectedNet?.name}`}
+            />
+            {walletAddressError && areErrorsVisible && (
+              <>
+                <p className="absolute left-0 text-[#FF676A] text-[12px] bottom-0">
+                  {walletAddressError}
+                </p>
+                <Icon
+                  src="alert.svg"
+                  className="w-[16px] h-[16px] absolute right-[12px] top-[14px]"
+                ></Icon>
+              </>
+            )}
+          </div>
+        )}
       </div>
     );
   }

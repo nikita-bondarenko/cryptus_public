@@ -2,13 +2,11 @@
 import ExchangeInputCard from "@/components/exchange/ExchangeInputCard";
 import ExchangeInputCash from "@/components/exchange/ExchangeInputCash";
 import ExchangeInputCrypto from "@/components/exchange/ExchangeInputCrypto";
-import ExchangePageLayout from "@/components/exchange/ExchangePageLayout";
 import {
   CurrencyPosition,
   CurrencyType,
 } from "@/components/request/RequestDetails";
 import Button from "@/components/ui/Button";
-import { SectionHeadingProps } from "@/components/ui/SectionHeading";
 import { usePrepareExchangeInputPage } from "@/hooks/usePrepareExchangeInputPage";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectCurrencyTypes } from "@/redux/selectors";
@@ -25,7 +23,6 @@ export default memo(function Page() {
 
   const [isLoading] = usePrepareExchangeInputPage();
 
-  console.log("page");
   const onSubmit = useCallback(() => {
     dispatch(setAreErrorsVisible(true));
     
@@ -39,7 +36,6 @@ export default memo(function Page() {
     }
     
    router.push("/exchange/details");
-    console.log("ошибок нет")
   }, [dispatch, router]);
 
   const memoizedSelector = useMemo(() => selectCurrencyTypes(), []);
@@ -48,7 +44,6 @@ export default memo(function Page() {
 
   useEffect(() => {
     dispatch(setPageName("детали обмена"));
-    console.log(store.getState().exchangeInput)
     return () => {
       dispatch(setAreErrorsVisible(false));
     };

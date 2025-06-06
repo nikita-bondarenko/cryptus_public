@@ -43,9 +43,9 @@ const Select: React.FC<SelectProps> = memo(
     };
 
     return (
-      <div className="relative w-full shrink-0 [&_button]:text-[13px] shimmer-on-loading pb-[14px] mb-[-14px]" ref={dropdownRef}>
+      <div className="relative w-full shrink-0 [&_button]:text-[16px] shimmer-on-loading pb-[16px] mb-[-16px]" ref={dropdownRef}>
            {!!error && (
-          <p className="absolute left-0 text-[#FF676A] text-[10px] bottom-0">
+          <p className="absolute left-0 text-[#FF676A] text-[12px] bottom-0">
             {error}
           </p>
         )}

@@ -31,8 +31,7 @@ export const exchangeInputSlice = createSlice({
   initialState,
   reducers: {
     resetExchangeInput: (state) => {
-   console.log('resetExchangeInput')
-          state = initialState;
+      state = initialState;
     },
     setFetchedData(state, action: SetFetchedDataAction) {
       state.rate = action.payload.rate;

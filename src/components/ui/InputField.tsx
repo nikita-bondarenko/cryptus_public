@@ -21,14 +21,14 @@ export const InputField: React.FC<Props> = ({
   } = useFormContext();
 
   return (
-    <div className=" w-full pb-[15px] relative">
+    <div className=" w-full pb-[16px] relative">
       <input
         id={name}
         type={type}
         placeholder={placeholder}
         {...register(name)}
         className={clsx(
-          "w-full bg-white text-[13px] leading-[107%] rounded-[6.3px] px-[18px] py-[14px] placeholder:text-[#CBCBCB] border-[1px] border-[#DEDEDE]",
+          "w-full bg-white text-[16px] leading-[107%] rounded-[6.3px] px-[18px] py-[14px] placeholder:text-[#CBCBCB] border-[1px] border-[#DEDEDE]",
           {
             "[&]:border-[#FF676A] pr-[30px]": errors[name],
           }
@@ -36,7 +36,7 @@ export const InputField: React.FC<Props> = ({
       />
       {errors[name] && (
         <>
-          <p className="absolute left-0 text-[#FF676A] text-[10px] bottom-0">
+          <p className="absolute left-0 text-[#FF676A] text-[13px] bottom-[-1px]">
             {(errors[name]?.message as string) || "Ошибка"}
           </p>
           <Icon

@@ -24,13 +24,13 @@ export default memo(function Page() {
   }, [router]);
 
   useEffect(() => {
-    dispatch(setPageName(""));
+    dispatch(setPageName("выбор типа обмена"));
     const state = store.getState() as RootState;
 
     dispatch(resetExchangeInput());
 
     validateAllFields(state, dispatch);
-  },[]);
+  }, [dispatch]);
 
   const giveOptions = useRef(exchangeTypesButtons);
   return (
@@ -47,12 +47,12 @@ export default memo(function Page() {
           buttons={recieveOptions}
         ></ExchangeTypeBlock>
         <div className="border-[1px] rounded-[6px] border-[#DEDEDE] bg-white w-full h-[60px] flex flex-col items-center justify-center">
-          <p className="text-[11px] text-[#939393]">
+          <p className="text-[13px] text-[#939393]">
             Не нашли интересующий тип обмена?
           </p>
           <button
             onClick={callSupport}
-            className="text-[11px] font-medium text-[#3F3F3F] underline underline-offset-1"
+            className="text-[13px] font-medium text-[#3F3F3F] underline underline-offset-1"
           >
             связаться с поддержкой
           </button>

@@ -20,7 +20,7 @@ body {
 }
 
 .header__text {
-  @apply text-[12px] font-medium text-black
+  @apply text-[16px] font-medium text-black
 }
 
 button {
@@ -50,7 +50,7 @@ button {
 }
 
 .heading {
-  @apply font-medium text-[13px] leading-[107%] mb-[20px]
+  @apply font-medium text-[16px] leading-[107%] mb-[20px]
 }
 
 .story-info {
