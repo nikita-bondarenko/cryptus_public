@@ -140,7 +140,7 @@ export default function Header() {
                   "w-[0px]": currentStep === 0 || currentStep === 1,
                   "w-[26px]": currentStep === 2,
                   "w-[52px]": currentStep === 3,
-                  "delay-1000": !isBackward,
+                  "delay-1000": !isBackward && currentStep !== 2,
                   
                 }
               )}
@@ -148,7 +148,7 @@ export default function Header() {
           </div>
           <div
             className={clsx(
-              "w-[20px] h-[20px] border-[2px] border-[#4FC3FF]  rounded-full flex items-center justify-center relative shrink-0",
+              "w-[20px] h-[20px] border-[2px] border-[#4FC3FF]  rounded-full flex items-center justify-center relative shrink-0 delay-500",
               {
                 "bg-[#4FC3FF] ": currentStep === 3,
               }
