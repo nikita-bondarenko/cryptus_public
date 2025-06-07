@@ -15,27 +15,30 @@ export type SectionHeadingProps = {
 
 const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValue, error}) => {
   return (
-     <div className="flex items-end justify-between mb-10 pl-6">
-          <h2 className="text-16 font-medium leading-normal shimmer-on-loading">{title}</h2>
+     <div className="flex items-end justify-between mb-10 pl-6  gap-10">
+          <h2 className="text-16 font-medium leading-normal shimmer-on-loading shrink-0">{title}</h2>
           {rate && (
             <span
-              className="text-13 leading-normal text-neutral-gray-1600 shimmer-on-loading"
+              className="text-13  leading-normal text-neutral-gray-1600 shimmer-on-loading"
               dangerouslySetInnerHTML={{
                 __html: `${valueMask(rate?.from.value)} ${rate?.from.name} = <span class="text-black">${valueMask(rate?.to.value)}</span> ${rate?.to.name}`,
               }}
             ></span>
           )}
           {minValue && (
-              <span className='relative block'>
-                <Icon src='alert.svg' className={clsx('w-12 h-12 absolute top-1 left--17 opacity-0 transition-opacity duration-500', {"opacity-100": error})}></Icon>
+              <span className='relative block pl-17 '>
+                <Icon src='alert.svg' className={clsx('w-12 h-12 absolute top-1 left-0 opacity-0 transition-opacity duration-500', {"opacity-100": error})}></Icon>
                  <span
-              className={clsx("block text-13 leading-normal text-neutral-gray-1600 shimmer-on-loading ", {
-                "[&]:text-primary-red [&_span]:text-primary-red": error
+              className={clsx("block text-13 leading-normal text-neutral-gray-1600 shimmer-on-loading [&_span]:transition-all [&_span]:duration-500", {
+                "[&]:text-primary-red [&_span]:text-primary-red-strong": error
               })}
-              dangerouslySetInnerHTML={{
-                __html: `минимальная сумма обмена <span class="text-black">${valueMask(minValue)}</span>`,
-              }}
-            ></span>
+          
+            >
+              <span className='whitespace-nowrap mr-6'>минимальная сумма обмена</span>
+              <span className={clsx("text-black transition-all duration-500 whitespace-nowrap", {
+                "text-primary-red-strong": error
+              })}>{valueMask(minValue)}</span>
+            </span>
               </span>
           )}
         </div>

@@ -1,7 +1,5 @@
 "use client";
-import ExchangeInputCard from "@/components/exchange/ExchangeInputCard";
-import ExchangeInputCash from "@/components/exchange/ExchangeInputCash";
-import ExchangeInputCrypto from "@/components/exchange/ExchangeInputCrypto";
+
 import {
   CurrencyPosition,
   CurrencyType,
@@ -16,6 +14,7 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { memo, useCallback, useEffect, useMemo } from "react";
 import { store } from "@/redux/store";
+import ExchangeInput from "@/components/exchange/ExchangeInput";
 
 export default memo(function Page() {
   const dispatch = useAppDispatch();
@@ -25,17 +24,17 @@ export default memo(function Page() {
 
   const onSubmit = useCallback(() => {
     dispatch(setAreErrorsVisible(true));
-    
+
     // Проверяем наличие ошибок
     const state = store.getState();
     const areErrors = state.exchangeInput.areErrors;
-    
+
     // Если есть ошибки, не переходим дальше
     if (areErrors) {
       return;
     }
-    
-   router.push("/exchange/details");
+
+    router.push("/exchange/details");
   }, [dispatch, router]);
 
   const memoizedSelector = useMemo(() => selectCurrencyTypes(), []);
@@ -53,29 +52,9 @@ export default memo(function Page() {
     cyrrencyType: CurrencyType,
     position: CurrencyPosition
   ) => {
-    switch (cyrrencyType) {
-      case "crypto": {
-        return (
-          <ExchangeInputCrypto
-            position={position}
-          ></ExchangeInputCrypto>
-        );
-      }
-      case "card": {
-        return (
-          <ExchangeInputCard
-            position={position}
-          ></ExchangeInputCard>
-        );
-      }
-      case "cash": {
-        return (
-          <ExchangeInputCash
-            position={position}
-          ></ExchangeInputCash>
-        );
-      }
-    }
+    return (
+      <ExchangeInput position={position} type={cyrrencyType}></ExchangeInput>
+    );
   };
 
   return (

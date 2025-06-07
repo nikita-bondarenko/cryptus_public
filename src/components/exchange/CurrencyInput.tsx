@@ -6,15 +6,17 @@ import {
 import React, { memo, useEffect, useState, useCallback } from "react";
 import CurrencySelect, { CurrencyOption } from "./CurrencySelect";
 import clsx from "clsx";
+import { InputWrapper } from "../ui/InputWrapper";
+import { Input } from "../ui/Input";
 
 export type CurrencyInputProps = {
   inputValue: number | null;
   onInputChange: (value: number | null) => void;
-  placeholder: string;
-  onSelectChange: (value: CurrencyOption) => void;
-  options: CurrencyOption[];
+  onSelectChange: (option: CurrencyOption) => void;
   selectValue: CurrencyOption;
-  error?: boolean
+  options: CurrencyOption[];
+  placeholder?: string;
+  error?: boolean;
 };
 
 const CurrencyInput: React.FC<CurrencyInputProps> = memo(
@@ -25,7 +27,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
     options,
     placeholder,
     selectValue,
-    error
+    error,
   }) => {
     const [inputValue, setInputValue] = useState<string>("");
 
@@ -37,7 +39,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
         if (newValue !== "") {
           setInputValue("");
         }
-         
+
         return;
       }
       if (newValue !== inputValue) {
@@ -45,26 +47,32 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
       }
     }, [outsideValue, inputValue]);
 
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = normalizeInput(e.target.value);
-      
-      if (!raw) {
-        setInputValue("");
-        onInputChange(null);
-        return;
-      }
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const raw = normalizeInput(e.target.value);
 
-      const parts = raw.split(",");
-      const intPart = parts[0];
-      const decPart = parts[1]?.slice(0, 8);
+        if (!raw) {
+          setInputValue("");
+          onInputChange(null);
+          return;
+        }
 
-      const combined = decPart !== undefined ? `${intPart},${decPart}` : intPart;
-      const formatted = formatWithSpaces(combined);
-      setInputValue(formatted);
+        const parts = raw.split(",");
+        const intPart = parts[0];
+        const decPart = parts[1]?.slice(0, 8);
 
-      const numeric = parseFloat(combined.replace(/\s/g, "").replace(",", "."));
-      onInputChange(!isNaN(numeric) ? numeric : null);
-    }, [onInputChange]);
+        const combined =
+          decPart !== undefined ? `${intPart},${decPart}` : intPart;
+        const formatted = formatWithSpaces(combined);
+        setInputValue(formatted);
+
+        const numeric = parseFloat(
+          combined.replace(/\s/g, "").replace(",", ".")
+        );
+        onInputChange(!isNaN(numeric) ? numeric : null);
+      },
+      [onInputChange]
+    );
 
     const handleBlur = useCallback(() => {
       if (!inputValue) {
@@ -76,41 +84,60 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
       const parts = cleaned.split(",");
       const intPart = parts[0] || "0";
       const decPart = parts[1]?.slice(0, 8);
-      const normalized = decPart !== undefined ? `${intPart},${decPart}` : intPart;
+      const normalized =
+        decPart !== undefined ? `${intPart},${decPart}` : intPart;
 
       const formatted = formatWithSpaces(normalized);
       setInputValue(formatted);
 
-      const numeric = parseFloat(normalized.replace(/\s/g, "").replace(",", "."));
+      const numeric = parseFloat(
+        normalized.replace(/\s/g, "").replace(",", ".")
+      );
       onInputChange(!isNaN(numeric) ? numeric : null);
     }, [inputValue, onInputChange]);
 
-    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-      const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
-      const isNumber = /^[0-9]$/.test(e.key);
-      const isSeparator = e.key === "," || e.key === ".";
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const allowed = [
+          "Backspace",
+          "Delete",
+          "ArrowLeft",
+          "ArrowRight",
+          "Tab",
+        ];
+        const isNumber = /^[0-9]$/.test(e.key);
+        const isSeparator = e.key === "," || e.key === ".";
 
-      if (!isNumber && !allowed.includes(e.key) && !isSeparator) {
-        e.preventDefault();
-      }
-    }, []);
+        if (!isNumber && !allowed.includes(e.key) && !isSeparator) {
+          e.preventDefault();
+        }
+      },
+      []
+    );
 
     return (
-      <div className={clsx("shimmer-on-loading rounded-6 border border-neutral-gray-200 min-w-0 bg-neutral-white flex items-center", {"[&]:border-primary-red": error})}>
-        <input
-          value={inputValue}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          type="text"
-          className="text-16 min-w-0 placeholder:text-neutral-gray-400 leading-normal py-26 pl-19 pr-5 flex-grow"
-        />
-        <CurrencySelect
-          value={selectValue}
-          onChange={onSelectChange}
-          options={options}
-        />
+      <div className="relative">
+        <InputWrapper
+          error={error ? "error" : null}
+          showErrorText={false}
+          errorIcon={false}
+          className="pb-0"
+        >
+          <div className="py-7 rounded-6 border transition-all duration-500 border-neutral-gray-300 bg-neutral-white">
+            <div className="relative w-full flex items-center justify-between text-13">
+              <Input
+                value={inputValue || ""}
+                onChange={handleChange}
+                placeholder={placeholder}
+              />
+              <CurrencySelect
+                value={selectValue}
+                options={options}
+                onChange={onSelectChange}
+              />
+            </div>
+          </div>
+        </InputWrapper>
       </div>
     );
   }

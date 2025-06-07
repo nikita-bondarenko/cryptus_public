@@ -1,6 +1,6 @@
 import { CryptoNetOption } from "@/components/exchange/CryptoNetSelect";
 import { CurrencyOption } from "@/components/exchange/CurrencySelect";
-import { SelectOption } from "@/components/exchange/Select";
+import { SelectOption } from "@/components/exchange/BankSelect";
 import { CurrencyType } from "@/components/request/RequestDetails";
 import { PayloadAction } from "@reduxjs/toolkit";
 

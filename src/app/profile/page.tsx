@@ -3,7 +3,7 @@ import RequestStoryItem, {
   RequestStoryItemProps,
 } from "@/components/profile/RequestStoryItem";
 import Button from "@/components/ui/Button";
-import { InputField } from "@/components/ui/InputField";
+import { InputField } from "@/components/ui/ProfileInputField";
 import { useAppDispatch } from "@/redux/hooks";
 import { setPageName } from "@/redux/slices/uiSlice";
 import { formSchema } from "@/schemas/formSchema";

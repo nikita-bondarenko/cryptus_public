@@ -18,7 +18,10 @@ const config: Config = {
         "global-background": "#F2F2F2",
         primary: {
           blue: "#43C0FF",
-          red: "#FF6769",
+          red: {
+            DEFAULT: "#FF6769",
+            strong: "#F04438",
+          },
         },
         neutral: {
           white: "#FFFFFF",

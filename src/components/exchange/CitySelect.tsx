@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import { InputWrapper } from "../ui/InputWrapper";
 
 export type CityOption = {
   name: string;
@@ -76,61 +77,58 @@ const CitySelect: React.FC<CitySelectProps> = memo(
 
     return (
       <div
-        className="relative w-full shrink-0 [&_button]:text-16 shimmer-on-loading pb-16 -mb-16"
+        className="relative w-full shrink-0 [&_button]:text-16 shimmer-on-loading"
         ref={dropdownRef}
       >
-        {!!error && (
-          <p className="absolute left-0 text-primary-red text-12 bottom-0">
-            {error}
-          </p>
-        )}
-        <div
-          className={clsx(
-            "relative w-full flex items-center justify-between px-16 py-15 rounded-6 border border-neutral-gray-300 bg-neutral-white text-13 transition-all duration-500",
-            { "[&]:border-primary-red": !!error }
-          )}
-        >
-          {showCustomPlaceholder && (
-            <div
-              className={clsx(
-                "absolute left-16 pointer-events-none text-16 transition-colors",
-                focused ? "text-neutral-gray-400" : "text-neutral-black"
-              )}
-            >
-              {focused ? placeholderFocused : placeholder}
-            </div>
-          )}
-
-          <input
-            ref={inputRef}
-            type="text"
-            className="w-full outline-none bg-transparent text-16 text-neutral-black placeholder:opacity-0"
-            value={searchValue}
-            onChange={handleInputChange}
-            onFocus={handleFocus}
-          />
-          <button
-            type="button"
-            onClick={() => setIsOpen((prev) => !prev)}
-            tabIndex={-1}
+        <InputWrapper error={error} errorIcon={false}>
+          <div
+            className={clsx(
+              "relative w-full flex items-center justify-between px-16 py-15 rounded-6 border border-neutral-gray-300 bg-neutral-white text-13 transition-all duration-500",
+              { "[&]:border-primary-red": !!error }
+            )}
           >
-            <svg
-              className={`ml-2 w-15 h-15 transition-transform ${
-                !isOpen ? "rotate-180" : ""
-              }`}
-              fill="none"
-              stroke="#999999"
-              viewBox="0 0 24 24"
+            {showCustomPlaceholder && (
+              <div
+                className={clsx(
+                  "absolute left-16 pointer-events-none text-16 transition-colors",
+                  focused ? "text-neutral-gray-400" : "text-neutral-black"
+                )}
+              >
+                {focused ? placeholderFocused : placeholder}
+              </div>
+            )}
+
+            <input
+              ref={inputRef}
+              type="text"
+              className="w-full outline-none bg-transparent text-16 text-neutral-black placeholder:opacity-0"
+              value={searchValue}
+              onChange={handleInputChange}
+              onFocus={handleFocus}
+            />
+            <button
+              type="button"
+              onClick={() => setIsOpen((prev) => !prev)}
+              tabIndex={-1}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-        </div>
+              <svg
+                className={`ml-2 w-15 h-15 transition-transform ${
+                  !isOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="#999999"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          </div>
+        </InputWrapper>
 
         {isOpen && (
           <div className="absolute left-0 top59 mt-1 w-full z-50 bg-neutral-white border border-neutral-gray-200 rounded-6 max-h-134 overflow-hidden">

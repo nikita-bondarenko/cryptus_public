@@ -1,4 +1,4 @@
-import { SelectOption } from "@/components/exchange/Select";
+import { SelectOption } from "@/components/exchange/BankSelect";
 
 export const cityList: SelectOption[] = [
   { name: "Москва", value: "Москва" },

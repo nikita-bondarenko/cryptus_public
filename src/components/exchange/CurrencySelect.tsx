@@ -58,7 +58,7 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
       >
         <button
           type="button"
-          className="w-full flex items-center justify-between px-16 py-14 border-l border-neutral-gray-300 bg-white text-16"
+          className="w-full flex items-center justify-between px-16 py-10 border-l border-neutral-gray-300 bg-white text-16"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {selected ? (
