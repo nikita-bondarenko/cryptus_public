@@ -3,11 +3,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import exchangeInputReducer from "./slices/exchangeInput/exchangeInputSlice";
 import exchangeTypeReducer from "./slices/exchangeTypeSlice";
 import uiReducer from "./slices/uiSlice";
-import { exchangeInputValueChangingListener } from "./listeners/exchangeInputValueChangingListener";
+import { amountInputListener } from "./listeners/amountInputListener";
 import { cardBankListener } from "./listeners/cardBankListener";
 import { cardNumberListener } from "./listeners/cardNumberListener";
 import { cityInputListener } from "./listeners/cityInputListener";
-import { walletInputListener } from "./listeners/walletInputListener";
+import { walletAddressInputListener } from "./listeners/walletAddressInputListener";
 
 export const store = configureStore({
   reducer: {
@@ -17,11 +17,11 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(
-      exchangeInputValueChangingListener.middleware,
+      amountInputListener.middleware,
       cardBankListener.middleware,
       cardNumberListener.middleware,
       cityInputListener.middleware,
-      walletInputListener.middleware
+      walletAddressInputListener.middleware
     ),
   devTools: process.env.NODE_ENV !== "production",
 });

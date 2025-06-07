@@ -1,24 +1,21 @@
 import { CurrencyPosition } from "@/components/request/RequestDetails";
 import { AppDispatch, RootState } from "../store";
-import { ListenerEffectAPI, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
+import { ListenerEffectAPI, PayloadAction } from "@reduxjs/toolkit";
 import { validateExchangeInput } from "./validateExchangeInput";
-import { setCardNumberError, setAreErrors } from "../slices/exchangeInput/exchangeInputSlice";
+import { setCardNumberError, setAreErrors, setCardNumber } from "../slices/exchangeInput/exchangeInputSlice";
+import { SetCardNumberAction } from "../slices/exchangeInput/types";
 
 export type ValidateCardNumberProps = {
-  action: UnknownAction;
-  listenerApi: ListenerEffectAPI<
-    unknown,
-    ThunkDispatch<unknown, unknown, UnknownAction>,
-    unknown
-  >;
+  action: SetCardNumberAction;
+  listenerApi: ListenerEffectAPI<RootState, AppDispatch, SetCardNumberAction>;
 };
 
 export const validateCardNumber = ({
   action,
   listenerApi,
 }: ValidateCardNumberProps) => {
-  const state = listenerApi.getState() as RootState;
-  const dispatch = listenerApi.dispatch as AppDispatch;
+  const state = listenerApi.getState();
+  const dispatch = listenerApi.dispatch;
 
   const { selectedGiveType, selectedReceieveType } = state.exchangeType;
   const minValue = state.exchangeInput.minValue;

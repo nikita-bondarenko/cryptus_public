@@ -3,7 +3,29 @@ import { CurrencyPosition } from "../request/RequestDetails";
 import CurrencyInput from "./CurrencyInput";
 import { CurrencyOption } from "./CurrencySelect";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { selectSectionHeadingProps } from "@/redux/selectors";
+import {
+  selectSectionHeadingProps,
+  selectCurrencyOptions,
+  selectBankOptions,
+  selectCityOptions,
+  selectNetsOptions,
+  selectInputValue,
+  selectBankValue,
+  selectCityValue,
+  selectCardNumberValue,
+  selectNetValue,
+  selectWalletAddressValue,
+  selectCardCurrency,
+  selectCashCurrency,
+  selectCryptoCurrency,
+  selectValueError,
+  selectBankError,
+  selectCardNumberError,
+  selectCityError,
+  selectWalletAddressError,
+  selectAreErrorsVisible,
+  selectCurrencyTypes
+} from "@/redux/selectors";
 import {
   setActiveInputType,
   setCardInputAmountValue,
@@ -44,109 +66,41 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
   
   const dispatch = useAppDispatch();
 
-  const { selectedGiveType, selectedReceieveType } = useAppSelector(
-    (state) => state.exchangeType
-  );
+  const { givenType, receivedType } = useAppSelector(selectCurrencyTypes);
 
   const sectionHeadingProps = useAppSelector(
     useMemo(() => selectSectionHeadingProps(position), [position])
   );
 
   const currencyOptions = useAppSelector(
-    (state) => {
-      switch (type) {
-        case "crypto":
-          return state.exchangeInput.options.cryptoCurrencyOptions;
-        case "card":
-        case "cash":
-          return state.exchangeInput.options.nonCryptoCurrencyOptions;
-        default:
-          return [];
-      }
-    }
+    useMemo(() => selectCurrencyOptions(type), [type])
   );
 
-  const bankOptions = useAppSelector(
-    (state) => state.exchangeInput.options.bankOptions
-  );
-
-
-
-  const cityOptions = useAppSelector(
-    (state) => state.exchangeInput.options.cityOptions
-  );
-
-
-
-  const netsOptions = useAppSelector(
-    (state) => state.exchangeInput.options.netsOptions
-  );
-
-
+  const bankOptions = useAppSelector(selectBankOptions);
+  const cityOptions = useAppSelector(selectCityOptions);
+  const netsOptions = useAppSelector(selectNetsOptions);
   const globalStateValue = useAppSelector(
-    (state) => {
-      const input = state.exchangeInput[`${type}Input` as keyof ExchangeInputState] as CryptoInput | CashInput | CardInput;
-      return input?.amount.value ?? null;
-    }
+    useMemo(() => selectInputValue(type), [type])
   );
 
-  const bankValue = useAppSelector(
-    (state) => state.exchangeInput.cardInput.bank.value
-  );
-  const cityValue = useAppSelector(
-    (state) => state.exchangeInput.cashInput.city.value
-  );
+  const bankValue = useAppSelector(selectBankValue);
+  const cityValue = useAppSelector(selectCityValue);
+  const cardNumberValue = useAppSelector(selectCardNumberValue);
+  const netValue = useAppSelector(selectNetValue);
+  const walletAddressValue = useAppSelector(selectWalletAddressValue);
 
-  const cardNumberValue = useAppSelector(
-    (state) => state.exchangeInput.cardInput.cardNumber.value
-  );
-
-  const netValue = useAppSelector(
-    (state) => state.exchangeInput.cryptoInput.net.value
-  );
-
-  const walletAddressValue = useAppSelector(
-    (state) => state.exchangeInput.cryptoInput.walletAddress.value
-  );
-
-  const selectedCardCurrency = useAppSelector(
-    (state) => state.exchangeInput.cardInput.currency
-  );
-
-  const selectedCashCurrency = useAppSelector(
-    (state) => state.exchangeInput.cashInput.currency
-  );
-  
-  const selectedCryptoCurrency = useAppSelector(
-    (state) => state.exchangeInput.cryptoInput.currency
-  );
+  const selectedCardCurrency = useAppSelector(selectCardCurrency);
+  const selectedCashCurrency = useAppSelector(selectCashCurrency);
+  const selectedCryptoCurrency = useAppSelector(selectCryptoCurrency);
 
   const valueError = useAppSelector(
-    (state) => {
-      const input = state.exchangeInput[`${type}Input` as keyof ExchangeInputState] as CryptoInput | CashInput | CardInput;
-      return input?.amount.error ?? null;
-    }
+    useMemo(() => selectValueError(type), [type])
   );
-
-  const bankError = useAppSelector(
-    (state) => state.exchangeInput.cardInput.bank.error
-  );
-
-  const cardNumberError = useAppSelector(
-    (state) => state.exchangeInput.cardInput.cardNumber.error
-  );
-
-  const cityError = useAppSelector(
-    (state) => state.exchangeInput.cashInput.city.error
-  );
-
-  const walletAddressError = useAppSelector(
-    (state) => state.exchangeInput.cryptoInput.walletAddress.error
-  );
-
-  const areErrorsVisible = useAppSelector(
-    (state) => state.exchangeInput.areErrorsVisible
-  );
+  const bankError = useAppSelector(selectBankError);
+  const cardNumberError = useAppSelector(selectCardNumberError);
+  const cityError = useAppSelector(selectCityError);
+  const walletAddressError = useAppSelector(selectWalletAddressError);
+  const areErrorsVisible = useAppSelector(selectAreErrorsVisible);
 
   const placeholder = usePlaceholder(position);
 
@@ -187,7 +141,7 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
 
   useEffect(() => {
     setIsInitialLoad(true);
-  }, [selectedGiveType, selectedReceieveType]);
+  }, [givenType, receivedType]);
 
   useEffect(() => {
     if (isInitialLoad) {

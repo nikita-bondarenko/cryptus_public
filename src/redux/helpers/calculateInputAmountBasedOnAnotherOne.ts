@@ -4,9 +4,9 @@ import { RootState, AppDispatch } from "../store";
 import { dispatchCrypto } from "./dispatchCrypto";
 import { dispatchNonCrypto } from "./dispatchNonCrypto";
 import { getCurrencyTypeFromAction } from "./getCurrencyTypeFromAction";
-import { ValidateOneInputAmountValueProps } from "./validateOneInputAmountValue";
+import { ValidateAmountInputProps } from "./validateAmountInput";
 
-export type CalculateInputAmountBasedOnAnotherOneProps = ValidateOneInputAmountValueProps;
+export type CalculateInputAmountBasedOnAnotherOneProps = ValidateAmountInputProps;
 
 export const calculateInputAmountBasedOnAnotherOne = ({
   action,

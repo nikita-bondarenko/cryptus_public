@@ -1,9 +1,14 @@
-type Validator = (value: unknown) => string | null;
+import { ValidationOptions } from "../types";
 
-export const validateBank: Validator = (value) => {
-  // Bank is required for both positions
+export type ValidateBankProps = {
+  value: string | null;
+  options?: ValidationOptions;
+};
+
+export const validateBank = ({ value, options }: ValidateBankProps): string | null => {
   if (!value) {
     return "Выберите банк";
   }
+
   return null;
 }; 

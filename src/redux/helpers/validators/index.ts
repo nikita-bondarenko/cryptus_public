@@ -1,25 +1,30 @@
-import { CurrencyPosition } from "@/components/request/RequestDetails";
-import { validateAmount } from "./validateAmount";
-import { validateWalletAddress } from "./validateWalletAddress";
-import { validateCardNumber } from "./validateCardNumber";
-import { validateBank } from "./validateBank";
-import { validateCity } from "./validateCity";
+import { validateAmount, ValidateAmountProps } from "./validateAmount";
+import { validateCardNumber, ValidateCardNumberProps } from "./validateCardNumber";
+import { validateCity, ValidateCityProps } from "./validateCity";
+import { validateWalletAddress, ValidateWalletAddressProps } from "./validateWalletAddress";
+import { validateBank, ValidateBankProps } from "./validateBank";
+import { validateNet, ValidateNetProps } from "./validateNet";
 
-export type ValidatedField = 'amount' | 'walletAddress' | 'cardNumber' | 'bank' | 'city';
+export type ValidatedField = "amount" | "walletAddress" | "cardNumber" | "bank" | "city" | "net";
 
-export const validatedFields: ValidatedField[] = ['amount', 'walletAddress', 'cardNumber', 'bank', 'city'];
-
-export type ValidatorOptions = {
-  minValue?: number;
-  position?: CurrencyPosition;
+export type ValidatorProps = {
+  amount: ValidateAmountProps;
+  walletAddress: ValidateWalletAddressProps;
+  cardNumber: ValidateCardNumberProps;
+  bank: ValidateBankProps;
+  city: ValidateCityProps;
+  net: ValidateNetProps;
 };
 
-export type Validator = (value: unknown, options?: ValidatorOptions) => string | null;
+export type Validator = {
+  [K in ValidatedField]: (props: ValidatorProps[K]) => string | null;
+};
 
-export const validators: Record<ValidatedField, Validator> = {
+export const validators: Validator = {
   amount: validateAmount,
   walletAddress: validateWalletAddress,
   cardNumber: validateCardNumber,
   bank: validateBank,
   city: validateCity,
+  net: validateNet,
 }; 

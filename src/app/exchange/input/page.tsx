@@ -7,7 +7,6 @@ import {
 import Button from "@/components/ui/Button";
 import { usePrepareExchangeInputPage } from "@/hooks/usePrepareExchangeInputPage";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { selectCurrencyTypes } from "@/redux/selectors";
 import { setAreErrorsVisible } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { setPageName } from "@/redux/slices/uiSlice";
 import clsx from "clsx";
@@ -16,6 +15,7 @@ import React, { memo, useCallback, useEffect, useMemo } from "react";
 import { store } from "@/redux/store";
 import ExchangeInput from "@/components/exchange/ExchangeInput";
 import { validateAllFields } from "@/redux/helpers/validateAllFields";
+import { selectCurrencyTypes } from "@/redux/selectors";
 
 export default memo(function Page() {
   const dispatch = useAppDispatch();
@@ -25,28 +25,22 @@ export default memo(function Page() {
 
   const onSubmit = useCallback(() => {
     dispatch(setAreErrorsVisible(true));
-
-    // Проверяем наличие ошибок
     const state = store.getState();
     const areErrors = validateAllFields(state, dispatch);
-    // Если есть ошибки, не переходим дальше
     if (areErrors) {
       return;
     }
-
-    // router.push("/exchange/details");
+    router.push("/exchange/details");
   }, [dispatch, router]);
 
-  const memoizedSelector = useMemo(() => selectCurrencyTypes(), []);
-  const { givenCurrencyType, receivedCurrencyType } =
-    useAppSelector(memoizedSelector);
+
+  const {givenType, receivedType} = useAppSelector(selectCurrencyTypes);
 
   useEffect(() => {
     return () => {
       dispatch(setAreErrorsVisible(false));
     };
   });
-
 
   return (
     <div className="container">
@@ -55,8 +49,8 @@ export default memo(function Page() {
           loading: isLoading,
         })}
       >
-        <ExchangeInput position={'given'} type={givenCurrencyType}></ExchangeInput>
-        <ExchangeInput position={'received'} type={receivedCurrencyType}></ExchangeInput>
+        <ExchangeInput position={'given'} type={givenType}></ExchangeInput>
+        <ExchangeInput position={'received'} type={receivedType}></ExchangeInput>
       </div>
       <Button type="primary" onClick={onSubmit}>
         Далее

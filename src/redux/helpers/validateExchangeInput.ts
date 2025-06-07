@@ -1,5 +1,5 @@
 import { CurrencyPosition } from "@/components/request/RequestDetails";
-import { ValidatedField, ValidatorOptions, validators } from "./validators";
+import { ValidatedField, validators } from "./validators";
 
 export type ValidateExchangeInput = (props: {
   value: unknown;
@@ -11,14 +11,20 @@ export type ValidateExchangeInput = (props: {
 export const validateExchangeInput: ValidateExchangeInput = ({ value, inputType, position, minValue }) => {
   const validator = validators[inputType];
 
-  if (validator) {
-    const options: ValidatorOptions = {
-      minValue: inputType === 'amount' ? minValue : undefined,
-      position
-    };
-    return validator(value, options);
+  if (!validator) {
+    console.warn(`No specific validator found for input type: ${inputType}. Returning null.`);
+    return null;
   }
 
-  console.warn(`No specific validator found for input type: ${inputType}. Returning null.`);
-  return null;
+  if (inputType === 'amount') {
+    return (validator as any)({
+      value: value === null ? null : Number(value),
+      options: { minValue, position }
+    });
+  }
+
+  return (validator as any)({
+    value: value === null ? null : String(value),
+    options: { position }
+  });
 }; 

@@ -1,24 +1,18 @@
-import { CurrencyPosition } from "@/components/request/RequestDetails";
+import { ValidationOptions } from "../types";
 
-type ValidatorOptions = {
-  minValue?: number;
-  position?: CurrencyPosition;
+export type ValidateAmountProps = {
+  value: number | null;
+  options?: ValidationOptions;
 };
 
-type Validator = (value: unknown, options?: ValidatorOptions) => string | null;
-
-export const validateAmount: Validator = (value, options) => {
-  // Only validate amount for 'given' position
-  if (options?.position !== 'given') return null;
-
-  if (value === null || value === undefined) {
+export const validateAmount = ({ value, options }: ValidateAmountProps): string | null => {
+  if (value === null) {
     return "Введите сумму";
   }
 
-  const amount = Number(value);
-  const minValue = options?.minValue ?? 0;
-  if (isNaN(amount) || amount < minValue) {
-    return `Минимальная сумма должна быть не меньше ${minValue}`;
+  if (options?.minValue && value < options.minValue) {
+    return `Минимальная сумма ${options.minValue}`;
   }
+
   return null;
 }; 

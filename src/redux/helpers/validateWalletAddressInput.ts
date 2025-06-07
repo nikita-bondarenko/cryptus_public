@@ -1,24 +1,21 @@
 import { CurrencyPosition } from "@/components/request/RequestDetails";
 import { AppDispatch, RootState } from "../store";
-import { ListenerEffectAPI, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
+import { ListenerEffectAPI, PayloadAction } from "@reduxjs/toolkit";
 import { validateExchangeInput } from "./validateExchangeInput";
-import { setCryptoWalletAddressError, setAreErrors } from "../slices/exchangeInput/exchangeInputSlice";
+import { setCryptoWalletAddressError, setAreErrors, setCryptoWalletAddress } from "../slices/exchangeInput/exchangeInputSlice";
+import { SetCryptoWalletAddressAction } from "../slices/exchangeInput/types";
 
 export type ValidateWalletAddressInputProps = {
-  action: UnknownAction;
-  listenerApi: ListenerEffectAPI<
-    unknown,
-    ThunkDispatch<unknown, unknown, UnknownAction>,
-    unknown
-  >;
+  action: SetCryptoWalletAddressAction;
+  listenerApi: ListenerEffectAPI<RootState, AppDispatch, SetCryptoWalletAddressAction>;
 };
 
 export const validateWalletAddressInput = ({
   action,
   listenerApi,
 }: ValidateWalletAddressInputProps) => {
-  const state = listenerApi.getState() as RootState;
-  const dispatch = listenerApi.dispatch as AppDispatch;
+  const state = listenerApi.getState();
+  const dispatch = listenerApi.dispatch;
 
   const { selectedGiveType, selectedReceieveType } = state.exchangeType;
   const minValue = state.exchangeInput.minValue;
