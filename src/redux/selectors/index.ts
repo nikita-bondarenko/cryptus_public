@@ -63,50 +63,26 @@ export const selectInputValue = (type: "card" | "cash" | "crypto") =>
   );
 
 // Bank Value Selector
-export const selectBankValue = createSelector(
-  (state: RootState) => state.exchangeInput.cardInput.bank.value,
-  (value) => value
-);
+export const selectBankValue = (state: RootState) => state.exchangeInput.cardInput.bank.value;
 
 // City Value Selector
-export const selectCityValue = createSelector(
-  (state: RootState) => state.exchangeInput.cashInput.city.value,
-  (value) => value
-);
+export const selectCityValue = (state: RootState) => state.exchangeInput.cashInput.city.value;
 
 // Card Number Value Selector
-export const selectCardNumberValue = createSelector(
-  (state: RootState) => state.exchangeInput.cardInput.cardNumber.value,
-  (value) => value
-);
+export const selectCardNumberValue = (state: RootState) => state.exchangeInput.cardInput.cardNumber.value;
 
 // Net Value Selector
-export const selectNetValue = createSelector(
-  (state: RootState) => state.exchangeInput.cryptoInput.net.value,
-  (value) => value
-);
+export const selectNetValue = (state: RootState) => state.exchangeInput.cryptoInput.net.value;
 
 // Wallet Address Value Selector
-export const selectWalletAddressValue = createSelector(
-  (state: RootState) => state.exchangeInput.cryptoInput.walletAddress.value,
-  (value) => value
-);
+export const selectWalletAddressValue = (state: RootState) => state.exchangeInput.cryptoInput.walletAddress.value;
 
 // Selected Currency Selectors
-export const selectCardCurrency = createSelector(
-  (state: RootState) => state.exchangeInput.cardInput.currency,
-  (currency) => currency
-);
+export const selectCardCurrency = (state: RootState) => state.exchangeInput.cardInput.currency;
 
-export const selectCashCurrency = createSelector(
-  (state: RootState) => state.exchangeInput.cashInput.currency,
-  (currency) => currency
-);
+export const selectCashCurrency = (state: RootState) => state.exchangeInput.cashInput.currency;
 
-export const selectCryptoCurrency = createSelector(
-  (state: RootState) => state.exchangeInput.cryptoInput.currency,
-  (currency) => currency
-);
+export const selectCryptoCurrency = (state: RootState) => state.exchangeInput.cryptoInput.currency;
 
 // Error Selectors
 export const selectValueError = (type: "card" | "cash" | "crypto") =>
@@ -118,28 +94,13 @@ export const selectValueError = (type: "card" | "cash" | "crypto") =>
     }
   );
 
-export const selectBankError = createSelector(
-  (state: RootState) => state.exchangeInput.cardInput.bank.error,
-  (error) => error
-);
+export const selectBankError = (state: RootState) => state.exchangeInput.cardInput.bank.error;
 
-export const selectCardNumberError = createSelector(
-  (state: RootState) => state.exchangeInput.cardInput.cardNumber.error,
-  (error) => error
-);
+export const selectCardNumberError = (state: RootState) => state.exchangeInput.cardInput.cardNumber.error;
 
-export const selectCityError = createSelector(
-  (state: RootState) => state.exchangeInput.cashInput.city.error,
-  (error) => error
-);
+export const selectCityError = (state: RootState) => state.exchangeInput.cashInput.city.error;
 
-export const selectWalletAddressError = createSelector(
-  (state: RootState) => state.exchangeInput.cryptoInput.walletAddress.error,
-  (error) => error
-);
+export const selectWalletAddressError = (state: RootState) => state.exchangeInput.cryptoInput.walletAddress.error;
 
 // Errors Visibility Selector
-export const selectAreErrorsVisible = createSelector(
-  (state: RootState) => state.exchangeInput.areErrorsVisible,
-  (areErrorsVisible) => areErrorsVisible
-); 
+export const selectAreErrorsVisible = (state: RootState) => state.exchangeInput.areErrorsVisible; 

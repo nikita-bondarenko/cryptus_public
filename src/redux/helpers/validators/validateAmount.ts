@@ -6,6 +6,9 @@ export type ValidateAmountProps = {
 };
 
 export const validateAmount = ({ value, options }: ValidateAmountProps): string | null => {
+  if (options?.position === "received") {
+    return null;
+  }
   if (value === null) {
     return "Введите сумму";
   }

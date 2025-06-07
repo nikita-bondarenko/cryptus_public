@@ -49,6 +49,9 @@ export const exchangeInputSlice = createSlice({
       if (state.options.cityOptions.length === 0) {
         state.options.cityOptions = options.cityOptions;
       }
+      if (state.options.netsOptions.length === 0) {
+        state.options.netsOptions = options.netsOptions;
+      }
       if (state.cryptoInput.currency === null) {
       state.cryptoInput.currency = options.cryptoCurrencyOptions[0];
       }
@@ -57,6 +60,9 @@ export const exchangeInputSlice = createSlice({
       }
       if (state.cardInput.currency === null) {
         state.cardInput.currency = options.nonCryptoCurrencyOptions[0];
+      }
+      if (state.cryptoInput.net.value === null) {
+        state.cryptoInput.net.value = options.netsOptions[0];
       }
         
     },
