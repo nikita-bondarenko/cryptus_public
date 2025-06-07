@@ -13,7 +13,7 @@ const Page: React.FC = () => {
   });
 
   return (
-    <div className="container mt-[10px] flex flex-col gap-[26px]">
+    <div className="container mt-10 flex flex-col gap-26">
       {requestDetails.map((request, index) => (
         <RequestDetails {...request} key={index}></RequestDetails>
       ))}

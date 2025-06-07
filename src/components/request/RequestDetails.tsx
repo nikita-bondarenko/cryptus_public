@@ -28,35 +28,35 @@ const RequestDetails: React.FC<RequestDetailsProps> = memo(
     return (
       <div className="">
         <SectionHeading title={title} rate={rate}></SectionHeading>
-        <div className="bg-white rounded-[6px] px-[20px] py-[24px] flex flex-col gap-[20px]">
+        <div className="bg-white rounded-6 px-20 py-24 flex flex-col gap-20">
           <div>
-            <div className="mb-[15px] flex  items-center justify-between">
-              <div className="flex  items-center gap-[6.33px]">
+            <div className="mb-15 flex  items-center justify-between">
+              <div className="flex  items-center gap-6">
                 <Icon
                   src={currency.icon}
-                  className={clsx("w-[24px] h-[24px]", {
+                  className={clsx("w-24 h-24", {
                  
                   })}
                 ></Icon>
-                <span className="text-[16px] leading-[107%]">
+                <span className="text-16 leading-[107%]">
                   {currency.name}
                 </span>
               </div>
-              <span className="text-[16px] leading-[107%] text-[#BFBFBF]">
+              <span className="text-16 leading-[107%] text-[#BFBFBF]">
                 {currency.typeLabel}
               </span>
             </div>
-            <span className="text-[21px] leading-[107%]">{currency.value}</span>
+            <span className="text-21 leading-[107%]">{currency.value}</span>
           </div>
           {currency.wayDetails && (
             <div>
-              <h3 className="text-[#BFBFBF] text-[13px] leading-[107%] mb-[10px]">
+              <h3 className="text-[#BFBFBF] text-13 leading-[107%] mb-10">
                 {currency.wayDetails.title}
               </h3>
               <span
-                className={clsx("break-all text-[16px] leading-[107%]", {
-                  "max-w-[250px]": currency.type === "crypto",
-                  "tracking-[5px]": currency.type === "card",
+                className={clsx("break-all text-16 leading-[107%]", {
+                  "max-w-250": currency.type === "crypto",
+                  "tracking-5": currency.type === "card",
                 })}
               >
                 {currency.wayDetails.value}

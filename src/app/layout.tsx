@@ -21,10 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={`${inter.variable} antialiased flex flex-col h-[100vh]`}>
+      <body className={`${inter.variable} antialiased flex flex-col h-100vh]`}>
         <StoreProvider>
           <Header></Header>
-          <main className="pb-[35px] flex-grow">{children}</main>
+          <main className="pb-35 flex-grow">{children}</main>
         </StoreProvider>
       </body>
     </html>

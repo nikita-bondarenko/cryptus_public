@@ -76,24 +76,24 @@ const CitySelect: React.FC<CitySelectProps> = memo(
 
     return (
       <div
-        className="relative w-full shrink-0 [&_button]:text-[16px] shimmer-on-loading pb-[16px] mb-[-16px]"
+        className="relative w-full shrink-0 [&_button]:text-16 shimmer-on-loading pb-16 mb--16"
         ref={dropdownRef}
       >
         {!!error && (
-          <p className="absolute left-0 text-[#FF676A] text-[12px] bottom-0">
+          <p className="absolute left-0 text-[#FF676A] text-12 bottom-0">
             {error}
           </p>
         )}
         <div
           className={clsx(
-            "relative w-full flex items-center justify-between px-[16px] py-[15px] rounded-[6px] border-[1px] border-[#DEDEDE] bg-white text-[13px] transition-all duration-500",
+            "relative w-full flex items-center justify-between px-16 py-15 rounded-6 border border-[#DEDEDE] bg-white text-13 transition-all duration-500",
             { "[&]:border-[#FF6769]": !!error }
           )}
         >
           {showCustomPlaceholder && (
             <div
               className={clsx(
-                "absolute left-[16px] pointer-events-none text-[16px] transition-colors",
+                "absolute left-16 pointer-events-none text-16 transition-colors",
                 focused ? "text-[#CCCCCC]" : "text-black"
               )}
             >
@@ -104,7 +104,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
           <input
             ref={inputRef}
             type="text"
-            className="w-full outline-none bg-transparent text-[16px] text-black placeholder:opacity-0"
+            className="w-full outline-none bg-transparent text-16 text-black placeholder:opacity-0"
             value={searchValue}
             onChange={handleInputChange}
             onFocus={handleFocus}
@@ -115,7 +115,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
             tabIndex={-1}
           >
             <svg
-              className={`ml-2 w-[15px] h-[15px] transition-transform ${
+              className={`ml-2 w-15 h-15 transition-transform ${
                 !isOpen ? "rotate-180" : ""
               }`}
               fill="none"
@@ -133,17 +133,17 @@ const CitySelect: React.FC<CitySelectProps> = memo(
         </div>
 
         {isOpen && (
-          <div className="absolute left-0 top-[59px] mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-[6px] max-h-[134px] overflow-hidden">
+          <div className="absolute left-0 top-59 mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-6 max-h-134 overflow-hidden">
             <SimpleBar style={{ maxHeight: 134 }} className="custom-scrollbar">
-              <div className="flex flex-col py-[6px] gap-[0px]">
+              <div className="flex flex-col py-6 gap-0">
                 {filteredOptions.length === 0 ? (
-                  <div className="px-[18px] py-[9px] text-[13px] text-[#999999]">
+                  <div className="px-18 py-9 text-13 text-[#999999]">
                     ничего не нашлось
                   </div>
                 ) : (
                   filteredOptions.map((option) => (
                     <button
-                      className="shrink-0 px-[18px] py-[9px] text-left w-full not-last:border-b-[1px] not-last:border-[#C3C3C3]"
+                      className="shrink-0 px-18 py-9 text-left w-full not-last:border-b not-last:border-[#C3C3C3]"
                       key={option.value}
                       onClick={() => handleSelect(option)}
                     >

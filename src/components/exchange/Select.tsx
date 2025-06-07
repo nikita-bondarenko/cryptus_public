@@ -42,20 +42,20 @@ const Select: React.FC<SelectProps> = memo(
     };
 
     return (
-      <div className="relative w-full shrink-0 [&_button]:text-[16px] shimmer-on-loading pb-[16px] mb-[-16px]" ref={dropdownRef}>
+      <div className="relative w-full shrink-0 [&_button]:text-16 shimmer-on-loading pb-16 mb--16" ref={dropdownRef}>
            {!!error && (
-          <p className="absolute left-0 text-[#FF676A] text-[12px] bottom-0">
+          <p className="absolute left-0 text-[#FF676A] text-12 bottom-0">
             {error}
           </p>
         )}
         <button
           type="button"
-          className={clsx("w-full flex items-center justify-between px-[16px] py-[15px] rounded-[6px] border-[1px] border-[#DEDEDE] bg-white text-[13px]",  { "[&]:border-[#FF6769]": !!error })}
+          className={clsx("w-full flex items-center justify-between px-16 py-15 rounded-6 border-1 border-[#DEDEDE] bg-white text-13",  { "[&]:border-[#FF6769]": !!error })}
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {selected ? selected.name : placeholder}
           <svg
-            className={`ml-2 w-[15px] h-[15px] transition-transform ${
+            className={`ml-2 w-15 h-15 transition-transform ${
               !isOpen ? "rotate-180" : ""
             }`}
             fill="none"
@@ -72,12 +72,12 @@ const Select: React.FC<SelectProps> = memo(
         </button>
 
         {isOpen && (
-          <div className="absolute left-0 top-[59px] mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-[6px] max-h-[134px] overflow-hidden">
+          <div className="absolute left-0 top-59 mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-6 max-h-134 overflow-hidden">
             <SimpleBar style={{ maxHeight: 134 }} className="custom-scrollbar">
-              <div className="flex flex-col py-[6px] gap-[0px]">
+              <div className="flex flex-col py-6 gap-0">
                 {options.map((option) => (
                   <button
-                    className="shrink-0 px-[18px] py-[9px] text-left w-full not-last:border-b-[1px] not-last:border-[#C3C3C3]"
+                    className="shrink-0 px-18 py-9 text-left w-full not-last:border-b-1 not-last:border-[#C3C3C3]"
                     key={option.value}
                     onClick={() => handleSelect(option)}
                   >

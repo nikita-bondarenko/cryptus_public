@@ -133,7 +133,7 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
     const placeholder = usePlaceholder(position);
 
     return (
-      <div className="flex flex-col gap-[13px]">
+      <div className="flex flex-col gap-13">
         <div className="">
           <SectionHeading
             {...sectionHeadingProps}
@@ -160,23 +160,23 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
           error={bankError && areErrorsVisible ? bankError : null}
         ></Select>
         {position === "received" && (
-          <div className="relative pb-[16px] mb-[-16px]">
+          <div className="relative pb-16 -mb-16">
             <input
               onChange={handleCardNumberChange}
               onKeyDown={handleKeyDown}
               value={cardNumber}
               type="text"
-              className={clsx("shimmer-on-loading border-[1px] border-[#E9E9E9] rounded-[6px] bg-white text-[16px] leading-[107%] px-[18px] py-[15px] w-full", cardNumberError && areErrorsVisible ? "[&]:border-[#FF676A]" : ""  )}
+              className={clsx("shimmer-on-loading border border-[#E9E9E9] rounded-6 bg-white text-16 leading-[1.07] px-18 py-15 w-full", cardNumberError && areErrorsVisible ? "[&]:border-[#FF676A]" : ""  )}
               placeholder="Номер  карты"
             />
             {cardNumberError && areErrorsVisible && (
               <>
-                <p className="absolute left-0 text-[#FF676A] text-[13px]">
+                <p className="absolute left-0 text-[#FF676A] text-13">
                   {cardNumberError}
                 </p>
                 <Icon
                   src="alert.svg"
-                  className="w-[16px] h-[16px] absolute right-[12px] top-[14px]"
+                  className="w-16 h-16 absolute right-12 top-14"
                 ></Icon>
               </>
             )}

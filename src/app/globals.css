@@ -1,3 +1,4 @@
+@config "../../tailwind.config.ts";
 @import "tailwindcss";
 
 @font-face {
@@ -9,18 +10,17 @@
   --font-main: "Inter"
 }
 
-
 body {
   font-family: var(--font-inter), var(--font-main);
   background: #F2F2F2;
 }
 
 .container {
-  @apply mx-auto max-w-[360px] px-[18px]
+  @apply mx-auto max-w-360 px-18
 }
 
 .header__text {
-  @apply text-[16px] font-medium text-black
+  @apply text-16 font-medium text-black
 }
 
 button {
@@ -28,7 +28,7 @@ button {
 }
 
 .home-btn {
-  @apply [&]:h-[38px]
+  @apply h-38
 }
 
 .animation-wave {
@@ -46,15 +46,15 @@ button {
 }
 
 .border-top {
-  @apply border-t-[1px] border-[#C3C3C3]
+  @apply border-t border-[#C3C3C3]
 }
 
 .heading {
-  @apply font-medium text-[16px] leading-[107%] mb-[20px]
+  @apply font-medium text-16 leading-[107%] mb-20
 }
 
 .story-info {
-  @apply text-[13px] leading-[107%] text-[#828282]
+  @apply text-13 leading-[107%] text-[#828282]
 }
 
 *:focus, *:focus-visible {
@@ -66,8 +66,8 @@ input::placeholder {
 }
 
 .simplebar-scrollbar::before {
-  background-color: #999999;
-  border-radius: 6px;
+  @apply bg-[#999999] rounded-6
+
 }
 .simplebar-track.simplebar-vertical {
   width: 9px !important;
@@ -80,7 +80,6 @@ input::placeholder {
 .simplebar-scrollbar.simplebar-visible::before {
   opacity: 1 !important;
 }
-
 
 @keyframes pingWave {
   0% {

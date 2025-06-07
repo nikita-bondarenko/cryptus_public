@@ -8,15 +8,15 @@ const RequestStatus: React.FunctionComponent<{
 }> = memo(({ isInProcess, id }) => {
   return (
     <div
-      className={clsx("transition-all select-none mb-[20px] w-full", {
+      className={clsx("transition-all select-none mb-20 w-full", {
         " opacity-100 ": isInProcess,
       })}
     >
-      <div className="px-[17px] pt-[14px] pb-[16px] rounded-[8px] flex items-center gap-[11px] w-full bg-white">
-        <Icon src="clock.svg" className="w-[30px] h-[30px]"></Icon>
+      <div className="px-17 pt-14 pb-16 rounded-8 flex items-center gap-11 w-full bg-white">
+        <Icon src="clock.svg" className="w-30 h-30"></Icon>
         <div>
-          <p className="text-[13px] mb-[4px]">Заявка {id} в работе</p>
-          <span className="text-[10px] text-[#BFBFBF] leading-[120%] block">
+          <p className="text-13 mb-4">Заявка {id} в работе</p>
+          <span className="text-10 text-[#BFBFBF] leading-[120%] block">
             Наш оператор скоро с вами свяжется
           </span>
         </div>

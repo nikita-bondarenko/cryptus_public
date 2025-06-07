@@ -118,12 +118,10 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
       (state) => state.exchangeInput.areErrorsVisible
     );
 
-    
-
     const placeholder = usePlaceholder(position);
     return (
       <div className="">
-        <div className="mb-[22px]">
+        <div className="mb-22">
           <SectionHeading
             {...sectionHeadingProps}
             error={!!valueError && areErrorsVisible}
@@ -150,9 +148,9 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
           ></CryptoNetSelect>
         </div>
         {position === "received" && (
-          <div className="relative pb-[16px] mb-[-16px] mt-[20px]">
+          <div className="relative pb-16 -mb-16 mt-20">
             <input
-              className={clsx("border-[1px] shimmer-on-loading border-[#E9E9E9] rounded-[6px] bg-white text-[16px] leading-[107%] px-[18px] py-[15px] pr-[30px] w-full", walletAddressError && areErrorsVisible ? "[&]:border-[#FF676A]" : ""  )}
+              className={clsx("border shimmer-on-loading border-[#E9E9E9] rounded-6 bg-white text-16 leading-[1.07] px-18 py-15 pr-30 w-full", walletAddressError && areErrorsVisible ? "[&]:border-[#FF676A]" : ""  )}
               type="text"
               onChange={(e) => {
                 dispatch(setActiveInputType("crypto"));
@@ -162,12 +160,12 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
             />
             {walletAddressError && areErrorsVisible && (
               <>
-                <p className="absolute left-0 text-[#FF676A] text-[12px] bottom-0">
+                <p className="absolute left-0 text-[#FF676A] text-12 bottom-0">
                   {walletAddressError}
                 </p>
                 <Icon
                   src="alert.svg"
-                  className="w-[16px] h-[16px] absolute right-[12px] top-[14px]"
+                  className="w-16 h-16 absolute right-12 top-14"
                 ></Icon>
               </>
             )}

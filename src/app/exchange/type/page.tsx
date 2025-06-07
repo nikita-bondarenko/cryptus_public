@@ -35,7 +35,7 @@ export default memo(function Page() {
   const giveOptions = useRef(exchangeTypesButtons);
   return (
     <ExchangePageLayout onMainButtonClick={onSubmit} buttonText="Подтвердить выбор">
-      <div className="flex flex-col gap-[12px] justify-between mb-[50px]">
+      <div className="flex flex-col gap-12 justify-between mb-50">
         <ExchangeTypeBlock
           position="given"
           title="Я отдаю"
@@ -46,13 +46,13 @@ export default memo(function Page() {
           title="Я получаю"
           buttons={recieveOptions}
         ></ExchangeTypeBlock>
-        <div className="border-[1px] rounded-[6px] border-[#DEDEDE] bg-white w-full h-[60px] flex flex-col items-center justify-center">
-          <p className="text-[13px] text-[#939393]">
+        <div className="border-1 rounded-6 border-[#DEDEDE] bg-white w-full h-60 flex flex-col items-center justify-center">
+          <p className="text-13 text-[#939393]">
             Не нашли интересующий тип обмена?
           </p>
           <button
             onClick={callSupport}
-            className="text-[13px] font-medium text-[#3F3F3F] underline underline-offset-1"
+            className="text-13 font-medium text-[#3F3F3F] underline underline-offset-1"
           >
             связаться с поддержкой
           </button>

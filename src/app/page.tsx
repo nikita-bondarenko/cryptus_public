@@ -88,17 +88,17 @@ export default function Home() {
     <>
       <div className="container">
         <div
-          className="rounded-[6px] px-[23px] pt-[35px] pb-[28px] mb-[17px]"
+          className="rounded-6 px-23 pt-35 pb-28 mb-17"
           style={{
             background: "linear-gradient(45deg, #C7ECFF 0%, #B8D1F6 100%)",
           }}
         >
           <div className=" flex justify-between">
-            <div className="max-w-[205px]">
-              <h1 className="font-bold text-[32px] mb-[15px] leading-[107.5%]">
+            <div className="max-w-205">
+              <h1 className="font-bold text-32 mb-15 leading-[107.5%]">
                 CRYPTUS EXCHANGE
               </h1>
-              <p className="text-[16px] font-medium mb-[30px]">
+              <p className="text-16 font-medium mb-30">
                 Обменник, которым ты всегда хотел пользоваться, но нечего было
                 менять
               </p>
@@ -106,7 +106,7 @@ export default function Home() {
             <ProfileButton onClick={toProfilePage}></ProfileButton>
           </div>
 
-          <ul className=" flex flex-col gap-[11px] mb-[16px]">
+          <ul className=" flex flex-col gap-11 mb-16">
             {descriptionItems.current.map((item, index) => (
               <DescriptionItem icon={item.icon} key={index}>
                 {item.text}
@@ -114,7 +114,7 @@ export default function Home() {
             ))}
           </ul>
           <RequestStatus isInProcess={true} id={"#151473"}></RequestStatus>
-          <div className=" grid grid-cols-2 gap-[6px]">
+          <div className=" grid grid-cols-2 gap-6">
             <Button
               onClick={toExchangePage}
               className="home-btn"
@@ -127,7 +127,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <div className="overflow-hidden rounded-[8px]">
+        <div className="overflow-hidden rounded-8">
           <AdditionallySectionButton
             onClick={() => setAdditionallySectionOpen((prev) => !prev)}
             arrowPosition={additionallySectionOpen ? "bottom" : "top"}

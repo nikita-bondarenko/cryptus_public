@@ -81,7 +81,7 @@ export default memo(function Page() {
   return (
     <div className="container">
       <div
-        className={clsx("flex flex-col gap-[30px] mb-[22px] ", {
+        className={clsx("flex flex-col gap-30 mb-22 ", {
           loading: isLoading,
         })}
       >

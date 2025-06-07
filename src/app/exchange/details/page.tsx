@@ -21,7 +21,7 @@ export default function ExchangeDetailsPage() {
 
   return (
     <ExchangePageLayout onMainButtonClick={onSubmit} buttonText="Оставить заявку">
-      <div className="flex flex-col gap-[26px]"> {details.map((item, idx) => (
+      <div className="flex flex-col gap-26"> {details.map((item, idx) => (
         <RequestDetails {...item} key={idx} />
       ))}
 </div> 

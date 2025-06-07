@@ -21,27 +21,27 @@ export const InputField: React.FC<Props> = ({
   } = useFormContext();
 
   return (
-    <div className=" w-full pb-[16px] relative">
+    <div className=" w-full pb-16 relative">
       <input
         id={name}
         type={type}
         placeholder={placeholder}
         {...register(name)}
         className={clsx(
-          "w-full bg-white text-[16px] leading-[107%] rounded-[6.3px] px-[18px] py-[14px] placeholder:text-[#CBCBCB] border-[1px] border-[#DEDEDE]",
+          "w-full bg-white text-16 leading-[107%] rounded-6 px-18 py-14 placeholder:text-[#CBCBCB] border border-[#DEDEDE]",
           {
-            "[&]:border-[#FF676A] pr-[30px]": errors[name],
+            "[&]:border-[#FF676A] pr-30": errors[name],
           }
         )}
       />
       {errors[name] && (
         <>
-          <p className="absolute left-0 text-[#FF676A] text-[13px] bottom-[-1px]">
+          <p className="absolute left-0 text-[#FF676A] text-13 bottom--1">
             {(errors[name]?.message as string) || "Ошибка"}
           </p>
           <Icon
             src="alert.svg"
-            className="w-[16px] h-[16px] absolute right-[12px] top-[14px]"
+            className="w-16 h-16 absolute right-12 top-14"
           ></Icon>
         </>
       )}

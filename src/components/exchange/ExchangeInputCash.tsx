@@ -109,7 +109,7 @@ const ExchangeInputCash: React.FC<ExchangeInputCashProps> = memo(
     const placeholder = usePlaceholder(position);
 
     return (
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-12">
         <div className="">
           <SectionHeading
             {...sectionHeadingProps}

@@ -16,8 +16,8 @@ export type CurrencySelectProps = {
 };
 
 const ButtonDisplay = memo(({ icon, name }: CurrencyOption) => (
-  <span className="flex items-center gap-[6px] overflow-hidden text-ellipsis whitespace-nowrap text-[16px]">
-    <Icon src={icon} className="w-[24px] h-[24px]" />
+  <span className="flex items-center gap-6 overflow-hidden text-ellipsis whitespace-nowrap text-16">
+    <Icon src={icon} className="w-24 h-24" />
     {name}
   </span>
 ));
@@ -53,12 +53,12 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
 
     return (
       <div
-        className="relative w-[128px] shrink-0 shimmer-on-loading"
+        className="relative w-128 shrink-0 shimmer-on-loading"
         ref={dropdownRef}
       >
         <button
           type="button"
-          className="w-full flex items-center justify-between px-[16px] py-[14px] border-l-[1px] border-[#DEDEDE] bg-white text-[16px]"
+          className="w-full flex items-center justify-between px-16 py-14 border-l border-[#DEDEDE] bg-white text-16"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {selected ? (
@@ -67,7 +67,7 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
             <span className="text-[#999]">Выбрать</span>
           )}
           <svg
-            className={`ml-2 w-[15px] h-[15px] transition-transform ${
+            className={`ml-2 w-15 h-15 transition-transform ${
               !isOpen ? "rotate-180" : ""
             }`}
             fill="none"
@@ -84,12 +84,12 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
         </button>
 
         {isOpen && (
-          <div className="absolute left-0 top-[120%] mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-[6px] max-h-[200px] overflow-hidden">
+          <div className="absolute left-0 top-[120%] mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-6 max-h-200 overflow-hidden">
             <SimpleBar style={{ maxHeight: 200 }} className="custom-scrollbar">
-              <div className="flex flex-col py-[6px] gap-[0px]">
+              <div className="flex flex-col py-6 gap-0">
                 {options.map((option) => (
                   <button
-                    className="shrink-0 px-[16px] py-[4px] text-left w-full"
+                    className="shrink-0 px-16 py-4 text-left w-full"
                     key={option.value}
                     onClick={() => handleSelect(option)}
                   >

@@ -12,21 +12,21 @@ const AdditionallySectionButton: FC<{
   return (
     <button
       className={clsx(
-        "flex items-center justify-center gap-[5px] w-full h-[50px] bg-white",
+        "flex items-center justify-center gap-5 w-full h-50 bg-white",
         {
           "border-top": border,
         }
       )}
       onClick={onClick}
     >
-      <span className="text-[16px] ">{children}</span>
+      <span className="text-16 ">{children}</span>
       {arrow && (
         <Icon
           src="arrow-top.svg"
           className={clsx(
-            "w-[11px] h-[11px] transition-transform duration-500 translate-y-[3px]",
+            "w-11 h-11 transition-transform duration-500 translate-y-3",
             {
-              "rotate-180 [&]:translate-y-[0px]": arrowPosition === "bottom",
+              "rotate-180 [&]:translate-y-0": arrowPosition === "bottom",
             }
           )}
         ></Icon>

@@ -15,13 +15,13 @@ export type CryptoNetSelectProps = {
 const CryptoNetSelect: React.FC<CryptoNetSelectProps> = memo(
   ({ options, value, onChange }) => {
     return (
-      <div className="flex gap-x-[8.33px] gap-y-[11.33px] flex-wrap">
+      <div className="flex gap-x-8 gap-y-11 flex-wrap">
         {options.map((option, index) => (
           <button
             onClick={() => onChange(option)}
             key={index}
             className={clsx(
-              "border-[1px] shimmer-on-loading border-[#E9E9E9] rounded-full bg-white text-[#B5B5B5] text-[13px] leading-[107%]  duration-500 px-[20px] py-[9px]",
+              "border shimmer-on-loading border-[#E9E9E9] rounded-full bg-white text-[#B5B5B5] text-13 leading-[107%] duration-500 px-20 py-9",
               {
                 "[&]:border-[#43C0FF] [&]:bg-[#43C0FF] [&]:text-white pointer-events-none":
                   value?.value === option?.value,

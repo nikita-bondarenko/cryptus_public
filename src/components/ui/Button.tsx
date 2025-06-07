@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = memo(
         type={submit ? "submit" : 'button'}
         className={clsx(
           className,
-          "flex items-center justify-center w-full text-white text-[16px] rounded-[6px] h-[47px]",
+          "flex items-center justify-center w-full text-white text-16 rounded-6 h-47",
           {
             "bg-[#43C0FF]": type === "primary",
             "bg-[#262626]": type === "secondary",

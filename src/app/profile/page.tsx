@@ -58,12 +58,12 @@ export default function Page() {
   });
 
   return (
-    <div className="container mt-[10px]">
-      <div className="mb-[35px]">
+    <div className="container mt-10">
+      <div className="mb-35">
         <FormProvider  {...methods}>
           <form onSubmit={onSubmit}>
             <h2 className="heading">Контактная информация</h2>
-            <div className="flex flex-col mb-[7px]">
+            <div className="flex flex-col mb-7">
               <InputField
                 name="name"
                 type="text"
