@@ -6,9 +6,17 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectSectionHeadingProps } from "@/redux/selectors";
 import {
   setActiveInputType,
-  setCardInput,
-  setCashInput,
-  setCryptoInput,
+  setCardInputAmountValue,
+  setCashInputAmountValue,
+  setCryptoInputAmountValue,
+  setCardCurrency,
+  setCardBank,
+  setCardNumber as setCardNumberAction,
+  setCashCurrency,
+  setCashCity,
+  setCryptoCurrency,
+  setCryptoNet,
+  setCryptoWalletAddress,
 } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { usePlaceholder } from "@/hooks/usePlaceholder";
 import SectionHeading from "../ui/SectionHeading";
@@ -26,12 +34,11 @@ export type ExchangeInputProps = {
 };
 
 const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) => {
-  const [value, setValue] = useState<number | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption | null>(null);
   const [bank, setBank] = useState<BankOption | null>(null);
-  const [cardNumber, setCardNumber] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [walletAddress, setWalletAddress] = useState<string>("");
+  const [cardNumber, setCardNumber] = useState<string | null>(null);
+  const [city, setCity] = useState<string | null>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [selectedNet, setSelectedNet] = useState<CryptoNetOption | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   
@@ -63,19 +70,55 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
     (state) => state.exchangeInput.options.bankOptions
   );
 
+
+
   const cityOptions = useAppSelector(
     (state) => state.exchangeInput.options.cityOptions
   );
 
+
+
   const netsOptions = useAppSelector(
     (state) => state.exchangeInput.options.netsOptions
   );
+
 
   const globalStateValue = useAppSelector(
     (state) => {
       const input = state.exchangeInput[`${type}Input` as keyof ExchangeInputState] as CryptoInput | CashInput | CardInput;
       return input?.amount.value ?? null;
     }
+  );
+
+  const bankValue = useAppSelector(
+    (state) => state.exchangeInput.cardInput.bank.value
+  );
+  const cityValue = useAppSelector(
+    (state) => state.exchangeInput.cashInput.city.value
+  );
+
+  const cardNumberValue = useAppSelector(
+    (state) => state.exchangeInput.cardInput.cardNumber.value
+  );
+
+  const netValue = useAppSelector(
+    (state) => state.exchangeInput.cryptoInput.net.value
+  );
+
+  const walletAddressValue = useAppSelector(
+    (state) => state.exchangeInput.cryptoInput.walletAddress.value
+  );
+
+  const selectedCardCurrency = useAppSelector(
+    (state) => state.exchangeInput.cardInput.currency
+  );
+
+  const selectedCashCurrency = useAppSelector(
+    (state) => state.exchangeInput.cashInput.currency
+  );
+  
+  const selectedCryptoCurrency = useAppSelector(
+    (state) => state.exchangeInput.cryptoInput.currency
   );
 
   const valueError = useAppSelector(
@@ -114,7 +157,17 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
 
   const onInputChange = useCallback((value: number | null) => {
     dispatch(setActiveInputType(type));
-    setValue(value);
+    switch (type) {
+        case "card":
+          dispatch(setCardInputAmountValue(value))
+          break;
+        case "cash":
+            dispatch(setCashInputAmountValue(value))
+          break;
+        case "crypto":
+            dispatch(setCryptoInputAmountValue(value))
+          break;
+      }
   }, [dispatch, type]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -142,44 +195,70 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
       return;
     }
 
+    if (!selectedCurrency) return;
+
     switch (type) {
       case "card":
-        dispatch(
-          setCardInput({
-            amountValue: value,
-            currency: selectedCurrency as CurrencyOption,
-            bankValue: bank,
-            cardNumberValue: cardNumber,
-          })
-        );
+        if (selectedCurrency.value !== selectedCardCurrency?.value) {
+          dispatch(setCardCurrency(selectedCurrency as CurrencyOption));
+        }
         break;
       case "cash":
-        dispatch(
-          setCashInput({
-            amountValue: value,
-            currency: selectedCurrency as CurrencyOption,
-            cityValue: city,
-          })
-        );
+        if (selectedCurrency.value !== selectedCashCurrency?.value) {
+          dispatch(setCashCurrency(selectedCurrency as CurrencyOption));
+        }
         break;
       case "crypto":
-        dispatch(
-          setCryptoInput({
-            amountValue: value,
-            currency: selectedCurrency as CurrencyOption,
-            netValue: selectedNet as CryptoNetOption,
-            walletAddressValue: walletAddress,
-          })
-        );
+        if (selectedCurrency.value !== selectedCryptoCurrency?.value) {
+          dispatch(setCryptoCurrency(selectedCurrency as CurrencyOption));
+        }
         break;
     }
-  }, [value, selectedCurrency, bank, cardNumber, city, selectedNet, walletAddress, isInitialLoad, dispatch, type]);
+  }, [selectedCurrency, selectedCardCurrency, selectedCashCurrency, selectedCryptoCurrency, isInitialLoad, dispatch, type]);
 
   useEffect(() => {
-    return () => {
-      setIsInitialLoad(true);
-    };
-  }, []);
+    if (isInitialLoad) return;
+    if (type !== "card" || !bank) return;
+    if (bank.value === bankValue?.value) return;
+
+    dispatch(setCardBank(bank));
+  }, [bank, bankValue, isInitialLoad, dispatch, type]);
+
+  useEffect(() => {
+    if (isInitialLoad) return;
+    if (type !== "card" || !cardNumber) return;
+    if (cardNumber === cardNumberValue) return;
+
+    dispatch(setCardNumberAction(cardNumber));
+  }, [cardNumber, cardNumberValue, isInitialLoad, dispatch, type]);
+
+  useEffect(() => {
+    if (isInitialLoad) return;
+    if (type !== "cash" || !city) return;
+    if (city === cityValue) return;
+
+    dispatch(setCashCity(city));
+  }, [city, cityValue, isInitialLoad, dispatch, type]);
+
+  useEffect(() => {
+    if (isInitialLoad) return;
+    if (type !== "crypto" || !selectedNet) return;
+    if (selectedNet.value === netValue?.value) return;
+
+    dispatch(setCryptoNet(selectedNet as CryptoNetOption));
+  }, [selectedNet, netValue, isInitialLoad, dispatch, type]);
+
+  useEffect(() => {
+    if (isInitialLoad) return;
+    if (type !== "crypto" || !walletAddress) return;
+    if (walletAddress === walletAddressValue) return;
+
+    dispatch(setCryptoWalletAddress(walletAddress));
+  }, [walletAddress, walletAddressValue, isInitialLoad, dispatch, type]);
+
+  useEffect(() => {
+    setIsInitialLoad(true);
+  }, [type]);
 
   const nonCryptoCurrencyOptions = useAppSelector(
     (state) => state.exchangeInput.options.nonCryptoCurrencyOptions
@@ -209,8 +288,53 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
   }, [type, bankOptions, cityOptions, netsOptions, nonCryptoCurrencyOptions, cryptoCurrencyOptions]);
 
   useEffect(() => {
-    setValue(globalStateValue);
-  }, [globalStateValue]);
+    if (bank?.value !== bankValue?.value) {
+      setBank(bankValue);
+    }
+  }, [bankValue]);
+
+  useEffect(() => {
+    if (city !== cityValue) {
+      setCity(cityValue);
+    }
+  }, [cityValue]);
+
+  useEffect(() => {
+    if (cardNumber !== cardNumberValue) {
+      setCardNumber(cardNumberValue);
+    }
+  }, [cardNumberValue]);
+
+  useEffect(() => {
+    if (selectedNet !== netValue) {
+      setSelectedNet(netValue as CryptoNetOption);
+    }
+  }, [netValue]);
+
+  useEffect(() => {
+    if (walletAddress !== walletAddressValue) {
+      setWalletAddress(walletAddressValue);
+    }
+  }, [walletAddressValue]);
+
+  useEffect(() => {
+    if (JSON.stringify(selectedCurrency) !== JSON.stringify(selectedCardCurrency) && type === "card") {
+      setSelectedCurrency(selectedCardCurrency as CurrencyOption);
+    }
+  }, [selectedCardCurrency]);
+
+  useEffect(() => {
+    if (JSON.stringify(selectedCurrency) !== JSON.stringify(selectedCashCurrency) && type === "cash") {
+      setSelectedCurrency(selectedCashCurrency as CurrencyOption);
+    }
+  }, [selectedCashCurrency]);
+
+  useEffect(() => {
+    console.log("selectedCryptoCurrency", selectedCryptoCurrency, type, selectedCurrency);
+    if (JSON.stringify(selectedCurrency) !== JSON.stringify(selectedCryptoCurrency) && type === "crypto") {
+      setSelectedCurrency(selectedCryptoCurrency as CurrencyOption);
+    }
+  }, [selectedCryptoCurrency]);
 
   return (
     <div className="flex flex-col ">
@@ -233,7 +357,7 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
       {type === "card" && (
         <>
           <BankSelect
-            value={bank}
+            value={bankValue}
             options={bankOptions}
             onChange={(option) => {
               dispatch(setActiveInputType("card"));
@@ -248,7 +372,7 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
                 <Input
                   onChange={handleCardNumberChange}
                   onKeyDown={handleKeyDown}
-                  value={cardNumber}
+                  value={cardNumber ?? ""}
                   type="text"
                   className="shimmer-on-loading border border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 w-full"
                   placeholder="Номер карты"
@@ -261,7 +385,7 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
 
       {type === "cash" && (
         <CitySelect
-          value={city}
+          value={cityValue ?? ""}
           options={cityOptions}
           onChange={(option) => {
             dispatch(setActiveInputType("cash"));
@@ -282,7 +406,7 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
                 dispatch(setActiveInputType("crypto"));
                 setSelectedNet(net);
               }}
-              value={selectedNet as CryptoNetOption}
+              value={netValue as CryptoNetOption}
               options={netsOptions}
             />
           </div>
@@ -296,7 +420,7 @@ const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) =>
                     dispatch(setActiveInputType("crypto"));
                     setWalletAddress(e.target.value);
                   }}
-                  value={walletAddress}
+                  value={walletAddress ?? ""}
                   placeholder={`Адрес кошелька в сети ${selectedNet?.name}`}
                 />
               </InputWrapper>

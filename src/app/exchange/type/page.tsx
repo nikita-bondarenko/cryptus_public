@@ -3,7 +3,6 @@ import ExchangePageLayout from "@/components/exchange/ExchangePageLayout";
 import ExchangeTypeBlock from "@/components/exchange/ExchangeTypeBlock";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
 import { callSupport } from "@/helpers/callSupport";
-import { validateAllFields } from "@/redux/helpers";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { setPageName } from "@/redux/slices/uiSlice";
@@ -25,11 +24,7 @@ export default memo(function Page() {
 
   useEffect(() => {
     dispatch(setPageName("выбор типа обмена"));
-    const state = store.getState() as RootState;
 
-    dispatch(resetExchangeInput());
-
-    validateAllFields(state, dispatch);
   }, [dispatch]);
 
   const giveOptions = useRef(exchangeTypesButtons);

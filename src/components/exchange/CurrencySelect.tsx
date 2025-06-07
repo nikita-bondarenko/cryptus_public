@@ -24,12 +24,11 @@ const ButtonDisplay = memo(({ icon, name }: CurrencyOption) => (
 
 ButtonDisplay.displayName = "ButtonDisplay";
 
-const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
+const CurrencySelect = memo(forwardRef<HTMLDivElement, CurrencySelectProps>(
   (props, ref) => {
     const { options, onChange, value: selected } = props;
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    console.log(ref);
     useEffect(() => {
       const handlePointerDown = (event: PointerEvent) => {
         if (
@@ -50,7 +49,6 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
       onChange(option);
       setIsOpen(false);
     };
-
     return (
       <div
         className="relative w-128 shrink-0 shimmer-on-loading"
@@ -103,7 +101,7 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
       </div>
     );
   }
-);
+));
 
 CurrencySelect.displayName = "CurrencySelect";
 

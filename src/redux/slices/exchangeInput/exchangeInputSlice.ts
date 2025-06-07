@@ -16,6 +16,14 @@ import {
   SetCardAmountErrorAction,
   SetCardBankErrorAction,
   SetCardNumberErrorAction,
+  SetCardCurrencyAction,
+  SetCardBankAction,
+  SetCardNumberAction,
+  SetCashCurrencyAction,
+  SetCashCityAction,
+  SetCryptoCurrencyAction,
+  SetCryptoNetAction,
+  SetCryptoWalletAddressAction,
 } from "./types";
 import { initialState } from "./initValues";
 
@@ -29,33 +37,30 @@ export const exchangeInputSlice = createSlice({
     setFetchedData(state, action: SetFetchedDataAction) {
       state.rate = action.payload.rate;
       const options = action.payload.options;
-      state.options = options;
+      if (state.options.cryptoCurrencyOptions.length === 0) {
+        state.options.cryptoCurrencyOptions = options.cryptoCurrencyOptions;
+      }
+      if (state.options.nonCryptoCurrencyOptions.length === 0) {
+        state.options.nonCryptoCurrencyOptions = options.nonCryptoCurrencyOptions;
+      }
+      if (state.options.bankOptions.length === 0) {
+        state.options.bankOptions = options.bankOptions;
+      }
+      if (state.options.cityOptions.length === 0) {
+        state.options.cityOptions = options.cityOptions;
+      }
+      if (state.cryptoInput.currency === null) {
       state.cryptoInput.currency = options.cryptoCurrencyOptions[0];
-      state.cashInput.currency = options.nonCryptoCurrencyOptions[0];
-      state.cardInput.currency = options.nonCryptoCurrencyOptions[0];
+      }
+      if (state.cashInput.currency === null) {
+        state.cashInput.currency = options.nonCryptoCurrencyOptions[0];
+      }
+      if (state.cardInput.currency === null) {
+        state.cardInput.currency = options.nonCryptoCurrencyOptions[0];
+      }
+        
     },
-    setCryptoInput(state, action: SetCryptoActionInput) {
-      const { amountValue, currency, netValue, walletAddressValue } =
-        action.payload;
-      state.cryptoInput.amount.value = amountValue;
-      state.cryptoInput.currency = currency;
-      state.cryptoInput.net.value = netValue;
-      state.cryptoInput.walletAddress.value = walletAddressValue;
-    },
-    setCardInput(state, action: SetCardActionInput) {
-      const { amountValue, currency, bankValue, cardNumberValue } =
-        action.payload;
-      state.cardInput.amount.value = amountValue;
-      state.cardInput.currency = currency;
-      state.cardInput.bank.value = bankValue;
-      state.cardInput.cardNumber.value = cardNumberValue;
-    },
-    setCashInput(state, action: SetCashInputAction) {
-      const { amountValue, currency, cityValue } = action.payload;
-      state.cashInput.amount.value = amountValue;
-      state.cashInput.currency = currency;
-      state.cashInput.city.value = cityValue;
-    },
+ 
     setCryptoInputAmountValue(state, action: SetInputAmountValueActionPayload) {
       state.cryptoInput.amount.value = action.payload;
     },
@@ -63,6 +68,15 @@ export const exchangeInputSlice = createSlice({
       state.cardInput.amount.value = action.payload;
     },
     setCashInputAmountValue(state, action: SetInputAmountValueActionPayload) {
+      state.cashInput.amount.value = action.payload;
+    },
+    setAutomaticlyCryptoInputAmountValue(state, action: SetInputAmountValueActionPayload) {
+      state.cryptoInput.amount.value = action.payload;
+    },
+    setAutomaticlyCardInputAmountValue(state, action: SetInputAmountValueActionPayload) {
+      state.cardInput.amount.value = action.payload;
+    },
+    setAutomaticlyCashInputAmountValue(state, action: SetInputAmountValueActionPayload) {
       state.cashInput.amount.value = action.payload;
     },
     setActiveInputType: (state, action: SetActiveInputTypeAction) => {
@@ -104,31 +118,66 @@ export const exchangeInputSlice = createSlice({
     setCardNumberError: (state, action: SetCardNumberErrorAction) => {
       state.cardInput.cardNumber.error = action.payload;
     },
+
+    // Card Input Reducers
+    setCardCurrency: (state, action: SetCardCurrencyAction) => {
+      state.cardInput.currency = action.payload;
+    },
+    setCardBank: (state, action: SetCardBankAction) => {
+      state.cardInput.bank.value = action.payload;
+    },
+    setCardNumber: (state, action: SetCardNumberAction) => {
+      state.cardInput.cardNumber.value = action.payload;
+    },
+
+    // Cash Input Reducers
+    setCashCurrency: (state, action: SetCashCurrencyAction) => {
+      state.cashInput.currency = action.payload;
+    },
+    setCashCity: (state, action: SetCashCityAction) => {
+      state.cashInput.city.value = action.payload;
+    },
+
+    // Crypto Input Reducers
+    setCryptoCurrency: (state, action: SetCryptoCurrencyAction) => {
+      state.cryptoInput.currency = action.payload;
+    },
+    setCryptoNet: (state, action: SetCryptoNetAction) => {
+      state.cryptoInput.net.value = action.payload;
+    },
+    setCryptoWalletAddress: (state, action: SetCryptoWalletAddressAction) => {
+      state.cryptoInput.walletAddress.value = action.payload;
+    },
   },
 });
 
 export const {
   resetExchangeInput,
   setFetchedData,
-  setCardInput,
-  setCashInput,
-  setCryptoInput,
   setCardInputAmountValue,
   setCashInputAmountValue,
   setCryptoInputAmountValue,
   setActiveInputType,
   setAreErrors,
   setAreErrorsVisible,
-  // Crypto Input Error Actions
   setCryptoAmountError,
   setCryptoNetError,
   setCryptoWalletAddressError,
-  // Cash Input Error Actions
   setCashAmountError,
   setCashCityError,
-  // Card Input Error Actions
   setCardAmountError,
   setCardBankError,
   setCardNumberError,
+  setAutomaticlyCryptoInputAmountValue,
+  setAutomaticlyCardInputAmountValue,
+  setAutomaticlyCashInputAmountValue,
+  setCardCurrency,
+  setCardBank,
+  setCardNumber,
+  setCashCurrency,
+  setCashCity,
+  setCryptoCurrency,
+  setCryptoNet,
+  setCryptoWalletAddress,
 } = exchangeInputSlice.actions;
 export default exchangeInputSlice.reducer;

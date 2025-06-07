@@ -33,19 +33,16 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
 
     // Обработка внешнего значения
     useEffect(() => {
-      const newValue = valueMask(outsideValue);
-
       if (outsideValue === null) {
-        if (newValue !== "") {
-          setInputValue("");
-        }
-
+        setInputValue("");
         return;
       }
+      const newValue = valueMask(outsideValue);
+
       if (newValue !== inputValue) {
         setInputValue(newValue);
       }
-    }, [outsideValue, inputValue]);
+    }, [outsideValue]);
 
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {

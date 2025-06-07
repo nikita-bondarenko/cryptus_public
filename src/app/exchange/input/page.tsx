@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import React, { memo, useCallback, useEffect, useMemo } from "react";
 import { store } from "@/redux/store";
 import ExchangeInput from "@/components/exchange/ExchangeInput";
+import { validateAllFields } from "@/redux/helpers/validateAllFields";
 
 export default memo(function Page() {
   const dispatch = useAppDispatch();
@@ -27,14 +28,13 @@ export default memo(function Page() {
 
     // Проверяем наличие ошибок
     const state = store.getState();
-    const areErrors = state.exchangeInput.areErrors;
-
+    const areErrors = validateAllFields(state, dispatch);
     // Если есть ошибки, не переходим дальше
     if (areErrors) {
       return;
     }
 
-    router.push("/exchange/details");
+    // router.push("/exchange/details");
   }, [dispatch, router]);
 
   const memoizedSelector = useMemo(() => selectCurrencyTypes(), []);
@@ -42,20 +42,11 @@ export default memo(function Page() {
     useAppSelector(memoizedSelector);
 
   useEffect(() => {
-    dispatch(setPageName("детали обмена"));
     return () => {
       dispatch(setAreErrorsVisible(false));
     };
   });
 
-  const getCurrencyInput = (
-    cyrrencyType: CurrencyType,
-    position: CurrencyPosition
-  ) => {
-    return (
-      <ExchangeInput position={position} type={cyrrencyType}></ExchangeInput>
-    );
-  };
 
   return (
     <div className="container">
@@ -64,8 +55,8 @@ export default memo(function Page() {
           loading: isLoading,
         })}
       >
-        {getCurrencyInput(givenCurrencyType, "given")}
-        {getCurrencyInput(receivedCurrencyType, "received")}
+        <ExchangeInput position={'given'} type={givenCurrencyType}></ExchangeInput>
+        <ExchangeInput position={'received'} type={receivedCurrencyType}></ExchangeInput>
       </div>
       <Button type="primary" onClick={onSubmit}>
         Далее

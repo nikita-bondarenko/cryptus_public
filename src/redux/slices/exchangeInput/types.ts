@@ -66,24 +66,23 @@ export type SetFetchedDataActionPayload = { rate: Rate; options: InputOptions };
 export type SetFetchedDataAction = PayloadAction<SetFetchedDataActionPayload>;
 
 export type InputActionPayload = {
-  amountValue: number | null;
   currency: CurrencyOption;
 };
 
 export type SetCryptoInputActionPayload = {
-  netValue: CryptoNetOption;
-  walletAddressValue: string;
+  netValue: CryptoNetOption | null;
+  walletAddressValue: string | null;
 } & InputActionPayload;
 export type SetCryptoActionInput = PayloadAction<SetCryptoInputActionPayload>;
 
 export type SetCardInputActionPayload = {
   bankValue: SelectOption | null;
-  cardNumberValue: string;
+  cardNumberValue: string | null;
 } & InputActionPayload;
 export type SetCardActionInput = PayloadAction<SetCardInputActionPayload>;
 
 export type SetCashInputActionPayload = {
-  cityValue: string;
+  cityValue: string | null;
 } & InputActionPayload;
 export type SetCashInputAction = PayloadAction<SetCashInputActionPayload>;
 
@@ -107,4 +106,18 @@ export type SetCashCityErrorAction = PayloadAction<string | null>;
 export type SetCardAmountErrorAction = PayloadAction<string | null>;
 export type SetCardBankErrorAction = PayloadAction<string | null>;
 export type SetCardNumberErrorAction = PayloadAction<string | null>;
+
+// Card Input Action Types
+export type SetCardCurrencyAction = PayloadAction<CurrencyOption>;
+export type SetCardBankAction = PayloadAction<SelectOption | null>;
+export type SetCardNumberAction = PayloadAction<string | null>;
+
+// Cash Input Action Types
+export type SetCashCurrencyAction = PayloadAction<CurrencyOption>;
+export type SetCashCityAction = PayloadAction<string | null>;
+
+// Crypto Input Action Types
+export type SetCryptoCurrencyAction = PayloadAction<CurrencyOption>;
+export type SetCryptoNetAction = PayloadAction<CryptoNetOption | null>;
+export type SetCryptoWalletAddressAction = PayloadAction<string | null>;
 
