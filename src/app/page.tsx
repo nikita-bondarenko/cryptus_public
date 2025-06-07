@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { setPageName } from "@/redux/slices/uiSlice";
 import { callSupport } from "@/helpers/callSupport";
+import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 
 export default function Home() {
   const [additionallySectionOpen, setAdditionallySectionOpen] = useState(false);
@@ -80,8 +81,8 @@ export default function Home() {
   ]);
 
   useEffect(() => {
-    dispatch(setPageName(''))
-  })
+    dispatch(resetExchangeInput())
+  }, [])
 
 
   return (
