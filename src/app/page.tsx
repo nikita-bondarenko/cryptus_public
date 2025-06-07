@@ -95,7 +95,7 @@ export default function Home() {
         >
           <div className=" flex justify-between">
             <div className="max-w-205">
-              <h1 className="font-bold text-32 mb-15 leading-[107.5%]">
+              <h1 className="font-bold text-32 mb-15 leading-normal">
                 CRYPTUS EXCHANGE
               </h1>
               <p className="text-16 font-medium mb-30">
@@ -137,7 +137,7 @@ export default function Home() {
           </AdditionallySectionButton>
           <div
             className={clsx(
-              " transition-all duration-500 border-[#C3C3C3]  relative overflow-hidden",
+              " transition-all duration-500 border-neutral-gray-400  relative overflow-hidden",
               { "border-top": additionallySectionOpen }
             )}
             style={{ height: additionallySectionListHeight }}

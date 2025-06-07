@@ -58,13 +58,13 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
       >
         <button
           type="button"
-          className="w-full flex items-center justify-between px-16 py-14 border-l border-[#DEDEDE] bg-white text-16"
+          className="w-full flex items-center justify-between px-16 py-14 border-l border-neutral-gray-300 bg-white text-16"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {selected ? (
             <ButtonDisplay {...selected} />
           ) : (
-            <span className="text-[#999]">Выбрать</span>
+            <span className="text-neutral-gray-700">Выбрать</span>
           )}
           <svg
             className={`ml-2 w-15 h-15 transition-transform ${
@@ -84,7 +84,7 @@ const CurrencySelect = forwardRef<HTMLDivElement, CurrencySelectProps>(
         </button>
 
         {isOpen && (
-          <div className="absolute left-0 top-[120%] mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-6 max-h-200 overflow-hidden">
+          <div className="absolute left-0 top-[120%] mt-1 w-full z-50 bg-neutral-white border border-neutral-gray-200 rounded-6 max-h-200 overflow-hidden">
             <SimpleBar style={{ maxHeight: 200 }} className="custom-scrollbar">
               <div className="flex flex-col py-6 gap-0">
                 {options.map((option) => (

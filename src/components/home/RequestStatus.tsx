@@ -16,7 +16,7 @@ const RequestStatus: React.FunctionComponent<{
         <Icon src="clock.svg" className="w-30 h-30"></Icon>
         <div>
           <p className="text-13 mb-4">Заявка {id} в работе</p>
-          <span className="text-10 text-[#BFBFBF] leading-[120%] block">
+          <span className="text-10 text-neutral-gray-1000 leading-[120%] block">
             Наш оператор скоро с вами свяжется
           </span>
         </div>

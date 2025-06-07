@@ -28,9 +28,9 @@ const ExchangeTypeItem: React.FC<ExchangeTypeItemProps> = memo(
     return (
       <button
         className={clsx(
-          "h-46 flex items-center justify-between w-[101%] duration-500 transition-all bg-white px-18 relative",
+          "h-46 flex items-center justify-between w-[101%] duration-500 transition-all bg-neutral-white px-18 relative",
           {
-            "[&]:bg-[#F5F8F9]  pointer-events-none z-20": isSelected,
+            "[&]:bg-neutral-gray-100 pointer-events-none z-20": isSelected,
           }
         )}
         onClick={onClick}
@@ -39,7 +39,7 @@ const ExchangeTypeItem: React.FC<ExchangeTypeItemProps> = memo(
           <Icon src={icon} className={clsx("w-19 h-19", {
             "w-21 h-21": icon === 'cash.svg',
           })}></Icon>
-          <span className="text-16 leading-[107%]">{name}</span>
+          <span className="text-16 leading-normal">{name}</span>
         </div>
         <Icon
           src="sign.svg"

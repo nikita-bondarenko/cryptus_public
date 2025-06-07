@@ -11,8 +11,7 @@
 }
 
 body {
-  font-family: var(--font-inter), var(--font-main);
-  background: #F2F2F2;
+  @apply font-main bg-global-background
 }
 
 .container {
@@ -45,16 +44,31 @@ button {
   animation-delay: 0.8s;
 }
 
+
+.center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+}
+
+.center-x {
+@apply absolute left-1/2 -translate-x-1/2
+}
+
+.center-y { 
+  @apply absolute top-1/2 -translate-y-1/2
+}
+
+
+
 .border-top {
-  @apply border-t border-[#C3C3C3]
+  @apply border-t border-neutral-gray-400
 }
 
 .heading {
-  @apply font-medium text-16 leading-[107%] mb-20
+  @apply font-medium text-16 leading-normal mb-20
 }
 
 .story-info {
-  @apply text-13 leading-[107%] text-[#828282]
+  @apply text-13 leading-normal text-neutral-gray-800
 }
 
 *:focus, *:focus-visible {
@@ -62,11 +76,11 @@ button {
 }
 
 input::placeholder {
-  @apply text-[#CBCBCB]
+  @apply text-neutral-gray-1300
 }
 
 .simplebar-scrollbar::before {
-  @apply bg-[#999999] rounded-6
+  @apply bg-neutral-gray-700 rounded-6
 
 }
 .simplebar-track.simplebar-vertical {

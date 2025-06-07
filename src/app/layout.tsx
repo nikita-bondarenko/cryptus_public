@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={`${inter.variable} antialiased flex flex-col h-100vh]`}>
+      <body className={`${inter.variable} antialiased flex flex-col h-screen`}>
         <StoreProvider>
           <Header></Header>
           <main className="pb-35 flex-grow">{children}</main>

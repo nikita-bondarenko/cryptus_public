@@ -150,7 +150,7 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
         {position === "received" && (
           <div className="relative pb-16 -mb-16 mt-20">
             <input
-              className={clsx("border shimmer-on-loading border-[#E9E9E9] rounded-6 bg-white text-16 leading-[1.07] px-18 py-15 pr-30 w-full", walletAddressError && areErrorsVisible ? "[&]:border-[#FF676A]" : ""  )}
+              className={clsx("border shimmer-on-loading border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 pr-30 w-full", walletAddressError && areErrorsVisible ? "[&]:border-primary-red" : ""  )}
               type="text"
               onChange={(e) => {
                 dispatch(setActiveInputType("crypto"));
@@ -160,7 +160,7 @@ const ExchangeInputCrypto: React.FC<ExchangeInputCryptoProps> = memo(
             />
             {walletAddressError && areErrorsVisible && (
               <>
-                <p className="absolute left-0 text-[#FF676A] text-12 bottom-0">
+                <p className="absolute left-0 text-primary-red text-12 bottom-0">
                   {walletAddressError}
                 </p>
                 <Icon

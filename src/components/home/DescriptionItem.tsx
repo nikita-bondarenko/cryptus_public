@@ -7,9 +7,9 @@ const DescriptionItem: React.FunctionComponent<{
 }> = memo(({ icon, children }) => {
 
   return (
-    <li className="rounded-full h-34 w-fit flex items-center justify-center px-17 gap-7 bg-[#E4F5FF] ">
+    <li className="rounded-full h-34 w-fit flex items-center justify-center px-17 gap-7 bg-neutral-blue-sky ">
       <Icon src={icon} className="w-20 h-20"></Icon>
-      <span className="font-medium text-13 text-[#759EB2]">{children}</span>
+      <span className="font-medium text-13 text-neutral-blue-steel">{children}</span>
     </li>
   );
 });

@@ -25,7 +25,7 @@ const StoryCryptoData: React.FC<StoryCryptoDataProps> = ({
         
             })}
           ></Icon>
-          <span className="text-13 leading-[107.5%] block translate-y-1">{name}</span>
+          <span className="text-13 leading-normal block translate-y-1">{name}</span>
         </div>
         {arrow && (
           <Icon
@@ -34,7 +34,7 @@ const StoryCryptoData: React.FC<StoryCryptoDataProps> = ({
           ></Icon>
         )}
       </div>
-      <span className="text-16 leading-[107%] break-all mr-20 text-left">{value}</span>
+      <span className="text-16 leading-normal break-all mr-20 text-left">{value}</span>
     </div>
   );
 };

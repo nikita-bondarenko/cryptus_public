@@ -28,15 +28,15 @@ export const InputField: React.FC<Props> = ({
         placeholder={placeholder}
         {...register(name)}
         className={clsx(
-          "w-full bg-white text-16 leading-[107%] rounded-6 px-18 py-14 placeholder:text-[#CBCBCB] border border-[#DEDEDE]",
+          "w-full bg-white text-16 leading-normal rounded-6 px-18 py-14 placeholder:text-neutral-gray-1300 border border-neutral-gray-300",
           {
-            "[&]:border-[#FF676A] pr-30": errors[name],
+            "[&]:border-primary-red pr-30": errors[name],
           }
         )}
       />
       {errors[name] && (
         <>
-          <p className="absolute left-0 text-[#FF676A] text-13 bottom--1">
+          <p className="absolute left-0 text-primary-red text-13 bottom--1">
             {(errors[name]?.message as string) || "Ошибка"}
           </p>
           <Icon

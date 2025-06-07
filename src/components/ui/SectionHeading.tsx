@@ -16,10 +16,10 @@ export type SectionHeadingProps = {
 const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValue, error}) => {
   return (
      <div className="flex items-end justify-between mb-10 pl-6">
-          <h2 className="text-16 font-medium leading-[107%] shimmer-on-loading">{title}</h2>
+          <h2 className="text-16 font-medium leading-normal shimmer-on-loading">{title}</h2>
           {rate && (
             <span
-              className="text-13 leading-[107%] text-[#B1B1B1] shimmer-on-loading"
+              className="text-13 leading-normal text-neutral-gray-1600 shimmer-on-loading"
               dangerouslySetInnerHTML={{
                 __html: `${valueMask(rate?.from.value)} ${rate?.from.name} = <span class="text-black">${valueMask(rate?.to.value)}</span> ${rate?.to.name}`,
               }}
@@ -29,8 +29,8 @@ const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValu
               <span className='relative block'>
                 <Icon src='alert.svg' className={clsx('w-12 h-12 absolute top-1 left--17 opacity-0 transition-opacity duration-500', {"opacity-100": error})}></Icon>
                  <span
-              className={clsx("block text-13 leading-[107%] text-[#B1B1B1] shimmer-on-loading ", {
-                "[&]:text-[#FF6769] [&_span]:text-[#FF6769]": error
+              className={clsx("block text-13 leading-normal text-neutral-gray-1600 shimmer-on-loading ", {
+                "[&]:text-primary-red [&_span]:text-primary-red": error
               })}
               dangerouslySetInnerHTML={{
                 __html: `минимальная сумма обмена <span class="text-black">${valueMask(minValue)}</span>`,

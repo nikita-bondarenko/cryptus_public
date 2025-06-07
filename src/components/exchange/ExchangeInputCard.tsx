@@ -166,12 +166,12 @@ const ExchangeInputCard: React.FC<ExchangeInputCardProps> = memo(
               onKeyDown={handleKeyDown}
               value={cardNumber}
               type="text"
-              className={clsx("shimmer-on-loading border border-[#E9E9E9] rounded-6 bg-white text-16 leading-[1.07] px-18 py-15 w-full", cardNumberError && areErrorsVisible ? "[&]:border-[#FF676A]" : ""  )}
+              className={clsx("shimmer-on-loading border border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 w-full", cardNumberError && areErrorsVisible ? "[&]:border-primary-red" : ""  )}
               placeholder="Номер  карты"
             />
             {cardNumberError && areErrorsVisible && (
               <>
-                <p className="absolute left-0 text-[#FF676A] text-13">
+                <p className="absolute left-0 text-primary-red text-13">
                   {cardNumberError}
                 </p>
                 <Icon

@@ -21,9 +21,9 @@ const CryptoNetSelect: React.FC<CryptoNetSelectProps> = memo(
             onClick={() => onChange(option)}
             key={index}
             className={clsx(
-              "border shimmer-on-loading border-[#E9E9E9] rounded-full bg-white text-[#B5B5B5] text-13 leading-[107%] duration-500 px-20 py-9",
+              "border shimmer-on-loading border-neutral-gray-200 rounded-full bg-white text-neutral-gray-400 text-13 leading-normal duration-500 px-20 py-9",
               {
-                "[&]:border-[#43C0FF] [&]:bg-[#43C0FF] [&]:text-white pointer-events-none":
+                "[&]:border-primary-blue [&]:bg-primary-blue [&]:text-white pointer-events-none":
                   value?.value === option?.value,
               }
             )}

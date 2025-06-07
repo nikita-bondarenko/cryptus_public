@@ -20,8 +20,8 @@ const Button: React.FC<ButtonProps> = memo(
           className,
           "flex items-center justify-center w-full text-white text-16 rounded-6 h-47",
           {
-            "bg-[#43C0FF]": type === "primary",
-            "bg-[#262626]": type === "secondary",
+            "bg-primary-blue": type === "primary",
+            "bg-neutral-gray-1400": type === "secondary",
           }
         )}
       >

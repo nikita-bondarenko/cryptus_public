@@ -42,15 +42,15 @@ const Select: React.FC<SelectProps> = memo(
     };
 
     return (
-      <div className="relative w-full shrink-0 [&_button]:text-16 shimmer-on-loading pb-16 mb--16" ref={dropdownRef}>
+      <div className="relative w-full shrink-0 [&_button]:text-16 shimmer-on-loading pb-16 -mb-16" ref={dropdownRef}>
            {!!error && (
-          <p className="absolute left-0 text-[#FF676A] text-12 bottom-0">
+          <p className="absolute left-0 text-primary-red text-12 bottom-0">
             {error}
           </p>
         )}
         <button
           type="button"
-          className={clsx("w-full flex items-center justify-between px-16 py-15 rounded-6 border-1 border-[#DEDEDE] bg-white text-13",  { "[&]:border-[#FF6769]": !!error })}
+          className={clsx("w-full flex items-center justify-between px-16 py-15 rounded-6 border-1 border-neutral-gray-300 bg-white text-13",  { "[&]:border-primary-red": !!error })}
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {selected ? selected.name : placeholder}
@@ -72,12 +72,12 @@ const Select: React.FC<SelectProps> = memo(
         </button>
 
         {isOpen && (
-          <div className="absolute left-0 top-59 mt-1 w-full z-50 bg-white border border-[#E9E9E9] rounded-6 max-h-134 overflow-hidden">
+          <div className="absolute left-0 top-59 mt-1 w-full z-50 bg-white border border-neutral-gray-200 rounded-6 max-h-134 overflow-hidden">
             <SimpleBar style={{ maxHeight: 134 }} className="custom-scrollbar">
               <div className="flex flex-col py-6 gap-0">
                 {options.map((option) => (
                   <button
-                    className="shrink-0 px-18 py-9 text-left w-full not-last:border-b-1 not-last:border-[#C3C3C3]"
+                    className="shrink-0 px-18 py-9 text-left w-full not-last:border-b-1 not-last:border-neutral-gray-400"
                     key={option.value}
                     onClick={() => handleSelect(option)}
                   >

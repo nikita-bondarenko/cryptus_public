@@ -96,7 +96,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
     }, []);
 
     return (
-      <div className={clsx("shimmer-on-loading rounded-6 border border-[#E9E9E9] min-w-0 bg-white flex items-center", {"[&]:border-[#FF6769]": error})}>
+      <div className={clsx("shimmer-on-loading rounded-6 border border-neutral-gray-200 min-w-0 bg-neutral-white flex items-center", {"[&]:border-primary-red": error})}>
         <input
           value={inputValue}
           onChange={handleChange}
@@ -104,7 +104,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = memo(
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           type="text"
-          className="text-16 min-w-0 placeholder:text-[#CCCCCC] leading-[1.07] py-26 pl-19 pr-5 flex-grow"
+          className="text-16 min-w-0 placeholder:text-neutral-gray-400 leading-normal py-26 pl-19 pr-5 flex-grow"
         />
         <CurrencySelect
           value={selectValue}

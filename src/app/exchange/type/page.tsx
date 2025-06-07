@@ -46,13 +46,13 @@ export default memo(function Page() {
           title="Я получаю"
           buttons={recieveOptions}
         ></ExchangeTypeBlock>
-        <div className="border-1 rounded-6 border-[#DEDEDE] bg-white w-full h-60 flex flex-col items-center justify-center">
-          <p className="text-13 text-[#939393]">
+        <div className="border-1 rounded-6 border-neutral-gray-300 bg-white w-full h-60 flex flex-col items-center justify-center">
+          <p className="text-13 text-neutral-gray-1500">
             Не нашли интересующий тип обмена?
           </p>
           <button
             onClick={callSupport}
-            className="text-13 font-medium text-[#3F3F3F] underline underline-offset-1"
+            className="text-13 font-medium text-neutral-gray-900 underline underline-offset-1"
           >
             связаться с поддержкой
           </button>

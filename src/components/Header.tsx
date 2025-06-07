@@ -6,6 +6,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { useTelegramWebApp } from "@/hooks/useTelegramWebApp";
 import clsx from "clsx";
 import { callSupport } from "@/helpers/callSupport";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const EXCHANGE_STEPS = [
   { path: "/exchange/type", label: "Тип" },
@@ -50,7 +51,13 @@ export default function Header() {
 
   // --- Dropdown menu logic ---
   const [menuOpen, setMenuOpen] = useState(false);
-  const handleMenuToggle = () => setMenuOpen((v) => !v);
+  const handleMenuToggle = () => {
+   setMenuOpen((v) => !v)
+  };
+
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  useClickOutside<HTMLDivElement, HTMLButtonElement>(menuRef, menuButtonRef, () => setMenuOpen(false));
 
   // --- Stepper logic ---
   const currentStep = useMemo(() => {
@@ -90,19 +97,19 @@ export default function Header() {
             className={clsx(
               "w-20 h-20  rounded-full relative shrink-0",
               {
-                "bg-[#4FC3FF]": true,
+                "bg-neutral-blue-100": true,
               }
             )}
           >
             <Icon
               src="white-sign.svg"
-              className="w-10 h-10 absolute top-6 left-50%] translate-x--50%] "
+              className="w-10 h-10  top-6 center-x "
             ></Icon>
           </div>
-          <div className="w-52 h-2 bg-[#DBDBDB] rounded-full relative">
+          <div className="w-52 h-2 bg-neutral-gray-300 rounded-full relative">
             <div
               className={clsx(
-                "h-2 bg-[#4FC3FF] rounded-full absolute top-0 left-0",
+                "h-2 bg-neutral-blue-100 rounded-full absolute top-0 left-0",
                 {
                   "w-0": currentStep === 0,
                   "w-26": currentStep === 1,
@@ -114,9 +121,9 @@ export default function Header() {
           </div>
           <div
             className={clsx(
-              "w-20 h-20 border-2 border-[#4FC3FF]  rounded-full flex items-center justify-center relative shrink-0",
+              "w-20 h-20 border-2 border-neutral-blue-100  rounded-full flex items-center justify-center relative shrink-0",
               {
-                "bg-[#4FC3FF]": currentStep === 2 || currentStep === 3,
+                "bg-neutral-blue-100": currentStep === 2 || currentStep === 3,
                 "delay-500": true,
               }
             )}
@@ -124,7 +131,7 @@ export default function Header() {
             <Icon
               src="white-sign.svg"
               className={clsx(
-                "w-10 h-10 opacity-0 absolute top-5 left-50%] translate-x--50%] ",
+                "w-10 h-10 opacity-0 top-5 center-x",
                 {
                   "[&]:opacity-100": currentStep === 2 || currentStep === 3,
                   "delay-500":true,
@@ -132,10 +139,10 @@ export default function Header() {
               )}
             ></Icon>
           </div>
-          <div className="w-52 h-2 bg-[#DBDBDB] rounded-full relative">
+          <div className="w-52 h-2 bg-neutral-gray-300 rounded-full relative">
             <div
               className={clsx(
-                "h-2 bg-[#4FC3FF] rounded-full absolute top-0 left-0",
+                "h-2 bg-neutral-blue-100 rounded-full absolute top-0 left-0",
                 {
                   "w-0": currentStep === 0 || currentStep === 1,
                   "w-26": currentStep === 2,
@@ -148,16 +155,16 @@ export default function Header() {
           </div>
           <div
             className={clsx(
-              "w-20 h-20 border-2 border-[#4FC3FF]  rounded-full flex items-center justify-center relative shrink-0 delay-500",
+              "w-20 h-20 border-2 border-neutral-blue-100  rounded-full flex items-center justify-center relative shrink-0 delay-500",
               {
-                "bg-[#4FC3FF] ": currentStep === 3,
+                "bg-neutral-blue-100 ": currentStep === 3,
               }
             )}
           >
             <Icon
               src="white-sign.svg"
               className={clsx(
-                "w-10 h-10 opacity-0 absolute top-5 left-50%] translate-x--50%] delay-500",
+                "w-10 h-10 opacity-0 top-5 center-x delay-500",
                 { "[&]:opacity-100": currentStep === 3 }
               )}
             ></Icon>
@@ -169,10 +176,11 @@ export default function Header() {
       <div className="flex justify-end relative">
         <button
           onClick={handleMenuToggle}
+          ref={menuButtonRef}
           className="flex items-center justify-center"
         >
           <Icon
-            src="menu.svg"
+            src="menu.svg"  
             className={clsx("w-14 h-14 transition-all duration-500 ", {
               "opacity-0": menuOpen,
               "opacity-100": !menuOpen,
@@ -181,7 +189,7 @@ export default function Header() {
           <Icon
             src="close.svg"
             className={clsx(
-              "w-10 h-10 transition-all duration-500 absolute top-50%] translate-y--50%] right-50%] translate-x-50%]",
+              "w-10 h-10 transition-all duration-500 center",
               {
                 "opacity-100": menuOpen,
                 "opacity-0": !menuOpen,
@@ -190,21 +198,21 @@ export default function Header() {
           />
         </button>
         {menuOpen && (
-          <div className="absolute right-0 top-120%] z-50 min-w-180 bg-white rounded-10 shadow-lg border border-[#E9E9E9]  flex flex-col animate-fade-in">
+          <div ref={menuRef} className="absolute right-0 top-[120%] z-50 min-w-180 bg-white rounded-10 shadow-lg border border-neutral-gray-200  flex flex-col animate-fade-in rounded-6">
             <button
-              className="flex items-center gap-8 px-11 py-13  rounded"
+              className="flex items-center gap-8 px-11 py-13  rounded-6"
               onClick={handleMakeQuestion}
             >
               <Icon src="support.svg" className="w-13 h-13" />
-              <span className="text-13 leading-[107%]">Задать вопрос</span>
+              <span className="text-13 leading-normal">Задать вопрос</span>
             </button>
-            <div className="border-b border-[#E9E9E9]"></div>
+            <div className="border-b border-neutral-gray-200"></div>
             <button
               className="flex items-center gap-6 px-11 py-13  rounded"
               onClick={() => window.location.reload()}
             >
               <Icon src="reload.svg" className="w-15 h-15" />
-              <span className="text-13 leading-[107%]">
+              <span className="text-13 leading-normal">
                 Обновить страницу
               </span>
             </button>

@@ -38,23 +38,23 @@ const RequestDetails: React.FC<RequestDetailsProps> = memo(
                  
                   })}
                 ></Icon>
-                <span className="text-16 leading-[107%]">
+                <span className="text-16 leading-normal">
                   {currency.name}
                 </span>
               </div>
-              <span className="text-16 leading-[107%] text-[#BFBFBF]">
+              <span className="text-16 leading-normal text-neutral-gray-1000">
                 {currency.typeLabel}
               </span>
             </div>
-            <span className="text-21 leading-[107%]">{currency.value}</span>
+            <span className="text-21 leading-normal">{currency.value}</span>
           </div>
           {currency.wayDetails && (
             <div>
-              <h3 className="text-[#BFBFBF] text-13 leading-[107%] mb-10">
+              <h3 className="text-neutral-gray-1000 text-13 leading-normal mb-10">
                 {currency.wayDetails.title}
               </h3>
               <span
-                className={clsx("break-all text-16 leading-[107%]", {
+                className={clsx("break-all text-16 leading-normal", {
                   "max-w-250": currency.type === "crypto",
                   "tracking-5": currency.type === "card",
                 })}
