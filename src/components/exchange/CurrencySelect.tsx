@@ -1,7 +1,6 @@
-import React, { memo, useEffect, useRef, useState, forwardRef } from "react";
-import SimpleBar from "simplebar-react";
-import "simplebar-react/dist/simplebar.min.css";
+import React, { memo, useState } from "react";
 import Icon from "../helpers/Icon";
+import BaseSelect from "../ui/BaseSelect";
 
 export type CurrencyOption = {
   value: string;
@@ -24,36 +23,20 @@ const ButtonDisplay = memo(({ icon, name }: CurrencyOption) => (
 
 ButtonDisplay.displayName = "ButtonDisplay";
 
-const CurrencySelect = memo(forwardRef<HTMLDivElement, CurrencySelectProps>(
-  (props, ref) => {
-    const { options, onChange, value: selected } = props;
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-      const handlePointerDown = (event: PointerEvent) => {
-        if (
-          dropdownRef.current &&
-          !dropdownRef.current.contains(event.target as Node)
-        ) {
-          setIsOpen(false);
-        }
-      };
+const CurrencySelect = memo(({ options, onChange, value: selected }: CurrencySelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-      document.addEventListener("pointerdown", handlePointerDown);
-      return () => {
-        document.removeEventListener("pointerdown", handlePointerDown);
-      };
-    }, []);
-
-    const handleSelect = (option: CurrencyOption) => {
-      onChange(option);
-      setIsOpen(false);
-    };
-    return (
-      <div
-        className="relative w-128 shrink-0 shimmer-on-loading"
-        ref={dropdownRef}
-      >
+  return (
+    <BaseSelect
+      options={options}
+      value={selected}
+      onChange={onChange}
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+      className="[&]:w-128"
+      dropdownTop="top-[120%]"
+      maxHeight={200}
+      renderTrigger={({ isOpen }) => (
         <button
           type="button"
           className="w-full flex items-center justify-between px-16 py-10 border-l border-neutral-gray-300 bg-white text-16"
@@ -80,28 +63,19 @@ const CurrencySelect = memo(forwardRef<HTMLDivElement, CurrencySelectProps>(
             />
           </svg>
         </button>
-
-        {isOpen && (
-          <div className="absolute left-0 top-[120%] mt-1 w-full z-50 bg-neutral-white border border-neutral-gray-200 rounded-6 max-h-200 overflow-hidden">
-            <SimpleBar style={{ maxHeight: 200 }} className="custom-scrollbar">
-              <div className="flex flex-col py-6 gap-0">
-                {options.map((option) => (
-                  <button
-                    className="shrink-0 px-16 py-4 text-left w-full"
-                    key={option.value}
-                    onClick={() => handleSelect(option)}
-                  >
-                    <ButtonDisplay {...option} />
-                  </button>
-                ))}
-              </div>
-            </SimpleBar>
-          </div>
-        )}
-      </div>
-    );
-  }
-));
+      )}
+      renderOption={({ option, onClick }) => (
+        <button
+          className="shrink-0 px-16 py-4 text-left w-full"
+          key={option.value}
+          onClick={onClick}
+        >
+          <ButtonDisplay {...option} />
+        </button>
+      )}
+    />
+  );
+});
 
 CurrencySelect.displayName = "CurrencySelect";
 
