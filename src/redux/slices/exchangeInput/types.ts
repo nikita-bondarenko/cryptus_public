@@ -7,7 +7,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 export type RateSide = {
   value: number | null;
   name: string | null;
-  type: CurrencyType | null;
+  type?: CurrencyType | null;
 };
 
 export type Rate = {

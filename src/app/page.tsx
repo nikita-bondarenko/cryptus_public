@@ -3,46 +3,24 @@
 import DescriptionItem from "@/components/home/DescriptionItem";
 import ProfileButton from "@/components/home/ProfileButton";
 import RequestStatus from "@/components/home/RequestStatus";
-import AdditionallySectionButton from "@/components/home/AdditionallySectionButton";
+import ExpandableList from "@/components/home/ExpandableList";
 import Button from "@/components/ui/Button";
-import clsx from "clsx";
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
-import { setPageName } from "@/redux/slices/uiSlice";
-import { callSupport } from "@/helpers/callSupport";
 import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
+import { useTelegramWebApp } from "@/hooks/useTelegramWebApp";
+import { setUserId } from "@/redux/slices/userDataSlice";
+import { POLICY_URL, TEST_USER_ID } from "@/config";
+import { useActiveRequest } from "@/hooks/useActiveRequest";
+import { useCallSupport } from "@/hooks/useCallSupport";
+import { TERMS_URL } from "@/config";
 
 export default function Home() {
-  const [additionallySectionOpen, setAdditionallySectionOpen] = useState(false);
-  const additionallySectionList = useRef<HTMLUListElement>(null);
-  const [additionallySectionListHeight, setAdditionallySectionListHeight] =
-    useState(0);
-
   const router = useRouter();
-  const dispatch = useAppDispatch()
-
-  const openAdditionallySectionList = () => {
-    if (additionallySectionList.current)
-      setAdditionallySectionListHeight(
-        additionallySectionList.current?.clientHeight
-      );
-  };
-  const closeAdditionallySectionList = () => {
-    setAdditionallySectionListHeight(0);
-  };
-  useEffect(() => {
-    if (additionallySectionOpen) {
-      openAdditionallySectionList();
-    } else {
-      closeAdditionallySectionList();
-    }
-  }, [additionallySectionOpen]);
+  const dispatch = useAppDispatch();
+  const { activeRequests } = useActiveRequest();
+  const { callSupport } = useCallSupport();
 
   const toProfilePage = useCallback(() => {
     router.push("/profile");
@@ -52,10 +30,17 @@ export default function Home() {
     router.push("/exchange/type");
   }, [router]);
 
-   const toFaqPage = useCallback(() => {
+  const toFaqPage = useCallback(() => {
     router.push("/faq");
   }, [router]);
 
+  const openPolicy = useCallback(() => {
+    window.open(POLICY_URL, "_blank");
+  }, []);
+
+  const openTerms = useCallback(() => {
+    window.open(TERMS_URL, "_blank");
+  }, []);
 
   const additionallySectionListItems = useRef([
     {
@@ -64,26 +49,22 @@ export default function Home() {
     },
     {
       text: "Соглашение",
-      onClick: () => {},
+      onClick: openTerms,
     },
     {
       text: "Политика AML",
-      onClick: () => {},
+      onClick: openPolicy,
     },
     {
       text: "Профиль",
       onClick: toProfilePage,
     },
   ]);
+
   const descriptionItems = useRef([
     { icon: "rocket.svg", text: "Быстрый обмен" },
     { icon: "shield.svg", text: "Безопасность" },
   ]);
-
-  useEffect(() => {
-    dispatch(resetExchangeInput())
-  }, [])
-
 
   return (
     <>
@@ -94,7 +75,7 @@ export default function Home() {
             background: "linear-gradient(45deg, #C7ECFF 0%, #B8D1F6 100%)",
           }}
         >
-          <div className=" flex justify-between">
+          <div className="flex justify-between">
             <div className="max-w-205">
               <h1 className="font-bold text-32 mb-15 leading-normal">
                 CRYPTUS EXCHANGE
@@ -104,18 +85,28 @@ export default function Home() {
                 менять
               </p>
             </div>
-            <ProfileButton onClick={toProfilePage}></ProfileButton>
+            <ProfileButton onClick={toProfilePage} />
           </div>
 
-          <ul className=" flex flex-col gap-11 mb-16">
+          <ul className="flex flex-col gap-11 mb-16">
             {descriptionItems.current.map((item, index) => (
               <DescriptionItem icon={item.icon} key={index}>
                 {item.text}
               </DescriptionItem>
             ))}
           </ul>
-          <RequestStatus isInProcess={true} id={"#151473"}></RequestStatus>
-          <div className=" grid grid-cols-2 gap-6">
+          <div className="min-h-60 flex flex-col gap-11  mb-20">
+            {activeRequests &&
+              activeRequests.map((request) => (
+                <RequestStatus
+                  isInProcess={true}
+                  id={request.id}
+                  key={request.id}
+                />
+              ))}
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
             <Button
               onClick={toExchangePage}
               className="home-btn"
@@ -123,40 +114,19 @@ export default function Home() {
             >
               Начать обмен
             </Button>
-            <Button onClick={callSupport} className="home-btn" type={"secondary"}>
+            <Button
+              onClick={callSupport}
+              className="home-btn"
+              type={"secondary"}
+            >
               Поддержка
             </Button>
           </div>
         </div>
-        <div className="overflow-hidden rounded-8">
-          <AdditionallySectionButton
-            onClick={() => setAdditionallySectionOpen((prev) => !prev)}
-            arrowPosition={additionallySectionOpen ? "bottom" : "top"}
-            arrow
-          >
-            Дополнительно
-          </AdditionallySectionButton>
-          <div
-            className={clsx(
-              " transition-all duration-500 border-neutral-gray-400  relative overflow-hidden",
-              { "border-top": additionallySectionOpen }
-            )}
-            style={{ height: additionallySectionListHeight }}
-          >
-            <ul
-              className="absolute w-full bottom-0 left-0"
-              ref={additionallySectionList}
-            >
-              {additionallySectionListItems.current.map((item, index) => (
-                <li key={index}>
-                  <AdditionallySectionButton border onClick={item.onClick}>
-                    {item.text}
-                  </AdditionallySectionButton>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <ExpandableList
+          items={additionallySectionListItems.current}
+          title="Дополнительно"
+        />
       </div>
     </>
   );

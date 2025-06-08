@@ -29,7 +29,7 @@ const BankSelect: React.FC<BankSelectProps> = memo(
         onChange={onChange}
         isOpen={isOpen}
         onOpenChange={setIsOpen}
-        className="[&_button]:text-16 shimmer-on-loading"
+        className="[&_button]:text-16 "
         renderTrigger={({ isOpen }) => (
           <InputWrapper error={error} errorIcon={false}>
             <button

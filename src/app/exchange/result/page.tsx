@@ -4,13 +4,16 @@ import Button from "@/components/ui/Button";
 import { callSupport } from "@/helpers/callSupport";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Notification } from "@/components/ui/Notification";
+import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 const REQUEST_ID = "#151473";
 
 export default function ExchangeResultPage() {
   const [copied, setCopied] = useState(false);
-
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const handleCopy = async () => {
@@ -24,8 +27,12 @@ export default function ExchangeResultPage() {
   };
 
   const handleGoChat = () => {
-    callSupport()
+    callSupport();
   };
+
+  useEffect(() => {
+    dispatch(resetExchangeInput());
+  }, [dispatch]);
 
   return (
     <div className="container h-full  ">
@@ -56,22 +63,24 @@ export default function ExchangeResultPage() {
           </div>
         </div>
         <div className="flex flex-col flex-grow gap-32 justify-between">
-          <div >
-            <div
-              className={clsx(
-                "flex items-center justify-center gap-8 text-16  h-56 opacity-0 transition-opacity duration-500 bg-white rounded-6 border-1 border-neutral-gray-200",
-                { "opacity-100": copied }
-              )}
-            >
-              <Icon src="sign.svg" className="w-12 h-12 translate-y-2" />
-              номер заявки скопирован
-            </div>
-          </div>
+            <Notification
+              isVisible={copied}
+              message="номер заявки скопирован"
+              iconSrc="sign.svg"
+            />
           <div className="flex flex-col gap-12">
-            <Button onClick={handleGoChat} type="primary" className="w-full text-15 py-15">
+            <Button
+              onClick={handleGoChat}
+              type="primary"
+              className="w-full text-15 py-15"
+            >
               В чат с оператором
             </Button>
-            <Button onClick={handleGoHome} type="secondary" className="w-full text-15 py-15">
+            <Button
+              onClick={handleGoHome}
+              type="secondary"
+              className="w-full text-15 py-15"
+            >
               В главное меню
             </Button>
           </div>

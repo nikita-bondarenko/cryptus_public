@@ -57,7 +57,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
         onOpenChange={setIsOpen}
         searchValue={searchValue}
         filterOptions={filterOptions}
-        className="[&_button]:text-16 shimmer-on-loading"
+        className="[&_button]:text-16 "
         renderTrigger={({ isOpen }) => (
           <InputWrapper error={error} errorIcon={false}>
             <div

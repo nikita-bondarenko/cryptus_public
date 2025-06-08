@@ -21,7 +21,7 @@ export default memo(function Page() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const [isLoading] = usePrepareExchangeInputPage();
+ usePrepareExchangeInputPage();
 
   const onSubmit = useCallback(() => {
     dispatch(setAreErrorsVisible(true));
@@ -45,9 +45,7 @@ export default memo(function Page() {
   return (
     <div className="container">
       <div
-        className={clsx("flex flex-col gap-30 mb-22 ", {
-          loading: isLoading,
-        })}
+        className={clsx("flex flex-col gap-30 mb-22 ")}
       >
         <ExchangeInput position={'given'} type={givenType}></ExchangeInput>
         <ExchangeInput position={'received'} type={receivedType}></ExchangeInput>

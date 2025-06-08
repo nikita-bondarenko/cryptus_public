@@ -2,11 +2,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Icon from "./helpers/Icon";
 import { usePathname, useRouter } from "next/navigation";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useTelegramWebApp } from "@/hooks/useTelegramWebApp";
 import clsx from "clsx";
-import { callSupport } from "@/helpers/callSupport";
 import useClickOutside from "@/hooks/useClickOutside";
+import { setUserId } from "@/redux/slices/userDataSlice";
+import { TEST_USER_ID } from "@/config";
+import { useCallSupport } from "@/hooks/useCallSupport";
+import { ProgressBar } from "@/components/ui/ProgressBar";
 
 const EXCHANGE_STEPS = [
   { path: "/exchange/type", label: "Тип" },
@@ -38,6 +41,7 @@ export default function Header() {
     setTimeout(() => {setIsBackward(false)}, 200)
   }, [pathname])
 
+
   const onBackButtonClick = () => {
     if (isHome) {
       webApp?.close();
@@ -67,9 +71,25 @@ export default function Header() {
     return idx === -1 ? null : idx;
   }, [pathname]);
 
+
+  const {callSupport} = useCallSupport()
+  
   const handleMakeQuestion = () => {
     callSupport();
   };
+const dispatch = useAppDispatch()
+  const tg = useTelegramWebApp();
+
+  useEffect(() => {
+    if (tg?.initDataUnsafe.user) {
+      dispatch(setUserId(tg.initDataUnsafe.user.id));
+    }
+
+    if (process.env.NODE_ENV === "development") {
+      dispatch(setUserId(TEST_USER_ID));
+    }
+  }, [tg, dispatch]);
+
 
   return (
     <div
@@ -92,83 +112,8 @@ export default function Header() {
       {isProfile && <span className="header__text translate-y-5">{pageName}</span>}
       {/* Stepper */}
       {isExchange && (
-        <div className="flex  items-center gap-5 [&_*]:transition-all [&_*]:duration-500 ">
-          <div
-            className={clsx(
-              "w-20 h-20  rounded-full relative shrink-0",
-              {
-                "bg-neutral-blue-100": true,
-              }
-            )}
-          >
-            <Icon
-              src="white-sign.svg"
-              className="w-10 h-10  top-6 center-x "
-            ></Icon>
-          </div>
-          <div className="w-52 h-2 bg-neutral-gray-300 rounded-full relative">
-            <div
-              className={clsx(
-                "h-2 bg-neutral-blue-100 rounded-full absolute top-0 left-0",
-                {
-                  "w-0": currentStep === 0,
-                  "w-26": currentStep === 1,
-                  "w-52": currentStep === 2 || currentStep === 3,
-                  "delay-1000": isBackward
-                }
-              )}
-            ></div>
-          </div>
-          <div
-            className={clsx(
-              "w-20 h-20 border-2 border-neutral-blue-100  rounded-full flex items-center justify-center relative shrink-0",
-              {
-                "bg-neutral-blue-100": currentStep === 2 || currentStep === 3,
-                "delay-500": true,
-              }
-            )}
-          >
-            <Icon
-              src="white-sign.svg"
-              className={clsx(
-                "w-10 h-10 opacity-0 top-5 center-x",
-                {
-                  "[&]:opacity-100": currentStep === 2 || currentStep === 3,
-                  "delay-500":true,
-                }
-              )}
-            ></Icon>
-          </div>
-          <div className="w-52 h-2 bg-neutral-gray-300 rounded-full relative">
-            <div
-              className={clsx(
-                "h-2 bg-neutral-blue-100 rounded-full absolute top-0 left-0",
-                {
-                  "w-0": currentStep === 0 || currentStep === 1,
-                  "w-26": currentStep === 2,
-                  "w-52": currentStep === 3,
-                  "delay-1000": !isBackward &&  currentStep !== 3,
-                  
-                }
-              )}
-            ></div>
-          </div>
-          <div
-            className={clsx(
-              "w-20 h-20 border-2 border-neutral-blue-100  rounded-full flex items-center justify-center relative shrink-0 delay-500",
-              {
-                "bg-neutral-blue-100 ": currentStep === 3,
-              }
-            )}
-          >
-            <Icon
-              src="white-sign.svg"
-              className={clsx(
-                "w-10 h-10 opacity-0 top-5 center-x delay-500",
-                { "[&]:opacity-100": currentStep === 3 }
-              )}
-            ></Icon>
-          </div>
+        <div className="flex items-center gap-5 [&_*]:transition-all [&_*]:duration-500">
+          <ProgressBar currentStep={currentStep ?? 0} isBackward={isBackward} />
         </div>
       )}
 

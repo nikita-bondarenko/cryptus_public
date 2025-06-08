@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/redux/StoreProvider";
 import Header from "@/components/Header";
+import { LoadingProvider } from "@/components/LoadingProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,10 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={`${inter.variable} antialiased flex flex-col h-screen`}>
+      <body className={`${inter.variable} antialiased flex flex-col h-screen `}>
         <StoreProvider>
           <Header></Header>
-          <main className="pb-35 flex-grow">{children}</main>
+          <LoadingProvider>
+            <main className="pb-35 flex-grow overflow-x-hidden">{children}</main>
+          </LoadingProvider>
         </StoreProvider>
       </body>
     </html>

@@ -2,10 +2,10 @@
 import ExchangePageLayout from "@/components/exchange/ExchangePageLayout";
 import ExchangeTypeBlock from "@/components/exchange/ExchangeTypeBlock";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
-import { callSupport } from "@/helpers/callSupport";
+import { useCallSupport } from "@/hooks/useCallSupport";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
-import { setPageName } from "@/redux/slices/uiSlice";
+import { setIsLoading, setPageName } from "@/redux/slices/uiSlice";
 import { store, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import React, { memo, useCallback, useEffect, useRef } from "react";
@@ -22,9 +22,11 @@ export default memo(function Page() {
     router.push("/exchange/input");
   }, [router]);
 
+  const {callSupport} = useCallSupport()
+
   useEffect(() => {
     dispatch(setPageName("выбор типа обмена"));
-
+    dispatch(setIsLoading(false))
   }, [dispatch]);
 
   const giveOptions = useRef(exchangeTypesButtons);

@@ -17,24 +17,26 @@ const StoryCryptoData: React.FC<StoryCryptoDataProps> = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <div className=" flex items-center justify-between mb-7">
+      <div className=" flex items-center justify-between mb-8 gap-20">
         <div className="flex items-center gap-5 shrink-0">
-          <Icon
-            src={icon}
-            className={clsx("w-13 h-13 shrink-0", {
-        
-            })}
-          ></Icon>
-          <span className="text-13 leading-normal block translate-y-1">{name}</span>
+          <Icon src={icon} className={clsx("w-13 h-13 shrink-0", {})}></Icon>
+          <span className="text-13 leading-normal block translate-y-1">
+            {name}
+          </span>
         </div>
         {arrow && (
-          <Icon
-            src="long-arrow.svg"
-            className="w-57 h-8 mr-21 shrink-0"
-          ></Icon>
+          <div className="relative flex flex-grow justify-end mr-21 max-w-57">
+            <div className="center-y h-1 w-full bg-neutral-gray-arrow right-4"></div>
+            <Icon
+              src="arrow-right.svg"
+              className="w-8 h-8 shrink-0"
+            ></Icon>
+          </div>
         )}
       </div>
-      <span className="text-16 leading-normal break-all mr-20 text-left">{value}</span>
+      <span className="text-16 leading-normal break-all mr-24 text-left">
+        {value}
+      </span>
     </div>
   );
 };

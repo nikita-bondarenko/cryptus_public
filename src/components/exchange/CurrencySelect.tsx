@@ -3,7 +3,7 @@ import Icon from "../helpers/Icon";
 import BaseSelect from "../ui/BaseSelect";
 
 export type CurrencyOption = {
-  value: string;
+  value: number;
   icon: string;
   name: string;
 };

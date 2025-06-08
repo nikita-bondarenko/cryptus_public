@@ -97,7 +97,7 @@ input::placeholder {
 
 @keyframes pingWave {
   0% {
-    transform: scale(0.9);
+    transform: scale(1);
     opacity: 1;
   }
 
@@ -121,23 +121,22 @@ input::placeholder {
   @apply transition-all duration-500
 }
 
-.loading .shimmer-on-loading {
+.loading.shimmer-on-loading {
   position: relative;
   overflow: hidden;
-  background: #e0e0e0;
   color: transparent;
   filter: blur(2px) brightness(0.9);
 }
 
-.loading .shimmer-on-loading::after {
+.loading.shimmer-on-loading::after {
   content: "";
   position: absolute;
   top: 0;
   left: -150%;
   height: 100%;
   width: 150%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  animation: shimmer 1.5s infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 1s infinite;
 }
 
 @keyframes shimmer {

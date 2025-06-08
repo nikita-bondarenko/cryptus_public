@@ -8,7 +8,7 @@ const RequestStatus: React.FunctionComponent<{
 }> = memo(({ isInProcess, id }) => {
   return (
     <div
-      className={clsx("transition-all select-none mb-20 w-full", {
+      className={clsx("transition-all select-none w-full", {
         " opacity-100 ": isInProcess,
       })}
     >
