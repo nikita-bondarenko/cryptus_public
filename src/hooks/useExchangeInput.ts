@@ -14,7 +14,7 @@ import {
 } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { CurrencyOption } from "@/components/exchange/CurrencySelect";
 
-export type ExchangeInputType = "card" | "cash" | "crypto";
+export type ExchangeInputType = "BANK" | "CASH" | "COIN";
 
 export const useExchangeInput = (type: ExchangeInputType) => {
   const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption | null>(null);
@@ -34,13 +34,13 @@ export const useExchangeInput = (type: ExchangeInputType) => {
   const onInputChange = useCallback((value: number | null) => {
     dispatch(setActiveInputType(type));
     switch (type) {
-      case "card":
+      case "BANK":
         dispatch(setCardInputAmountValue(value));
         break;
-      case "cash":
+      case "CASH":
         dispatch(setCashInputAmountValue(value));
         break;
-      case "crypto":
+      case "COIN":
         dispatch(setCryptoInputAmountValue(value));
         break;
     }

@@ -13,6 +13,8 @@ import { api } from "@/api/api";
 import userDataReducer from "./slices/userDataSlice";
 import requestDetailsReducer from "./slices/requestDetailsSlice";
 import { loadState, saveState } from "./persistConfig";
+import exchangeReducer from "./slices/exchangeSlice/exchangeSlice";
+import { exchangeSliceListener } from "./slices/exchangeSlice/listeners/exchangeSliceListener";
 
 const rootReducer = combineReducers({
   exchangeInput: exchangeInputReducer,
@@ -20,6 +22,7 @@ const rootReducer = combineReducers({
   ui: uiReducer,
   userData: userDataReducer,
   requestDetails: requestDetailsReducer,
+  exchange: exchangeReducer,
   [api.reducerPath]: api.reducer,
 });
 
@@ -36,12 +39,13 @@ export const store = configureStore({
       immutableCheck: false,
     })
       .prepend(
-        amountInputListener.middleware,
-        cardBankListener.middleware,
-        cardNumberListener.middleware,
-        cityInputListener.middleware,
-        walletAddressInputListener.middleware,
-        exchangeTypeListener.middleware
+        // amountInputListener.middleware,
+        // cardBankListener.middleware,
+        // cardNumberListener.middleware,
+        // cityInputListener.middleware,
+        // walletAddressInputListener.middleware,
+        // exchangeTypeListener.middleware
+        exchangeSliceListener.middleware
       )
       .concat(api.middleware),
   devTools: process.env.NODE_ENV !== "production",

@@ -12,7 +12,7 @@ export const calculateCityId = ({
   selectedReceivedType,
   city,
 }: CalculateCityIdProps) => {
-  if (city && (selectedGivenType === "cash" || selectedReceivedType === "cash")) {
+  if (city && (selectedGivenType === "CASH" || selectedReceivedType === "CASH")) {
     return {
       city: city.id,
     };

@@ -4,12 +4,12 @@ import { ServerCurrencyType } from "./calculateCurrencyTypeForFetching";
 export const calculateCurrencyTypeForFrontend = (currencyType: ServerCurrencyType): CurrencyType => {
     switch (currencyType) {
         case "COIN":
-            return "crypto";
+            return "COIN";
         case "CASH":
-            return "cash";
+            return "CASH";
         case "BANK":
-            return "card";
+            return "BANK";
         default:
-            return "crypto";
+            return "COIN";
     }
 };  

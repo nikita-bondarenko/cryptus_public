@@ -47,13 +47,13 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
     areErrorsVisible,
     onSelectChange,
     onInputChange
-  } = useExchangeInput("card");
+  } = useExchangeInput("BANK");
 
   const sectionHeadingProps = useAppSelector(
     selectSectionHeadingProps(position)
   );
 
-  const currencyOptions = useAppSelector(selectCurrencyOptions("card"));
+  const currencyOptions = useAppSelector(selectCurrencyOptions("BANK"));
   const bankOptions = useAppSelector(selectBankOptions);
   const bankValue = useAppSelector(selectBankValue);
   const cardNumberValue = useAppSelector(selectCardNumberValue);
@@ -73,7 +73,7 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
   }, []);
 
   const handleCardNumberChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setActiveInputType("card"));
+    dispatch(setActiveInputType("BANK"));
     const raw = normalizeInput(e.target.value);
     setCardNumber(formatWithSpacesCardNumber(raw));
   }, [dispatch]);
@@ -143,16 +143,16 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
         />
       </div>
 
-      <BankSelect
+      {/* <BankSelect
         value={bankValue}
         options={bankOptions || []}
         onChange={(option) => {
-          dispatch(setActiveInputType("card"));
+          dispatch(setActiveInputType("BANK"));
           setBank(option);
         }}
         placeholder="Выберите банк получения"
         error={bankError && areErrorsVisible ? bankError : null}
-      />
+      /> */}
       {position === "received" && (
         <div className="-mb-16">
           <InputWrapper error={cardNumberError && areErrorsVisible ? cardNumberError : null}>

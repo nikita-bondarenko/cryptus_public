@@ -19,27 +19,27 @@ export const selectExchangeDetails = createSelector(
   ): RequestDetailsProps[] => {
     // "Я отдаю"
     let give: RequestDetailsProps | null = null;
-    if (selectedGiveType === "crypto") {
+    if (selectedGiveType === "COIN") {
       give = {
         title: "Я отдаю",
         rate,
         currency: {
           icon: cryptoInput.currency?.icon || "usdt.svg",
           name: cryptoInput.currency?.name || "USDT",
-          type: "crypto",
+          type: "COIN",
           typeLabel: cryptoInput.net.value?.name || "BEP 20",
           value: cryptoInput.amount.value ? String(cryptoInput.amount.value) : "",
           position: "given",
         },
       };
-    } else if (selectedGiveType === "card") {
+    } else if (selectedGiveType === "BANK") {
       give = {
         title: "Я отдаю",
         rate,
         currency: {
           icon: cardInput.currency?.icon || "rub.svg",
           name: cardInput.currency?.name || "RUB",
-          type: "card",
+          type: "BANK",
           typeLabel: cardInput.bank.value?.name || "Банк",
           value: cardInput.amount.value ? String(cardInput.amount.value) : "",
           position: "given",
@@ -48,14 +48,14 @@ export const selectExchangeDetails = createSelector(
             : undefined,
         },
       };
-    } else if (selectedGiveType === "cash") {
+    } else if (selectedGiveType === "CASH") {
       give = {
         title: "Я отдаю",
         rate,
         currency: {
           icon: cashInput.currency?.icon || "rub.svg",
           name: cashInput.currency?.name || "RUB",
-          type: "cash",
+          type: "CASH",
           typeLabel: "Наличные",
           value: cashInput.amount.value ? String(cashInput.amount.value) : "",
           position: "given",
@@ -68,13 +68,13 @@ export const selectExchangeDetails = createSelector(
 
     // "Я получаю"
     let receive: RequestDetailsProps | null = null;
-    if (selectedReceieveType === "crypto") {
+    if (selectedReceieveType === "COIN") {
       receive = {
         title: "Я получаю",
         currency: {
           icon: cryptoInput.currency?.icon || "usdt.svg",
           name: cryptoInput.currency?.name || "USDT",
-          type: "crypto",
+          type: "COIN",
           typeLabel: cryptoInput.net.value?.name || "BEP 20",
           value: cryptoInput.amount.value ? String(cryptoInput.amount.value) : "",
           position: "received",
@@ -83,13 +83,13 @@ export const selectExchangeDetails = createSelector(
             : undefined,
         },
       };
-    } else if (selectedReceieveType === "card") {
+    } else if (selectedReceieveType === "BANK") {
       receive = {
         title: "Я получаю",
         currency: {
           icon: cardInput.currency?.icon || "rub.svg",
           name: cardInput.currency?.name || "RUB",
-          type: "card",
+          type: "BANK",
           typeLabel: cardInput.bank.value?.name || "Банк",
           value: cardInput.amount.value ? String(cardInput.amount.value) : "",
           position: "received",
@@ -98,13 +98,13 @@ export const selectExchangeDetails = createSelector(
             : undefined,
         },
       };
-    } else if (selectedReceieveType === "cash") {
+    } else if (selectedReceieveType === "CASH") {
       receive = {
         title: "Я получаю",
         currency: {
           icon: cashInput.currency?.icon || "rub.svg",
           name: cashInput.currency?.name || "RUB",
-          type: "cash",
+          type: "CASH",
           typeLabel: "Наличные",
           value: cashInput.amount.value ? String(cashInput.amount.value) : "",
           position: "received",

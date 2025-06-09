@@ -6,16 +6,16 @@ import ExchangeCryptoInput from "./ExchangeCryptoInput";
 
 export type ExchangeInputProps = {
   position: CurrencyPosition;
-  type: "card" | "cash" | "crypto";
+  type: "BANK" | "CASH" | "COIN";
 };
 
 const ExchangeInput: React.FC<ExchangeInputProps> = memo(({ position, type }) => {
   switch (type) {
-    case "card":
+    case "BANK":
       return <ExchangeCardInput position={position} />;
-    case "cash":
+    case "CASH":
       return <ExchangeCashInput position={position} />;
-    case "crypto":
+    case "COIN":
       return <ExchangeCryptoInput position={position} />;
     default:
       return null;

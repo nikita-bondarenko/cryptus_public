@@ -45,13 +45,13 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
     areErrorsVisible,
     onSelectChange,
     onInputChange
-  } = useExchangeInput("crypto");
+  } = useExchangeInput("COIN");
 
   const sectionHeadingProps = useAppSelector(
     selectSectionHeadingProps(position)
   );
 
-  const currencyOptions = useAppSelector(selectCurrencyOptions("crypto"));
+  const currencyOptions = useAppSelector(selectCurrencyOptions("COIN"));
   const netsOptions = useAppSelector(selectNetsOptions);
   const netValue = useAppSelector(selectNetValue);
   const walletAddressValue = useAppSelector(selectWalletAddressValue);
@@ -129,7 +129,7 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
         <SectionHeading title="Выберите сеть" />
         <CryptoNetSelect
           onChange={(net) => {
-            dispatch(setActiveInputType("crypto"));
+            dispatch(setActiveInputType("COIN"));
             setSelectedNet(net);
           }}
           value={netValue as CryptoNetOption}
@@ -143,7 +143,7 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
               className="border  border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 pr-30 w-full"
               type="text"
               onChange={(e) => {
-                dispatch(setActiveInputType("crypto"));
+                dispatch(setActiveInputType("COIN"));
                 setWalletAddress(e.target.value);
               }}
               value={walletAddress ?? ""}

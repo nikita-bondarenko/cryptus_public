@@ -17,7 +17,7 @@ export const useCallSupport = () => {
     try {
       await callOperator({
         user_id: userId,
-        type_direction: givenType === 'cash' || receivedType === 'cash' ? 'CASH' : 'CASHLESS',
+        type_direction: givenType === "CASH" || receivedType === "CASH" ? "CASH" : 'CASHLESS',
       }).unwrap();
 
       // Закрываем Telegram WebApp

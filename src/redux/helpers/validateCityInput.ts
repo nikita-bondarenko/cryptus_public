@@ -19,7 +19,7 @@ export const validateCityInput = ({
 
   const { selectedGiveType, selectedReceieveType } = state.exchangeType;
   const minValue = state.exchangeInput.minValue;
-  const sourseType = "cash";
+  const sourseType = "CASH";
   
   // Validate only if the input type is currently selected
   const isGiveType = selectedGiveType === sourseType;

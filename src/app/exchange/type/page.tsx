@@ -5,6 +5,7 @@ import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
+import { setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { setIsLoading, setPageName } from "@/redux/slices/uiSlice";
 import { store, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
@@ -12,7 +13,7 @@ import React, { memo, useCallback, useEffect, useRef } from "react";
 
 export default memo(function Page() {
   const recieveOptions = useAppSelector(
-    (state) => state.exchangeType.receiveOptions
+    (state) => state.exchange.currencyBuyTypeOptions
   );
   
   const router = useRouter();
@@ -27,6 +28,7 @@ export default memo(function Page() {
   useEffect(() => {
     dispatch(setPageName("выбор типа обмена"));
     dispatch(setIsLoading(false))
+
   }, [dispatch]);
 
   const giveOptions = useRef(exchangeTypesButtons);
@@ -41,7 +43,7 @@ export default memo(function Page() {
         <ExchangeTypeBlock
           position="received"
           title="Я получаю"
-          buttons={recieveOptions}
+          buttons={recieveOptions || []}
         ></ExchangeTypeBlock>
         <div className="border-1 rounded-6 border-neutral-gray-300 bg-white w-full h-60 flex flex-col items-center justify-center">
           <p className="text-13 text-neutral-gray-1500">

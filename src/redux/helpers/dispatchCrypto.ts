@@ -20,7 +20,7 @@ export type DispatchProps = {
     value,
     rate,
   }: DispatchProps) => {
-    if (selectedGiveType === "crypto") {
+    if (selectedGiveType === "COIN") {
       dispatch(
         setAutomaticlyCryptoInputAmountValue(
           roundTo8(translateCurrencyValue({ value, rate, position: "given" }))

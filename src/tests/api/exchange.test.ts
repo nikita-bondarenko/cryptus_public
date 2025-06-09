@@ -14,7 +14,7 @@ interface Currency {
   id: number;
   title: string;
   code: string;
-  type: 'COIN' | 'BANK' | 'CASH';
+  type: 'COIN' | 'BANK' | "CASH";
   weight: number;
   directions: string;
 }
@@ -687,7 +687,7 @@ describe('Exchange API', () => {
       const response = await fetch(`${API_URL}/calling-operator/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: USER_ID, type_direction: 'CASH' }),
+        body: JSON.stringify({ user_id: USER_ID, type_direction: "CASH" }),
       });
       const data = await response.json();
       expect(response.status).toBe(201);
@@ -707,7 +707,7 @@ describe('Exchange API', () => {
       const response = await fetch(`${API_URL}/calling-operator/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: 123, type_direction: 'CASH' }),
+        body: JSON.stringify({ user_id: 123, type_direction: "CASH" }),
       });
       const data = await response.json();
       expect(response.status).toBe(400);

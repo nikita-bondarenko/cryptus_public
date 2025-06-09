@@ -4,7 +4,7 @@ import { Rate } from "@/redux/slices/exchangeInput/types";
 type calculatePlaceholderProps = {
   position: CurrencyPosition;
   minValue: number;
-  rate: Rate;
+  rate: Rate | null;
 };
 export const calculatePlaceholder = ({
   position,
@@ -14,7 +14,7 @@ export const calculatePlaceholder = ({
   if (position === "given") {
     return minValue;
   } else {
-    if (rate?.from.value === null || rate?.to.value === null) return minValue;
+    if (rate === null || rate?.from.value === null || rate?.to.value === null) return minValue;
     return minValue / (rate?.from.value / rate?.to.value);
   }
 };

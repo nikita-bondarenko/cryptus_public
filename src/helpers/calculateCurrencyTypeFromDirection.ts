@@ -10,25 +10,25 @@ export const calculateCurrencyTypeFromDirection = (
   // Для позиции "given" (отдаю)
   if (position === "given") {
     if (direction?.startsWith("COIN")) {
-      return "crypto";
+      return "COIN";
     } else if (direction?.startsWith("BANK")) {
-      return "card";
+      return "BANK";
     } else if (direction?.startsWith("CASH")) {
-      return "cash";
+      return "CASH";
     }
   }
 
   // Для позиции "received" (получаю)
   if (position === "received") {
     if (direction.endsWith("COIN")) {
-      return "crypto";
+      return "COIN";
     } else if (direction.endsWith("BANK")) {
-      return "card";
+      return "BANK";
     } else if (direction.endsWith("CASH")) {
-      return "cash";
+      return "CASH";
     }
   }
 
   // По умолчанию возвращаем crypto
-  return "crypto";
+  return "COIN";
 }; 

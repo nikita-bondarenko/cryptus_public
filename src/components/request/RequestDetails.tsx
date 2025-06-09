@@ -3,7 +3,7 @@ import Icon from "../helpers/Icon";
 import clsx from "clsx";
 import SectionHeading, { SectionHeadingProps } from "../ui/SectionHeading";
 
-export type CurrencyType = "cash" | "card" | "crypto";
+export type CurrencyType = "CASH" | "BANK" | "COIN";
 export type CurrencyPosition = "given" | "received";
 
 export type CurrencyDetails = {
@@ -25,7 +25,7 @@ export type RequestDetailsProps = {
 
 const RequestDetails: React.FC<RequestDetailsProps> = memo(
   ({ title, rate, currency }) => {
-    console.log(rate, currency)
+    // console.log(rate, currency)
     return (
       <div className="">
         <SectionHeading title={title} rate={rate}></SectionHeading>
@@ -56,8 +56,8 @@ const RequestDetails: React.FC<RequestDetailsProps> = memo(
               </h3>
               <span
                 className={clsx("break-all text-16 leading-normal", {
-                  "max-w-250": currency.type === "crypto",
-                  "tracking-5": currency.type === "card",
+                  "max-w-250": currency.type === "COIN",
+                  "tracking-5": currency.type === "BANK",
                 })}
               >
                 {currency.wayDetails.value}

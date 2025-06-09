@@ -19,7 +19,7 @@ export interface GroupedCurrency {
   id: number;
   title: string;
   code: string;
-  type: 'COIN' | 'BANK' | 'CASH';
+  type: 'COIN' | 'BANK' | "CASH";
   weight: number;
   directions: Network[];
 }
@@ -125,7 +125,7 @@ export interface CreateExchangeParams extends Exchange {
 
 export interface CreateSwiftExchangeParams {
   user_id: number;
-  type_direction: 'CASH' | 'CASHLESS';
+  type_direction: "CASH" | 'CASHLESS';
 }
 
 export interface UpdateProfileParams {

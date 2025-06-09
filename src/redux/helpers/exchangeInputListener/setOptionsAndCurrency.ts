@@ -14,17 +14,17 @@ const selectedCurrency = translatedCurrencies[0]
 const selecterFetchedCurrency = currencies[0]
 
 switch (currencyType) {
-    case "crypto":
+    case "COIN":
         dispatch(setCryptoCurrenciesOptions(translatedCurrencies))
         dispatch(setCryptoCurrency(selectedCurrency))
         calculateNetworksOptions(dispatch, state, selecterFetchedCurrency)
         break;
-    case "card":
+    case "BANK":
         dispatch(setCardCurrenciesOptions(translatedCurrencies))
         dispatch(setCardCurrency(selectedCurrency))
         calculateBanksOptions(dispatch, state, selecterFetchedCurrency)
         break;
-    case "cash":
+    case "CASH":
         dispatch(setCashCurrenciesOptions(translatedCurrencies))
         dispatch(setCashCurrency(selectedCurrency))
         break;

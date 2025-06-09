@@ -10,23 +10,23 @@ export interface ExchangeTypeState {
   receiveOptions: ExchangeTypeItemProps[];
 }
 
-const initSelectedGiveType = "crypto";
+const initSelectedGiveType = "COIN";
 const filterReceiveVariants = (selectedGiveType: CurrencyType) => {
   switch (selectedGiveType) {
-    case "crypto": {
+    case "COIN": {
       return exchangeTypesButtons.filter(
         (item) => item.type !== selectedGiveType
       );
     }
     default: {
-      return exchangeTypesButtons.filter((item) => item.type === "crypto");
+      return exchangeTypesButtons.filter((item) => item.type === "COIN");
     }
   }
 };
 
 const initialState: ExchangeTypeState = {
   selectedGiveType: initSelectedGiveType,
-  selectedReceieveType: "card",
+  selectedReceieveType: "BANK",
   receiveOptions: filterReceiveVariants(initSelectedGiveType),
 };
 

@@ -19,7 +19,7 @@ export const validateWalletAddressInput = ({
 
   const { selectedGiveType, selectedReceieveType } = state.exchangeType;
   const minValue = state.exchangeInput.minValue;
-  const sourseType = "crypto";
+  const sourseType = "COIN";
   
   // Validate only if the input type is currently selected
   const isGiveType = selectedGiveType === sourseType;

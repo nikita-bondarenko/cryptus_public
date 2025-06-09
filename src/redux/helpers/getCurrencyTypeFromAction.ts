@@ -9,8 +9,8 @@ import {
 export const getCurrencyTypeFromAction = (
   actionType: string
 ): CurrencyType | null => {
-  if (actionType === setCardInputAmountValue.type) return "card";
-  if (actionType === setCashInputAmountValue.type) return "cash";
-  if (actionType === setCryptoInputAmountValue.type) return "crypto";
+  if (actionType === setCardInputAmountValue.type) return "BANK";
+  if (actionType === setCashInputAmountValue.type) return "CASH";
+  if (actionType === setCryptoInputAmountValue.type) return "COIN";
   return null;
 }; 

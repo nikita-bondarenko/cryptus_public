@@ -26,7 +26,7 @@ export const calculateWayDetails = ({
   // Для позиции "received" (получаю)
   if (position === "received") {
     // Для криптовалюты
-    if (type === "crypto" && address) {
+    if (type === "COIN" && address) {
       return {
         title: "Адрес получения",
         value: address,
@@ -34,7 +34,7 @@ export const calculateWayDetails = ({
     }
 
     // Для банковской карты
-    if (type === "card" && cardNumber) {
+    if (type === "BANK" && cardNumber) {
       return {
         title: "Карта получения",
         value: cardNumber,
@@ -42,7 +42,7 @@ export const calculateWayDetails = ({
     }
 
     // Для наличных
-    if (type === "cash" && city) {
+    if (type === "CASH" && city) {
       return {
         title: "Город получения",
         value: city,

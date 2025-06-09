@@ -18,16 +18,16 @@ export const selectSectionHeadingProps = (position: "given" | "received") =>
 export { selectCurrencyTypes };
 
 // Currency Options Selector
-export const selectCurrencyOptions = (type: "card" | "cash" | "crypto") =>
+export const selectCurrencyOptions = (type: "BANK" | "CASH" | "COIN") =>
   createSelector(
     (state: RootState) => state.exchangeInput.options,
     (options) => {
       switch (type) {
-        case "crypto":
+        case "COIN":
           return options.cryptoCurrencyOptions;
-        case "card":
+        case "BANK":
           return options.cardCurrencyOptions;
-        case "cash":
+        case "CASH":
           return options.cashCurrencyOptions;
         default:
           return [];
@@ -54,7 +54,7 @@ export const selectNetsOptions = createSelector(
 );
 
 // Input Value Selector
-export const selectInputValue = (type: "card" | "cash" | "crypto") =>
+export const selectInputValue = (type: "BANK" | "CASH" | "COIN") =>
   createSelector(
     (state: RootState) => state.exchangeInput,
     (exchangeInput) => {
@@ -86,7 +86,7 @@ export const selectCashCurrency = (state: RootState) => state.exchangeInput.cash
 export const selectCryptoCurrency = (state: RootState) => state.exchangeInput.cryptoInput.currency;
 
 // Error Selectors
-export const selectValueError = (type: "card" | "cash" | "crypto") =>
+export const selectValueError = (type: "BANK" | "CASH" | "COIN") =>
   createSelector(
     (state: RootState) => state.exchangeInput,
     (exchangeInput) => {

@@ -10,6 +10,7 @@ import { setUserId } from "@/redux/slices/userDataSlice";
 import { TEST_USER_ID } from "@/config";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 const EXCHANGE_STEPS = [
   { path: "/exchange/type", label: "Тип" },
@@ -90,8 +91,12 @@ const dispatch = useAppDispatch()
     }
   }, [tg, dispatch]);
 
+  const state = useAppSelector(state => state.exchange)
 
-  const state = useAppSelector(state => state.exchangeInput)
+useEffect(() => {
+  dispatch(setSelectedCurrencySellType("COIN"))
+  dispatch(setSelectedCurrencyBuyType("BANK"))
+}, [])
 
 useEffect(() => {
   console.log(state)

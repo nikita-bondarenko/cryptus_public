@@ -7,18 +7,18 @@ export const requestDetails: RequestDetailsProps[] = [
       from: {
         value: 1,
         name: "USDT",
-        type: "crypto",
+        type: "COIN",
       },
       to: {
         value: 81.69,
         name: "RUB",
-        type: "cash",
+        type: "CASH",
       },
     },
     currency: {
       name: "Tether",
       icon: "usdt.svg",
-      type: "crypto",
+      type: "COIN",
       typeLabel: "BEP 20",
       value: "100",
       position: "given",
@@ -29,7 +29,7 @@ export const requestDetails: RequestDetailsProps[] = [
     currency: {
       icon: "rub.svg",
       name: "RUB",
-      type: "card",
+      type: "BANK",
       typeLabel: "Тинькофф",
       value: "8 062",
       position: 'received',
@@ -45,18 +45,18 @@ export const requestDetails: RequestDetailsProps[] = [
       from: {
         value: 1,
         name: "USDT",
-        type: "crypto",
+        type: "COIN",
       },
       to: {
         value: 81.69,
         name: "RUB",
-        type: "cash",
+        type: "CASH",
       },
     },
     currency: {
       name: "Tether",
       icon: "usdt.svg",
-      type: "crypto",
+      type: "COIN",
       typeLabel: "BEP 20",
       value: "100",
       position: "given",
@@ -67,7 +67,7 @@ export const requestDetails: RequestDetailsProps[] = [
     currency: {
       icon: "rub.svg",
       name: "RUB",
-      type: "cash",
+      type: "CASH",
       typeLabel: "Наличные",
       value: "8 062",
       position: 'received',
@@ -83,18 +83,18 @@ export const requestDetails: RequestDetailsProps[] = [
       from: {
         value: 1,
         name: "USDT",
-        type: "crypto",
+        type: "COIN",
       },
       to: {
         value: 81.69,
         name: "RUB",
-        type: "cash",
+        type: "CASH",
       },
     },
    currency: {
       icon: "rub.svg",
       name: "RUB",
-      type: "cash",
+      type: "CASH",
       typeLabel: "Наличные",
       value: "50 000",
       position: 'given',
@@ -109,7 +109,7 @@ export const requestDetails: RequestDetailsProps[] = [
     currency:   {
       name: "USDT",
       icon: "usdt.svg",
-      type: "crypto",
+      type: "COIN",
       typeLabel: "BEP 20",
       value: "640",
       position:'received',
@@ -125,18 +125,18 @@ export const requestDetails: RequestDetailsProps[] = [
       from: {
         value: 1,
         name: "USDT",
-        type: "crypto",
+        type: "COIN",
       },
       to: {
         value: 81.69,
         name: "RUB",
-        type: "cash",
+        type: "CASH",
       },
     },
    currency: {
       icon: "rub.svg",
       name: "RUB",
-      type: "card",
+      type: "BANK",
       typeLabel: "Наличные",
       value: "10 000",
       position: 'given',
@@ -147,7 +147,7 @@ export const requestDetails: RequestDetailsProps[] = [
     currency:   {
       name: "USDT",
       icon: "usdt.svg",
-      type: "crypto",
+      type: "COIN",
       typeLabel: "BEP 20",
       value: "130",
       position:'received',

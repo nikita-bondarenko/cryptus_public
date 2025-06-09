@@ -21,7 +21,7 @@ export default memo(function Page() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
- usePrepareExchangeInputPage();
+//  usePrepareExchangeInputPage();
 
   const onSubmit = useCallback(() => {
     dispatch(setAreErrorsVisible(true));

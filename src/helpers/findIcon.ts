@@ -5,13 +5,13 @@ export const findIcon = (currencyType: CurrencyType, ...args: string[] | undefin
 
     let defaultIcon = "crypt.svg"
     switch (currencyType) {
-        case "crypto":
+        case "COIN":
             defaultIcon = "crypt.svg"
             break
-        case "cash":
+        case "CASH":
             defaultIcon = "cash.svg"
             break
-        case "card":
+        case "BANK":
             defaultIcon = "card.svg"
             break
     }

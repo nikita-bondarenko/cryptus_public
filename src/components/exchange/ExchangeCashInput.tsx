@@ -40,13 +40,13 @@ const ExchangeCashInput: React.FC<ExchangeCashInputProps> = memo(({ position }) 
     areErrorsVisible,
     onSelectChange,
     onInputChange
-  } = useExchangeInput("cash");
+  } = useExchangeInput("CASH");
 
   const sectionHeadingProps = useAppSelector(
     selectSectionHeadingProps(position)
   );
 
-  const currencyOptions = useAppSelector(selectCurrencyOptions("cash"));
+  const currencyOptions = useAppSelector(selectCurrencyOptions("CASH"));
   const cityOptions = useAppSelector(selectCityOptions);
   const cityValue = useAppSelector(selectCityValue);
   const selectedCashCurrency = useAppSelector(selectCashCurrency);
@@ -70,7 +70,6 @@ const ExchangeCashInput: React.FC<ExchangeCashInputProps> = memo(({ position }) 
   useEffect(() => {
     if (isInitialLoad) return;
     if (city === cityValue) return;
-console.log(city)
     dispatch(setCashCity(city));
   }, [city, cityValue, isInitialLoad, dispatch]);
 
@@ -108,9 +107,9 @@ console.log(city)
         value={cityValue ?? ""}
         options={cityOptions || []}
         onChange={(option) => {
-          dispatch(setActiveInputType("cash"));
+          dispatch(setActiveInputType("CASH"));
           setCity(option);
-          console.log(option)
+          // console.log(option)
         }}
         placeholder="Выберите город получения"
         placeholderFocused="Введите название города"

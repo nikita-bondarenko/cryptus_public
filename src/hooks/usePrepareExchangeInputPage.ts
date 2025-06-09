@@ -17,12 +17,12 @@ export     const fetchedDataPayload: SetInitFetchedDataActionPayload = {
     from: {
       value: 1,
       name: "USDT",
-      type: "crypto",
+      type: "COIN",
     },
     to: {
       value: 81.69,
       name: "RUB",
-      type: "cash",
+      type: "CASH",
     },
   },
   options: {
@@ -40,7 +40,7 @@ export const usePrepareExchangeInputPage = () => {
   const dispatch = useAppDispatch();
 //   const {givenType} = useAppSelector(selectCurrencyTypes)
 // const {data: currenciesGiven} = useGetCurrenciesSellQuery(calculateCurrencyTypeForFetching(givenType))
-// console.log(currenciesGiven)
+// // console.log(currenciesGiven)
 
 
 

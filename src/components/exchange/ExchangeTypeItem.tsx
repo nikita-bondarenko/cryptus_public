@@ -4,12 +4,12 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectGiveType, selectReceiveType } from "@/redux/slices/exchangeTypeSlice";
 import clsx from "clsx";
 import Icon from "../helpers/Icon";
-import { ServerCurrencyType } from "@/helpers/calculateCurrencyTypeForFetching";
+import { setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export type ExchangeTypeItemProps = {
   icon: string;
   name: string;
-  type: ServerCurrencyType;
+  type: CurrencyType;
   position?: CurrencyPosition;
 };
 
@@ -19,12 +19,12 @@ const ExchangeTypeItem: React.FC<ExchangeTypeItemProps> = memo(
 
     const isSelected = useAppSelector((state) => {
       if (position === "received")
-        return state.exchangeType.selectedReceieveType === type;
-      else return state.exchangeType.selectedGiveType === type;
+        return state.exchange.selectedCurrencyBuyType === type;
+      else return state.exchange.selectedCurrencySellType === type;
     });
     const onClick = () => {
-      if (position === "received") dispatch(selectReceiveType(type));
-      else dispatch(selectGiveType(type));
+      if (position === "received") dispatch(setSelectedCurrencyBuyType(type));
+      else dispatch(setSelectedCurrencySellType(type));
     };
     return (
       <button

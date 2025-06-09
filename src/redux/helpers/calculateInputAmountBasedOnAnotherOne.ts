@@ -27,9 +27,9 @@ export const calculateInputAmountBasedOnAnotherOne = ({
     return;
   }
 
-  console.log("value", value);
-  console.log("rate", rate);
-  console.log("action.type === setCryptoInputAmountValue.type", action.type === setCryptoInputAmountValue.type);
+  // console.log("value", value);
+  // console.log("rate", rate);
+  // console.log("action.type === setCryptoInputAmountValue.type", action.type === setCryptoInputAmountValue.type);
 
   if (action.type === setCryptoInputAmountValue.type) {
     dispatchNonCrypto({

@@ -4,11 +4,11 @@ export type ServerCurrencyType = "COIN" | "BANK" | "CASH";
 
 
     export const calculateCurrencyTypeForFetching = (type: CurrencyType): ServerCurrencyType  => {
-  if (type === "crypto") {
+  if (type === "COIN") {
     return "COIN";
-  } else if (type === "card") {
+  } else if (type === "BANK") {
     return "BANK";
-  } else if (type === "cash") {
+  } else if (type === "CASH") {
     return "CASH";
   }
   return "COIN";

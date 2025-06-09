@@ -13,13 +13,13 @@ export const calculateCurrenciesBuy = async (dispatch: AppDispatch, state: RootS
     let giveCurrencyId: number | null | undefined = null;
 
     switch (selectedGiveType) {
-      case "crypto":
+      case "COIN":
         giveCurrencyId = state.exchangeInput.cryptoInput.currency?.value;
         break;
-      case "card":
+      case "BANK":
         giveCurrencyId = state.exchangeInput.cardInput.currency?.value;
         break;
-      case "cash":
+      case "CASH":
         giveCurrencyId = state.exchangeInput.cashInput.currency?.value;
         break;
     }

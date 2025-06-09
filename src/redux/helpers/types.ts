@@ -13,7 +13,7 @@ export type ValidationOptions = {
 };
 
 export type ValidationContext = {
-  type: "card" | "cash" | "crypto";
+  type: "BANK" | "CASH" | "COIN";
   position: "given" | "received";
 };
 
@@ -63,7 +63,7 @@ export type TranslateFunction = (
   toCurrency: string
 ) => number;
 
-export type CurrencyTypeFunction = (action: any) => "card" | "cash" | "crypto";
+export type CurrencyTypeFunction = (action: any) => "BANK" | "CASH" | "COIN";
 
 // Validation Result Types
 export type ValidationResult = {

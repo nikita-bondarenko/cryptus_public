@@ -19,7 +19,7 @@ export const validateCardBank = ({
 
   const { selectedGiveType, selectedReceieveType } = state.exchangeType;
   const minValue = state.exchangeInput.minValue;
-  const sourseType = "card";
+  const sourseType = "BANK";
   
   // Validate only if the input type is currently selected
   const isGiveType = selectedGiveType === sourseType;

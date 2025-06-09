@@ -21,9 +21,9 @@ export const validateAllFields = (
   let hasErrors = false;
 
   // Validate crypto fields
-  if (selectedGiveType === "crypto" || selectedReceieveType === "crypto") {
+  if (selectedGiveType === "COIN" || selectedReceieveType === "COIN") {
     const { amount, walletAddress } = state.exchangeInput.cryptoInput;
-    const position = selectedGiveType === "crypto" ? "given" : "received";
+    const position = selectedGiveType === "COIN" ? "given" : "received";
 
     const amountError = validateExchangeInput({
       value: amount.value,
@@ -41,14 +41,14 @@ export const validateAllFields = (
 
     dispatch(setCryptoAmountError(amountError));
     dispatch(setCryptoWalletAddressError(walletAddressError));
-console.log(amountError, walletAddressError);
+// console.log(amountError, walletAddressError);
     hasErrors =  !!(amountError || walletAddressError);
   }
 
   // Validate card fields
-  if (selectedGiveType === "card" || selectedReceieveType === "card") {
+  if (selectedGiveType === "BANK" || selectedReceieveType === "BANK") {
     const { amount, bank, cardNumber } = state.exchangeInput.cardInput;
-    const position = selectedGiveType === "card" ? "given" : "received";
+    const position = selectedGiveType === "BANK" ? "given" : "received";
 
     const amountError = validateExchangeInput({
       value: amount.value,
@@ -57,12 +57,14 @@ console.log(amountError, walletAddressError);
       minValue,
     });
 
-    const bankError = validateExchangeInput({
-      value: bank.value,
-      inputType: "bank",
-      position,
-      minValue,
-    });
+    // const bankError = validateExchangeInput({
+    //   value: bank.value,
+    //   inputType: "bank",
+    //   position,
+    //   minValue,
+    // });
+
+    const bankError = null
 
     const cardNumberError = validateExchangeInput({
       value: cardNumber.value,
@@ -79,9 +81,9 @@ console.log(amountError, walletAddressError);
   }
 
   // Validate cash fields
-  if (selectedGiveType === "cash" || selectedReceieveType === "cash") {
+  if (selectedGiveType === "CASH" || selectedReceieveType === "CASH") {
     const { amount, city } = state.exchangeInput.cashInput;
-    const position = selectedGiveType === "cash" ? "given" : "received";
+    const position = selectedGiveType === "CASH" ? "given" : "received";
 
     const amountError = validateExchangeInput({
       value: amount.value,
