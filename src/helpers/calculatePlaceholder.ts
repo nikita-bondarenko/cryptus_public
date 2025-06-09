@@ -14,7 +14,7 @@ export const calculatePlaceholder = ({
   if (position === "given") {
     return minValue;
   } else {
-    if (rate.from.value === null || rate.to.value === null) return minValue;
-    return minValue / (rate.from.value / rate.to.value);
+    if (rate?.from.value === null || rate?.to.value === null) return minValue;
+    return minValue / (rate?.from.value / rate?.to.value);
   }
 };

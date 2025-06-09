@@ -2,8 +2,8 @@ import clsx from "clsx";
 import React, { memo } from "react";
 
 export type CryptoNetOption = {
-  name: string;
-  value: string;
+  name:string ;
+  value: number;
 };
 
 export type CryptoNetSelectProps = {

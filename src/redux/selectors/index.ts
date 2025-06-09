@@ -26,8 +26,9 @@ export const selectCurrencyOptions = (type: "card" | "cash" | "crypto") =>
         case "crypto":
           return options.cryptoCurrencyOptions;
         case "card":
+          return options.cardCurrencyOptions;
         case "cash":
-          return options.nonCryptoCurrencyOptions;
+          return options.cashCurrencyOptions;
         default:
           return [];
       }

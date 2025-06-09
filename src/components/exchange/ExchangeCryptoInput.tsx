@@ -120,7 +120,7 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
           onInputChange={onInputChange}
           onSelectChange={onSelectChange}
           selectValue={selectedCurrency as CurrencyOption}
-          options={currencyOptions}
+          options={currencyOptions || []}
           error={!!valueError && areErrorsVisible}
         />
       </div>
@@ -133,7 +133,7 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
             setSelectedNet(net);
           }}
           value={netValue as CryptoNetOption}
-          options={netsOptions}
+          options={netsOptions || []}
         />
       </div>
       {position === "received" && (

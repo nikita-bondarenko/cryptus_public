@@ -3,7 +3,7 @@ import { CurrencyType } from "@/components/request/RequestDetails";
 export type ServerCurrencyType = "COIN" | "BANK" | "CASH";
 
 
-    export const calculateCurrencyTypeForFetching = (type: CurrencyType): ServerCurrencyType | string => {
+    export const calculateCurrencyTypeForFetching = (type: CurrencyType): ServerCurrencyType  => {
   if (type === "crypto") {
     return "COIN";
   } else if (type === "card") {
@@ -11,5 +11,5 @@ export type ServerCurrencyType = "COIN" | "BANK" | "CASH";
   } else if (type === "cash") {
     return "CASH";
   }
-  return "";
+  return "COIN";
 };

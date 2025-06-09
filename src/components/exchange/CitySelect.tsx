@@ -2,15 +2,13 @@ import React, { memo, useState } from "react";
 import { InputWrapper } from "../ui/InputWrapper";
 import BaseSelect from "../ui/BaseSelect";
 import clsx from "clsx";
+import { SelectOption } from "./BankSelect";
 
-export type CityOption = {
-  name: string;
-  value: string;
-};
+export type CityOption = SelectOption;
 
 export type CitySelectProps = {
   options: CityOption[];
-  onChange: (value: string) => void;
+  onChange: (value: string | null) => void;
   value: string;
   placeholder: string;
   placeholderFocused?: string;
@@ -25,14 +23,18 @@ const CitySelect: React.FC<CitySelectProps> = memo(
 
     const handleSelect = (option: CityOption) => {
       setSearchValue(option.name);
-      onChange(option.value);
+      onChange(option.name);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value;
       setSearchValue(val);
       setIsOpen(true);
-      onChange(val);
+      
+      // Check if the input value exactly matches any city name
+      const exactMatch = options.find(option => option.name.toLowerCase() === val.toLowerCase());
+      console.log(exactMatch)
+      onChange(exactMatch ? exactMatch.name : null);
     };
 
     const handleFocus = () => {

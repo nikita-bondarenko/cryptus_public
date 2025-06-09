@@ -75,17 +75,24 @@ export const initOptions: InputOptions = {
   cityOptions: [],
   bankOptions: [],
   cryptoCurrencyOptions: [],
-  nonCryptoCurrencyOptions: [],
+  cardCurrencyOptions: [],
+  cashCurrencyOptions: [],
 };
 
 export const initialState: ExchangeInputState = {
   areErrorsVisible: false,
   areErrors: true,
   activeInputType: null,
-  minValue: 100,
-  rate: initRate,
+  minValue: 0,
+  rate: null,
   options: initOptions,
   cryptoInput: initCryptoInput,
   cashInput: initCashInput,
   cardInput: initCardInput,
+  currenciesSell: [],
+  currenciesBuy: [],
+  exchangeRate: null,
+  cities: [],
+  networks: [],
+  banks: [],
 };

@@ -8,7 +8,7 @@ import Button from "@/components/ui/Button";
 import { usePrepareExchangeInputPage } from "@/hooks/usePrepareExchangeInputPage";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setAreErrorsVisible } from "@/redux/slices/exchangeInput/exchangeInputSlice";
-import { setPageName } from "@/redux/slices/uiSlice";
+import { setIsLoading, setPageName } from "@/redux/slices/uiSlice";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { memo, useCallback, useEffect, useMemo } from "react";
@@ -37,10 +37,11 @@ export default memo(function Page() {
   const {givenType, receivedType} = useAppSelector(selectCurrencyTypes);
 
   useEffect(() => {
+    dispatch(setIsLoading(false))
     return () => {
       dispatch(setAreErrorsVisible(false));
     };
-  });
+  }, []);
 
   return (
     <div className="container">

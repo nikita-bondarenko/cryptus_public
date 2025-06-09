@@ -9,7 +9,7 @@ import { getCurrencyOptions } from "./getCurrencyOptions";
 import { CurrencyType } from "@/components/request/RequestDetails";
 import { ListenerEffectAPI, PayloadAction } from "@reduxjs/toolkit";
 import { calculateCityId } from "./calculateCityId";
-import { translateCities } from "./translateCIties";
+import { translateCities } from "./translateCities";
 
 export const calculateInitFetchedData = async (
   listenerApi: ListenerEffectAPI<
@@ -111,7 +111,6 @@ export const calculateInitFetchedData = async (
             netsOptions: [],
           },
         };
-            console.log(payload)
         listenerApi.dispatch(setInitFetchedData(payload));
       }
     }

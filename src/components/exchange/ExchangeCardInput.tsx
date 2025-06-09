@@ -138,14 +138,14 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
           onInputChange={onInputChange}
           onSelectChange={onSelectChange}
           selectValue={selectedCurrency as CurrencyOption}
-          options={currencyOptions}
+          options={currencyOptions || []}
           error={!!valueError && areErrorsVisible}
         />
       </div>
 
       <BankSelect
         value={bankValue}
-        options={bankOptions}
+        options={bankOptions || []}
         onChange={(option) => {
           dispatch(setActiveInputType("card"));
           setBank(option);

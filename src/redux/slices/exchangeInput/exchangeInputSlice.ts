@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   SetActiveInputTypeAction,
   SetAreErrorsAction,
@@ -24,8 +24,14 @@ import {
   SetCryptoCurrencyAction,
   SetCryptoNetAction,
   SetCryptoWalletAddressAction,
+  Bank,
+  Network,
 } from "./types";
 import { initialState } from "./initValues";
+import { City, ExchangeRate, GroupedCurrency } from "@/api/types";
+import { CurrencyOption } from "@/components/exchange/CurrencySelect";
+import { translateNetworks } from "@/redux/helpers/exchangeInputListener/translateNetworks";
+import { translateCities } from "@/redux/helpers/translateCities";
 
 export const exchangeInputSlice = createSlice({
   name: "exchangeInput",
@@ -70,7 +76,38 @@ export const exchangeInputSlice = createSlice({
         state.cryptoInput.net.value = options.netsOptions[0];
       }
     },
- 
+
+    setCryptoCurrenciesOptions(state, action: PayloadAction<CurrencyOption[]>) {
+      state.options.cryptoCurrencyOptions = action.payload;
+    },
+    setCardCurrenciesOptions(state, action: PayloadAction<CurrencyOption[]>) {
+      state.options.cardCurrencyOptions = action.payload;
+    },
+    setCashCurrenciesOptions(state, action: PayloadAction<CurrencyOption[]>) {
+      state.options.cashCurrencyOptions = action.payload;
+    },
+
+    setCurrenciesSell(state, action: PayloadAction<GroupedCurrency[]>) {
+      state.currenciesSell = action.payload;
+      
+    },
+    setCurrenciesBuy(state, action: PayloadAction<GroupedCurrency[]>) {
+      state.currenciesBuy = action.payload;
+    },
+    setCities(state, action: PayloadAction<City[]>) {
+      state.cities = action.payload;
+      state.options.cityOptions = translateCities(action.payload)
+    },
+    setNetworks(state, action: PayloadAction<Network[]>) {
+      state.networks = action.payload;
+      state.options.netsOptions = translateNetworks(action.payload)
+    },
+    setBanks(state, action: PayloadAction<Bank[]>) {
+      state.banks = action.payload;
+    },
+    setExchangeRate(state, action: PayloadAction<ExchangeRate>) {
+      state.exchangeRate = action.payload;
+    },
     setCryptoInputAmountValue(state, action: SetInputAmountValueActionPayload) {
       state.cryptoInput.amount.value = action.payload;
     },
@@ -189,5 +226,14 @@ export const {
   setCryptoCurrency,
   setCryptoNet,
   setCryptoWalletAddress,
+  setCurrenciesSell,
+  setCurrenciesBuy,
+  setCities,
+  setNetworks,
+  setBanks,
+  setExchangeRate,
+  setCryptoCurrenciesOptions,
+  setCardCurrenciesOptions,
+  setCashCurrenciesOptions,
 } = exchangeInputSlice.actions;
 export default exchangeInputSlice.reducer;

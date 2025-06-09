@@ -8,11 +8,11 @@ import { calculateCurrencyTypeForFetching } from "@/helpers/calculateCurrencyTyp
 import { translateCurrencies } from "@/helpers/translateCurrencies";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectCurrencyTypes } from "@/redux/selectors";
-import { setFetchedData } from "@/redux/slices/exchangeInput/exchangeInputSlice";
-import { SetFetchedDataActionPayload } from "@/redux/slices/exchangeInput/types";
+import { setInitFetchedData } from "@/redux/slices/exchangeInput/exchangeInputSlice";
+import { SetInitFetchedDataActionPayload } from "@/redux/slices/exchangeInput/types";
 import { useEffect, useState } from "react";
 
-export     const fetchedDataPayload: SetFetchedDataActionPayload = {
+export     const fetchedDataPayload: SetInitFetchedDataActionPayload = {
   rate: {
     from: {
       value: 1,
@@ -30,26 +30,27 @@ export     const fetchedDataPayload: SetFetchedDataActionPayload = {
     bankOptions: banksList,
     cityOptions: cityList,
     cryptoCurrencyOptions: cryptoCurrencyList,
-    nonCryptoCurrencyOptions: nonCryptoCurrencyList,
+    cardCurrencyOptions: nonCryptoCurrencyList,
+    cashCurrencyOptions: nonCryptoCurrencyList,
   },
 };
 
 export const usePrepareExchangeInputPage = () => {
 
   const dispatch = useAppDispatch();
-  const {givenType} = useAppSelector(selectCurrencyTypes)
-const {data: currenciesGiven} = useGetCurrenciesSellQuery(calculateCurrencyTypeForFetching(givenType))
-console.log(currenciesGiven)
+//   const {givenType} = useAppSelector(selectCurrencyTypes)
+// const {data: currenciesGiven} = useGetCurrenciesSellQuery(calculateCurrencyTypeForFetching(givenType))
+// console.log(currenciesGiven)
 
 
 
   useEffect(() => {
-if (currenciesGiven) {
-  const currenciesGivenOptions = translateCurrencies(currenciesGiven)
- }
+// if (currenciesGiven) {
+//   const currenciesGivenOptions = translateCurrencies(currenciesGiven)
+//  }
 
-    dispatch(setFetchedData(fetchedDataPayload));
+    dispatch(setInitFetchedData(fetchedDataPayload));
   
 
-  }, [currenciesGiven]);
+  }, []);
 };

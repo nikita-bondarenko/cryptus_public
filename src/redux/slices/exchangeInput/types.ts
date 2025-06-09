@@ -3,6 +3,9 @@ import { CurrencyOption } from "@/components/exchange/CurrencySelect";
 import { SelectOption } from "@/components/exchange/BankSelect";
 import { CurrencyType } from "@/components/request/RequestDetails";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { ExchangeRate, GroupedCurrency } from "@/api/types";
+import { City } from "@/api/types";
+import { ServerCurrencyType } from "@/helpers/calculateCurrencyTypeForFetching";
 
 export type RateSide = {
   value: number | null;
@@ -51,6 +54,22 @@ export type InputOptions = {
   cardCurrencyOptions: CurrencyOption[]| null;
   cashCurrencyOptions: CurrencyOption[]| null;
 };
+export type Network = {
+code:string
+id:number
+title:string
+title_network:string
+type:ServerCurrencyType
+weight:number
+}
+
+export type Bank = {
+  id:number
+  title:string
+  code:string
+  weight:number
+  directions:string
+}
 
 export interface ExchangeInputState {
   areErrorsVisible: boolean;
@@ -62,6 +81,12 @@ export interface ExchangeInputState {
   cryptoInput: CryptoInput;
   cashInput: CashInput;
   cardInput: CardInput;
+  currenciesSell: GroupedCurrency[] ;
+  currenciesBuy: GroupedCurrency[];
+  exchangeRate: ExchangeRate | null;
+  cities: City[];
+  networks: Network[];
+  banks: Bank[];
 }
 export type SetInitFetchedDataActionPayload = { rate: Rate ; options: InputOptions };
 export type SetInitFetchedDataAction = PayloadAction<SetInitFetchedDataActionPayload>;

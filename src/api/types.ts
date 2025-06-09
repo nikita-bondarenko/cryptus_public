@@ -1,3 +1,5 @@
+import { Network } from "@/redux/slices/exchangeInput/types";
+
 // Базовые типы для API
 export interface ApiResponse<T> {
   data: T;
@@ -19,7 +21,7 @@ export interface GroupedCurrency {
   code: string;
   type: 'COIN' | 'BANK' | 'CASH';
   weight: number;
-  directions: string;
+  directions: Network[];
 }
 
 export type DirectionType = 'COIN - BANK' | 'COIN - CASH' | 'BANK - COIN' | 'CASH - COIN';

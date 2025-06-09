@@ -91,6 +91,12 @@ const dispatch = useAppDispatch()
   }, [tg, dispatch]);
 
 
+  const state = useAppSelector(state => state.exchangeInput)
+
+useEffect(() => {
+  console.log(state)
+}, [state])
+
   return (
     <div
       className={clsx(

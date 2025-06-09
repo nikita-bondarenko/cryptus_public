@@ -8,7 +8,7 @@ import Icon from '../helpers/Icon';
 
 export type SectionHeadingProps = {
     title: string;
-    rate?: Rate | undefined;
+    rate?: Rate | undefined | null;
     minValue?: number | undefined;
     error?: boolean
 }

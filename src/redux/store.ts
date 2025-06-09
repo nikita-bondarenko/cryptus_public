@@ -48,16 +48,16 @@ export const store = configureStore({
 });
 
 // Subscribe to store changes to save state
-store.subscribe(() => {
-  const state = store.getState();
-  // Only persist specific parts of the state that we want to keep
-  saveState({
-    exchangeInput: state.exchangeInput,
-    exchangeType: state.exchangeType,
-    userData: state.userData,
-    requestDetails: state.requestDetails,
-  });
-});
+// store.subscribe(() => {
+//   const state = store.getState();
+//   // Only persist specific parts of the state that we want to keep
+//   saveState({
+//     exchangeInput: state.exchangeInput,
+//     exchangeType: state.exchangeType,
+//     userData: state.userData,
+//     requestDetails: state.requestDetails,
+//   });
+// });
 
 export type AppDispatch = typeof store.dispatch;
 

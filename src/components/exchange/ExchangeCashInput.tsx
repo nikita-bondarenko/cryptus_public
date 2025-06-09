@@ -69,9 +69,8 @@ const ExchangeCashInput: React.FC<ExchangeCashInputProps> = memo(({ position }) 
 
   useEffect(() => {
     if (isInitialLoad) return;
-    if (!city) return;
     if (city === cityValue) return;
-
+console.log(city)
     dispatch(setCashCity(city));
   }, [city, cityValue, isInitialLoad, dispatch]);
 
@@ -100,17 +99,18 @@ const ExchangeCashInput: React.FC<ExchangeCashInputProps> = memo(({ position }) 
           onInputChange={onInputChange}
           onSelectChange={onSelectChange}
           selectValue={selectedCurrency as CurrencyOption}
-          options={currencyOptions}
+          options={currencyOptions || []}
           error={!!valueError && areErrorsVisible}
         />
       </div>
 
       <CitySelect
         value={cityValue ?? ""}
-        options={cityOptions}
+        options={cityOptions || []}
         onChange={(option) => {
           dispatch(setActiveInputType("cash"));
           setCity(option);
+          console.log(option)
         }}
         placeholder="Выберите город получения"
         placeholderFocused="Введите название города"
