@@ -4,11 +4,12 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { selectGiveType, selectReceiveType } from "@/redux/slices/exchangeTypeSlice";
 import clsx from "clsx";
 import Icon from "../helpers/Icon";
+import { ServerCurrencyType } from "@/helpers/calculateCurrencyTypeForFetching";
 
 export type ExchangeTypeItemProps = {
   icon: string;
   name: string;
-  type: CurrencyType;
+  type: ServerCurrencyType;
   position?: CurrencyPosition;
 };
 

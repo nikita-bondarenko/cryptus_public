@@ -5,7 +5,7 @@ import BaseSelect from "../ui/BaseSelect";
 
 export type SelectOption = {
   name: string;
-  value: string;
+  value: string | number;
 };
 
 export type BankOption = SelectOption;

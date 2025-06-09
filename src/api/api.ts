@@ -17,7 +17,9 @@ import type {
   UpdateProfileParams,
   Directions,
   TypesCurrencies,
-  UsersRequisites
+  UsersRequisites,
+  ExchangeRate,
+  ExchangeRateParams
 } from '@/api/types';
 
 const API_URL = 'https://cryptus-2.0.1362967-ci52663.tw1.ru';
@@ -25,7 +27,7 @@ const API_URL = 'https://cryptus-2.0.1362967-ci52663.tw1.ru';
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
-  tagTypes: ['Exchange', 'Profile', 'Currency', 'City'],
+  tagTypes: ['Exchange', 'Profile', 'Currency', 'City', 'ExchangeRate'],
   endpoints: (builder) => ({
     // Cities
     getCities: builder.query<City[], CitiesParams>({
@@ -34,6 +36,14 @@ export const api = createApi({
         params,
       }),
       providesTags: ['City'],
+    }),
+
+    getExchangeRate: builder.query<ExchangeRate, ExchangeRateParams>({
+      query: (params) => ({
+        url: '/get-exchange-rate/',
+        params,
+      }),
+      providesTags: ['ExchangeRate'],
     }),
 
     // Currencies

@@ -6,7 +6,7 @@ import {
   SetCardActionInput,
   SetCashInputAction,
   SetCryptoActionInput,
-  SetFetchedDataAction,
+  SetInitFetchedDataAction,
   SetInputAmountValueActionPayload,
   SetCryptoAmountErrorAction,
   SetCryptoNetErrorAction,
@@ -34,37 +34,41 @@ export const exchangeInputSlice = createSlice({
     resetExchangeInput: (state) => {
       Object.assign(state, initialState);
     },
-    setFetchedData(state, action: SetFetchedDataAction) {
-      state.rate = action.payload.rate;
+    setInitFetchedData(state, action: SetInitFetchedDataAction) {
+      if (action.payload.rate) {
+        state.rate = action.payload.rate
+      }
       const options = action.payload.options;
-      if (state.options.cryptoCurrencyOptions.length === 0) {
+      if (state.options.cryptoCurrencyOptions?.length === 0 && options.cryptoCurrencyOptions) {
         state.options.cryptoCurrencyOptions = options.cryptoCurrencyOptions;
       }
-      if (state.options.nonCryptoCurrencyOptions.length === 0) {
-        state.options.nonCryptoCurrencyOptions = options.nonCryptoCurrencyOptions;
+      if (state.options.cardCurrencyOptions?.length === 0 && options.cardCurrencyOptions) {
+        state.options.cardCurrencyOptions = options.cardCurrencyOptions;
       }
-      if (state.options.bankOptions.length === 0) {
+      if (state.options.cashCurrencyOptions?.length === 0 && options.cashCurrencyOptions) {
+        state.options.cashCurrencyOptions = options.cashCurrencyOptions;
+      }
+      if (state.options.bankOptions?.length === 0 && options.bankOptions) {
         state.options.bankOptions = options.bankOptions;
       }
-      if (state.options.cityOptions.length === 0) {
+      if (state.options.cityOptions?.length === 0 && options.cityOptions) {
         state.options.cityOptions = options.cityOptions;
       }
-      if (state.options.netsOptions.length === 0) {
+      if (state.options.netsOptions?.length === 0 && options.netsOptions) {
         state.options.netsOptions = options.netsOptions;
       }
-      if (state.cryptoInput.currency === null) {
-      state.cryptoInput.currency = options.cryptoCurrencyOptions[0];
+      if (state.cryptoInput.currency === null && options.cryptoCurrencyOptions) {
+        state.cryptoInput.currency = options.cryptoCurrencyOptions[0];
       }
-      if (state.cashInput.currency === null) {
-        state.cashInput.currency = options.nonCryptoCurrencyOptions[0];
+      if (state.cashInput.currency === null && options.cashCurrencyOptions) {
+        state.cashInput.currency = options.cashCurrencyOptions[0];
       }
-      if (state.cardInput.currency === null) {
-        state.cardInput.currency = options.nonCryptoCurrencyOptions[0];
+      if (state.cardInput.currency === null && options.cardCurrencyOptions) {
+        state.cardInput.currency = options.cardCurrencyOptions[0];
       }
-      if (state.cryptoInput.net.value === null) {
+      if (state.cryptoInput.net.value === null && options.netsOptions) {
         state.cryptoInput.net.value = options.netsOptions[0];
       }
-        
     },
  
     setCryptoInputAmountValue(state, action: SetInputAmountValueActionPayload) {
@@ -159,7 +163,7 @@ export const exchangeInputSlice = createSlice({
 
 export const {
   resetExchangeInput,
-  setFetchedData,
+  setInitFetchedData,
   setCardInputAmountValue,
   setCashInputAmountValue,
   setCryptoInputAmountValue,

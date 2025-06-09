@@ -8,6 +8,7 @@ import { cardBankListener } from "./listeners/cardBankListener";
 import { cardNumberListener } from "./listeners/cardNumberListener";
 import { cityInputListener } from "./listeners/cityInputListener";
 import { walletAddressInputListener } from "./listeners/walletAddressInputListener";
+import { exchangeTypeListener } from "./listeners/exchangeTypeListener";
 import { api } from "@/api/api";
 import userDataReducer from "./slices/userDataSlice";
 import requestDetailsReducer from "./slices/requestDetailsSlice";
@@ -39,7 +40,8 @@ export const store = configureStore({
         cardBankListener.middleware,
         cardNumberListener.middleware,
         cityInputListener.middleware,
-        walletAddressInputListener.middleware
+        walletAddressInputListener.middleware,
+        exchangeTypeListener.middleware
       )
       .concat(api.middleware),
   devTools: process.env.NODE_ENV !== "production",

@@ -22,11 +22,13 @@ export interface GroupedCurrency {
   directions: string;
 }
 
+export type DirectionType = 'COIN - BANK' | 'COIN - CASH' | 'BANK - COIN' | 'CASH - COIN';
+
 export interface Directions {
   id: number;
   give_currency: number;
   get_currency: number;
-  direction: 'COIN - BANK' | 'COIN - CASH' | 'BANK - COIN' | 'CASH - COIN';
+  direction: DirectionType;
   course: number;
   course_view?: number;
   course_title: string;
@@ -41,7 +43,7 @@ export interface Exchange {
   currency_get: string;
   amount_get: number;
   course: number;
-  direction: 'COIN - BANK' | 'COIN - CASH' | 'BANK - COIN' | 'CASH - COIN';
+  direction: DirectionType;
   course_title: string;
   city?: string;
   get_to?: string;
@@ -106,8 +108,8 @@ export interface PaginationParams {
 }
 
 export interface CitiesParams {
-  currency_give: string;
-  currency_get: string;
+  currency_give: number;
+  currency_get: number;
 }
 
 export interface CurrenciesBuyParams {
@@ -137,4 +139,14 @@ export interface TypesCurrencies {
   weight: number;
   title: string;
   code: string;
+}
+
+
+export interface ExchangeRate extends Directions {}
+
+export interface ExchangeRateParams {
+  give_currency : number;
+  get_currency : number;
+  city?: number;
+  direction: DirectionType;
 }

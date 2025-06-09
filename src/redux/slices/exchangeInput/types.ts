@@ -44,11 +44,12 @@ export type CardInput = {
 };
 
 export type InputOptions = {
-  netsOptions: CryptoNetOption[];
-  cityOptions: SelectOption[];
-  bankOptions: SelectOption[];
-  cryptoCurrencyOptions: CurrencyOption[];
-  nonCryptoCurrencyOptions: CurrencyOption[];
+  netsOptions: CryptoNetOption[] | null;
+  cityOptions: SelectOption[] | null;
+  bankOptions: SelectOption[]| null;
+  cryptoCurrencyOptions: CurrencyOption[]| null;
+  cardCurrencyOptions: CurrencyOption[]| null;
+  cashCurrencyOptions: CurrencyOption[]| null;
 };
 
 export interface ExchangeInputState {
@@ -56,14 +57,14 @@ export interface ExchangeInputState {
   areErrors: boolean;
   activeInputType: CurrencyType | null;
   minValue: number;
-  rate: Rate;
+  rate: Rate | null;
   options: InputOptions;
   cryptoInput: CryptoInput;
   cashInput: CashInput;
   cardInput: CardInput;
 }
-export type SetFetchedDataActionPayload = { rate: Rate; options: InputOptions };
-export type SetFetchedDataAction = PayloadAction<SetFetchedDataActionPayload>;
+export type SetInitFetchedDataActionPayload = { rate: Rate ; options: InputOptions };
+export type SetInitFetchedDataAction = PayloadAction<SetInitFetchedDataActionPayload>;
 
 export type InputActionPayload = {
   currency: CurrencyOption;
