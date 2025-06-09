@@ -4,7 +4,7 @@ import { CurrencyType } from "@/components/request/RequestDetails";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface ExchangeTypeState {
+export type ExchangeTypeState = {
   selectedGiveType: CurrencyType;
   selectedReceieveType: CurrencyType;
   receiveOptions: ExchangeTypeItemProps[];

@@ -4,13 +4,13 @@ import { API_URL } from '@/config';
 import { describe, beforeAll, afterEach, afterAll, it, expect } from '@jest/globals';
 
 // Types
-interface City {
+type City {
   id: number;
   title: string;
   weight: number;
 }
 
-interface Currency {
+type Currency {
   id: number;
   title: string;
   code: string;
@@ -19,12 +19,12 @@ interface Currency {
   directions: string;
 }
 
-interface Exchange {
+type Exchange {
   status: string;
   id: number;
 }
 
-interface UserExchange {
+type UserExchange {
   id: string;
   created_at: string;
   currency_give: string;
@@ -39,13 +39,13 @@ interface UserExchange {
   status: string;
 }
 
-interface Profile {
+type Profile {
   name: string;
   phone: string;
   email: string;
 }
 
-interface RequestDetail {
+type RequestDetail {
   id: string;
   date: string;
   currencyFrom: {
@@ -60,7 +60,7 @@ interface RequestDetail {
   };
 }
 
-interface FAQ {
+type FAQ {
   id: number;
   question: string;
   answer: string;

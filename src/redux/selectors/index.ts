@@ -2,15 +2,21 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
 import { ExchangeInputState, CryptoInput, CashInput, CardInput } from "@/redux/slices/exchangeInput/types";
 import { selectCurrencyTypes } from "./currencyTypesSelector";
+import { calculateRate } from "@/helpers/calculateRate";
+import { translateCurrencies } from "@/helpers/translateCurrencies";
+import { translateNetworks } from "../helpers/exchangeInputListener/translateNetworks";
+import { CurrencyPosition } from "@/components/request/RequestDetails";
+import { translateCurrency } from "@/helpers/translateCurrency";
+import { translateNetwork } from "@/helpers/translateNetwork";
 
 // Section Heading Props Selector
 export const selectSectionHeadingProps = (position: "given" | "received") =>
   createSelector(
-    (state: RootState) => state.exchangeInput,
-    (exchangeInput) => {
+    (state: RootState) => state.exchange,
+    (exchange) => {
       return position === "given"
-        ? { title: "Я отдаю", minValue: exchangeInput.minValue }
-        : { title: "Я получаю", rate: exchangeInput.rate };
+        ? { title: "Я отдаю", minValue: exchange.exchangeRate?.min_amount }
+        : { title: "Я получаю", rate: calculateRate({currencyGive: exchange.selectedCurrencySell?.title || '', currencyGet: exchange.selectedCurrencyBuy?.title || '', course: exchange.exchangeRate?.course || 0}) };
     }
   );
 
@@ -18,17 +24,15 @@ export const selectSectionHeadingProps = (position: "given" | "received") =>
 export { selectCurrencyTypes };
 
 // Currency Options Selector
-export const selectCurrencyOptions = (type: "BANK" | "CASH" | "COIN") =>
+export const selectCurrencyOptions = (position: "given" | "received") =>
   createSelector(
-    (state: RootState) => state.exchangeInput.options,
-    (options) => {
-      switch (type) {
-        case "COIN":
-          return options.cryptoCurrencyOptions;
-        case "BANK":
-          return options.cardCurrencyOptions;
-        case "CASH":
-          return options.cashCurrencyOptions;
+    (state: RootState) => state.exchange,
+    (exchange) => {
+      switch (position) {
+        case "given":
+          return translateCurrencies(exchange.currenciesSell);
+        case "received":
+          return translateCurrencies(exchange.currenciesBuy);
         default:
           return [];
       }
@@ -49,17 +53,16 @@ export const selectCityOptions = createSelector(
 
 // Nets Options Selector
 export const selectNetsOptions = createSelector(
-  (state: RootState) => state.exchangeInput.options,
-  (options) => options.netsOptions
-);
+  (state: RootState) => state.exchange,
+    (exchange) => exchange.networks ? translateNetworks(exchange.networks) : []
+  );
 
 // Input Value Selector
-export const selectInputValue = (type: "BANK" | "CASH" | "COIN") =>
+export const selectInputValue = (position: CurrencyPosition) =>
   createSelector(
-    (state: RootState) => state.exchangeInput,
-    (exchangeInput) => {
-      const input = exchangeInput[`${type}Input` as keyof ExchangeInputState] as CryptoInput | CashInput | CardInput;
-      return input?.amount.value ?? null;
+    (state: RootState) => state.exchange,
+    (exchange) => {
+      return position === "given" ? exchange.currencySellAmount.value : exchange.currencyBuyAmount.value;
     }
   );
 
@@ -73,25 +76,33 @@ export const selectCityValue = (state: RootState) => state.exchangeInput.cashInp
 export const selectCardNumberValue = (state: RootState) => state.exchangeInput.cardInput.cardNumber.value;
 
 // Net Value Selector
-export const selectNetValue = (state: RootState) => state.exchangeInput.cryptoInput.net.value;
+  export const selectNetValue = (state: RootState) =>   translateNetwork(state.exchange.selectedNetwork?.value) ;
 
 // Wallet Address Value Selector
-export const selectWalletAddressValue = (state: RootState) => state.exchangeInput.cryptoInput.walletAddress.value;
+export const selectWalletAddressValue = (state: RootState) => state.exchange.walletAddress.value;
 
 // Selected Currency Selectors
 export const selectCardCurrency = (state: RootState) => state.exchangeInput.cardInput.currency;
 
 export const selectCashCurrency = (state: RootState) => state.exchangeInput.cashInput.currency;
 
-export const selectCryptoCurrency = (state: RootState) => state.exchangeInput.cryptoInput.currency;
-
-// Error Selectors
-export const selectValueError = (type: "BANK" | "CASH" | "COIN") =>
+export const selectCurrency = (position: CurrencyPosition) =>
   createSelector(
-    (state: RootState) => state.exchangeInput,
-    (exchangeInput) => {
-      const input = exchangeInput[`${type}Input` as keyof ExchangeInputState] as CryptoInput | CashInput | CardInput;
-      return input?.amount.error ?? null;
+    (state: RootState) => state.exchange,
+    (exchange) => position === "given" ? translateCurrency(exchange.selectedCurrencySell) : translateCurrency(exchange.selectedCurrencyBuy)
+  );
+
+  export const selectRate = () => createSelector(
+    (state: RootState) => state.exchange,
+    (exchange) => calculateRate({currencyGive: exchange.selectedCurrencySell?.title || '', currencyGet: exchange.selectedCurrencyBuy?.title || '', course: exchange.exchangeRate?.course || 0})
+  );
+  
+// Error Selectors
+export const selectValueError = (position: CurrencyPosition) =>
+  createSelector(
+    (state: RootState) => state.exchange,
+    (exchange) => {
+      return position === "given" ? exchange.currencySellAmount.error : exchange.currencyBuyAmount.error;
     }
   );
 
@@ -101,7 +112,7 @@ export const selectCardNumberError = (state: RootState) => state.exchangeInput.c
 
 export const selectCityError = (state: RootState) => state.exchangeInput.cashInput.city.error;
 
-export const selectWalletAddressError = (state: RootState) => state.exchangeInput.cryptoInput.walletAddress.error;
+export const selectWalletAddressError = (state: RootState) => state.exchange.walletAddress.error;
 
 // Errors Visibility Selector
-export const selectAreErrorsVisible = (state: RootState) => state.exchangeInput.areErrorsVisible; 
+export const selectAreErrorsVisible = (state: RootState) => state.exchange.areErrorsVisible; 

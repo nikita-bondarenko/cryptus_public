@@ -4,47 +4,53 @@ import {
   selectInputValue,
   selectValueError,
   selectAreErrorsVisible,
-  selectCurrencyTypes
+  selectCurrencyTypes,
+  selectCurrency
 } from "@/redux/selectors";
-import {
-  setActiveInputType,
-  setCardInputAmountValue,
-  setCashInputAmountValue,
-  setCryptoInputAmountValue,
-} from "@/redux/slices/exchangeInput/exchangeInputSlice";
+
 import { CurrencyOption } from "@/components/exchange/CurrencySelect";
+import { CurrencyPosition } from "@/components/request/RequestDetails";
+import { setActiveInputType, setCurrencyBuyAmountValue, setCurrencySellAmountValue, setSelectedCurrencyBuy, setSelectedCurrencySell } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export type ExchangeInputType = "BANK" | "CASH" | "COIN";
 
-export const useExchangeInput = (type: ExchangeInputType) => {
-  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption | null>(null);
+export const useExchangeInput = (position: CurrencyPosition) => {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   
   const dispatch = useAppDispatch();
   const { givenType, receivedType } = useAppSelector(selectCurrencyTypes);
-  const globalStateValue = useAppSelector(selectInputValue(type));
-  const valueError = useAppSelector(selectValueError(type));
+  const globalStateValue = useAppSelector(selectInputValue(position));
+  const valueError = useAppSelector(selectValueError(position));
   const areErrorsVisible = useAppSelector(selectAreErrorsVisible);
+  const selectedCurrency = useAppSelector(selectCurrency(position));
+  const currenciesSell = useAppSelector(state => state.exchange.currenciesSell);  
+  const currenciesBuy = useAppSelector(state => state.exchange.currenciesBuy);
 
   const onSelectChange = useCallback((option: CurrencyOption) => {
-    dispatch(setActiveInputType(type));
-    setSelectedCurrency(option);
-  }, [dispatch, type]);
+    console.log(option);
+    dispatch(setActiveInputType(position));
+
+    const currency = position === 'given' 
+      ? currenciesSell.find((currency) => currency.id === option.value)
+      : currenciesBuy.find((currency) => currency.id === option.value);
+
+    if (currency) {
+      dispatch(position === 'given' ? setSelectedCurrencySell(currency) : setSelectedCurrencyBuy(currency));
+    }
+  }, [dispatch, position, currenciesSell, currenciesBuy]);
 
   const onInputChange = useCallback((value: number | null) => {
-    dispatch(setActiveInputType(type));
-    switch (type) {
-      case "BANK":
-        dispatch(setCardInputAmountValue(value));
+    dispatch(setActiveInputType(position));
+    switch (position) {
+      case "given":
+        dispatch(setCurrencySellAmountValue(value));
         break;
-      case "CASH":
-        dispatch(setCashInputAmountValue(value));
+      case "received":
+        dispatch(setCurrencyBuyAmountValue(value));
         break;
-      case "COIN":
-        dispatch(setCryptoInputAmountValue(value));
-        break;
+
     }
-  }, [dispatch, type]);
+  }, [dispatch, position]);
 
   useEffect(() => {
     setIsInitialLoad(true);
@@ -52,11 +58,10 @@ export const useExchangeInput = (type: ExchangeInputType) => {
 
   useEffect(() => {
     setIsInitialLoad(true);
-  }, [type]);
+  }, []);
 
   return {
     selectedCurrency,
-    setSelectedCurrency,
     isInitialLoad,
     setIsInitialLoad,
     globalStateValue,

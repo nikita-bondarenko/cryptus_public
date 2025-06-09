@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import AdditionallySectionButton from "./AdditionallySectionButton";
 
-interface ExpandableListProps {
+type ExpandableListProps = {
   items: Array<{
     text: string;
     onClick: () => void;

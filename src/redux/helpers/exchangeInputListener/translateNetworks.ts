@@ -1,7 +1,7 @@
-import { SelectOption } from "@/components/exchange/BankSelect";
-import { Network } from "@/redux/slices/exchangeInput/types";
+import { ExchangeNetwork } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { CryptoNetOption } from "@/components/exchange/CryptoNetSelect";
-export const translateNetworks = (networks: Network[]): CryptoNetOption[] => {
+
+export const translateNetworks = (networks: ExchangeNetwork[]): CryptoNetOption[] => {
     return networks.map((network) => ({
         value: network.id,
         name: network.title_network,

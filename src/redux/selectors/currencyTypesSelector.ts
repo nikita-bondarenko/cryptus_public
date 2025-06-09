@@ -1,16 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { CurrencyType } from "@/components/request/RequestDetails";
+import { ExchangeCurrencyType } from "../slices/exchangeSlice/exchangeSlice";
 
 export type CurrencyTypes = {
-  givenType: CurrencyType;
-  receivedType: CurrencyType;
+  givenType: ExchangeCurrencyType | null;
+  receivedType: ExchangeCurrencyType | null;
 };
 
 export const selectCurrencyTypes = createSelector(
-  (state: RootState) => state.exchangeType,
-  (exchangeType): CurrencyTypes => ({
-    givenType: exchangeType.selectedGiveType,
-    receivedType: exchangeType.selectedReceieveType,
+  (state: RootState) => state.exchange,
+  (exchange): CurrencyTypes => ({
+    givenType: exchange.selectedCurrencySellType,
+    receivedType: exchange.selectedCurrencyBuyType,
   })
 ); 

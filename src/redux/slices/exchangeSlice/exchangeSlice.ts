@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { City, ExchangeRate, GroupedCurrency } from "@/api/types";
 import { ExchangeTypeItemProps } from "@/components/exchange/ExchangeTypeItem";
-import { CurrencyType } from "@/components/request/RequestDetails";
+import { CurrencyPosition, CurrencyType } from "@/components/request/RequestDetails";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
 import { Input } from "../exchangeInput/types";
+import { ExchangeInputType } from "@/hooks/useExchangeInput";
 
 export type ExchangeInput<T> = {
     value: T | null;
@@ -47,9 +48,10 @@ export type ExchangeState = {
   walletAddress: ExchangeInput<string | null>;
   areErrorsVisible: boolean;
   areErrors: boolean;
-  activeInputType: ExchangeCurrencyType | null;
+  activeInputType: CurrencyPosition | null;
   exchangeRate: ExchangeRate | null;
-
+  currencySellAmount: ExchangeInput<number | null>;
+  currencyBuyAmount: ExchangeInput<number | null>;
 };
 
 export const filterReceiveVariants = (
@@ -101,7 +103,15 @@ const initialState: ExchangeState = {
   areErrorsVisible: false,
   areErrors: false,
   activeInputType: null,
-  exchangeRate: null
+  exchangeRate: null,
+  currencySellAmount: {
+    value: null,
+    error: null
+  },
+  currencyBuyAmount: {
+    value: null,
+    error: null
+  }
 };
 
 export const exchangeSlice = createSlice({
@@ -191,11 +201,23 @@ export const exchangeSlice = createSlice({
     setAreErrors: (state, action: PayloadAction<boolean>) => {
       state.areErrors = action.payload;
     },
-    setActiveInputType: (state, action: PayloadAction<ExchangeCurrencyType | null>) => {
+    setActiveInputType: (state, action: PayloadAction<CurrencyPosition | null>) => {
       state.activeInputType = action.payload;
     },
     setExchangeRate: (state, action: PayloadAction<ExchangeRate | null>) => {
       state.exchangeRate = action.payload;
+    },
+    setCurrencySellAmountValue: (state, action: PayloadAction<number | null>) => {
+      state.currencySellAmount.value = action.payload;
+    },
+    setCurrencySellAmountError: (state, action: PayloadAction<string | null>) => {
+      state.currencySellAmount.error = action.payload;
+    },
+    setCurrencyBuyAmountValue: (state, action: PayloadAction<number | null>) => {
+      state.currencyBuyAmount.value = action.payload;
+    },
+    setCurrencyBuyAmountError: (state, action: PayloadAction<string | null>) => {
+      state.currencyBuyAmount.error = action.payload;
     },
     clearCurrencies: (state) => {
       state.currenciesSell = [];
@@ -237,6 +259,10 @@ export const {
   setAreErrors,
   setActiveInputType,
   setExchangeRate,
+  setCurrencySellAmountValue,
+  setCurrencySellAmountError,
+  setCurrencyBuyAmountValue,
+  setCurrencyBuyAmountError,
   clearCurrencies,
   clearAll
 } = exchangeSlice.actions;

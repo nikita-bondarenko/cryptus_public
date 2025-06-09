@@ -1,12 +1,12 @@
 import { CurrencyType } from "@/components/request/RequestDetails";
 import { Direction } from "./calculateCurrencyTypeFromDirection";
 
-interface WayDetails {
+type WayDetails = {
   title: string;
   value: string;
 }
 
-interface WayDetailsInput {
+type WayDetailsInput = {
   direction: Direction;
   position: "given" | "received";
   type: CurrencyType;

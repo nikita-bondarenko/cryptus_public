@@ -1,13 +1,13 @@
 import { Network } from "@/redux/slices/exchangeInput/types";
 
 // Базовые типы для API
-export interface ApiResponse<T> {
+export type ApiResponse<T> = {
   data: T;
   error?: string;
 }
 
 // Типы для городов
-export interface City {
+export type City = {
   id: number;
   api_id: number;
   weight: number;
@@ -15,7 +15,7 @@ export interface City {
 }
 
 // Типы для валют
-export interface GroupedCurrency {
+export type GroupedCurrency = {
   id: number;
   title: string;
   code: string;
@@ -26,7 +26,7 @@ export interface GroupedCurrency {
 
 export type DirectionType = 'COIN - BANK' | 'COIN - CASH' | 'BANK - COIN' | 'CASH - COIN';
 
-export interface Directions {
+export type Directions = {
   id: number;
   give_currency: number;
   get_currency: number;
@@ -38,7 +38,7 @@ export interface Directions {
 }
 
 // Типы для обменов
-export interface Exchange {
+export type Exchange = {
   user_id: number;
   currency_give: string;
   amount_give: number;
@@ -51,7 +51,7 @@ export interface Exchange {
   get_to?: string;
 }
 
-export interface UserExchange {
+export type UserExchange = {
   id: string;
   created_at: string;
   currency_give: string;
@@ -66,34 +66,34 @@ export interface UserExchange {
   status: string;
 }
 
-export interface SwiftExchange {
+export type SwiftExchange = {
   status: string;
   id: number;
 }
 
 // Типы для пользователя
-export interface Profile {
+export type Profile = {
   user_id: number;
   full_name: string;
   phone: string;
   email: string;
 }
 
-export interface UserDetail {
+export type UserDetail = {
   profile_picture: string;
   full_name: string;
   phone: string;
   email: string;
 }
 
-export interface UsersRequisites {
+export type UsersRequisites = {
   user: number;
   type_req?: 'BANK' | 'COIN';
   get_to?: string;
 }
 
 // Типы для FAQ
-export interface FAQSection {
+export type FAQSection = {
   weight: number;
   title: string;
   faqs: Array<{
@@ -104,31 +104,31 @@ export interface FAQSection {
 }
 
 // Параметры запросов
-export interface PaginationParams {
+export type PaginationParams = {
   start?: number;
   limit?: number;
 }
 
-export interface CitiesParams {
+export type CitiesParams = {
   currency_give: number;
   currency_get: number;
 }
 
-export interface CurrenciesBuyParams {
+export type CurrenciesBuyParams = {
   give_currency_id: number;
   currency_type: string;
 }
 
-export interface CreateExchangeParams extends Exchange {
+export type CreateExchangeParams = Exchange & {
   user_id: number;
 }
 
-export interface CreateSwiftExchangeParams {
+export type CreateSwiftExchangeParams = {
   user_id: number;
   type_direction: "CASH" | 'CASHLESS';
 }
 
-export interface UpdateProfileParams {
+export type UpdateProfileParams = {
   user_id: number;
   full_name: string;
   phone: string;
@@ -136,19 +136,18 @@ export interface UpdateProfileParams {
 }
 
 // Типы для валют
-export interface TypesCurrencies {
+export type TypesCurrencies = {
   id: number;
   weight: number;
   title: string;
   code: string;
 }
 
+export type ExchangeRate = Directions 
 
-export interface ExchangeRate extends Directions {}
-
-export interface ExchangeRateParams {
-  give_currency : number;
-  get_currency : number;
+export type ExchangeRateParams = {
+  give_currency: number;
+  get_currency: number;
   city?: number;
   direction: DirectionType;
 }

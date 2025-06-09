@@ -9,35 +9,27 @@ import {
   selectNetsOptions,
   selectNetValue,
   selectWalletAddressValue,
-  selectCryptoCurrency,
   selectWalletAddressError,
   selectAreErrorsVisible,
+  selectCurrency,
 } from "@/redux/selectors";
-import {
-  setActiveInputType,
-  setCryptoCurrency,
-  setCryptoNet,
-  setCryptoWalletAddress,
-} from "@/redux/slices/exchangeInput/exchangeInputSlice";
+
 import { usePlaceholder } from "@/hooks/usePlaceholder";
 import SectionHeading from "../ui/SectionHeading";
 import { InputWrapper } from "../ui/InputWrapper";
 import { Input } from "../ui/Input";
 import CryptoNetSelect, { CryptoNetOption } from "./CryptoNetSelect";
 import { useExchangeInput } from "@/hooks/useExchangeInput";
+import { setSelectedCurrencySell, setSelectedCurrencyBuy, setActiveInputType, setSelectedNetworkValue, setWalletAddressValue } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export type ExchangeCryptoInputProps = {
   position: CurrencyPosition;
 };
 
 const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position }) => {
-  const [selectedNet, setSelectedNet] = useState<CryptoNetOption | null>(null);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  
   const dispatch = useAppDispatch();
   const {
     selectedCurrency,
-    setSelectedCurrency,
     isInitialLoad,
     setIsInitialLoad,
     globalStateValue,
@@ -45,67 +37,45 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
     areErrorsVisible,
     onSelectChange,
     onInputChange
-  } = useExchangeInput("COIN");
+  } = useExchangeInput(position);
 
   const sectionHeadingProps = useAppSelector(
     selectSectionHeadingProps(position)
   );
 
-  const currencyOptions = useAppSelector(selectCurrencyOptions("COIN"));
+  const currencyOptions = useAppSelector(selectCurrencyOptions(position));
+ 
   const netsOptions = useAppSelector(selectNetsOptions);
+  const networks = useAppSelector(state => state.exchange.networks);
   const netValue = useAppSelector(selectNetValue);
   const walletAddressValue = useAppSelector(selectWalletAddressValue);
-  const selectedCryptoCurrency = useAppSelector(selectCryptoCurrency);
   const walletAddressError = useAppSelector(selectWalletAddressError);
 
   const placeholder = usePlaceholder(position);
 
+  // Обработка изменения валюты
   useEffect(() => {
     if (isInitialLoad) {
       setIsInitialLoad(false);
       return;
     }
 
-    if (!selectedCurrency) return;
+ 
+  }, []);
 
-    if (selectedCurrency.value !== selectedCryptoCurrency?.value) {
-      dispatch(setCryptoCurrency(selectedCurrency));
+  // Синхронизация с глобальным состоянием валюты
+
+
+  const handleNetChange = (net: CryptoNetOption) => {
+    const network = networks?.find((network) => network.id === net.value);
+    if (network) {
+      dispatch(setSelectedNetworkValue(network));
     }
-  }, [selectedCurrency, selectedCryptoCurrency, isInitialLoad, dispatch]);
+  };
 
-  useEffect(() => {
-    if (isInitialLoad) return;
-    if (!selectedNet) return;
-    if (selectedNet.value === netValue?.value) return;
-
-    dispatch(setCryptoNet(selectedNet));
-  }, [selectedNet, netValue, isInitialLoad, dispatch]);
-
-  useEffect(() => {
-    if (isInitialLoad) return;
-    if (!walletAddress) return;
-    if (walletAddress === walletAddressValue) return;
-
-    dispatch(setCryptoWalletAddress(walletAddress));
-  }, [walletAddress, walletAddressValue, isInitialLoad, dispatch]);
-
-  useEffect(() => {
-    if (selectedNet !== netValue) {
-      setSelectedNet(netValue as CryptoNetOption);
-    }
-  }, [netValue]);
-
-  useEffect(() => {
-    if (walletAddress !== walletAddressValue) {
-      setWalletAddress(walletAddressValue);
-    }
-  }, [walletAddressValue]);
-
-  useEffect(() => {
-    if (JSON.stringify(selectedCurrency) !== JSON.stringify(selectedCryptoCurrency)) {
-      setSelectedCurrency(selectedCryptoCurrency);
-    }
-  }, [selectedCryptoCurrency, selectedCurrency, setSelectedCurrency]);
+  const handleWalletAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setWalletAddressValue(e.target.value));
+  };
 
   return (
     <div className="flex flex-col">
@@ -125,29 +95,26 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
         />
       </div>
 
-      <div className="mt-13">
-        <SectionHeading title="Выберите сеть" />
-        <CryptoNetSelect
-          onChange={(net) => {
-            dispatch(setActiveInputType("COIN"));
-            setSelectedNet(net);
-          }}
-          value={netValue as CryptoNetOption}
-          options={netsOptions || []}
-        />
-      </div>
+      {netsOptions.length > 0 && (
+        <div className="mt-13">
+          <SectionHeading title="Выберите сеть" />
+          <CryptoNetSelect
+            onChange={handleNetChange}
+            value={netValue as CryptoNetOption}
+            options={netsOptions || []}
+          />
+        </div>
+      )}
+      
       {position === "received" && (
         <div className="mt-20">
           <InputWrapper error={walletAddressError && areErrorsVisible ? walletAddressError : null}>
             <Input
-              className="border  border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 pr-30 w-full"
+              className="border border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 pr-30 w-full"
               type="text"
-              onChange={(e) => {
-                dispatch(setActiveInputType("COIN"));
-                setWalletAddress(e.target.value);
-              }}
-              value={walletAddress ?? ""}
-              placeholder={`Адрес кошелька в сети ${selectedNet?.name}`}
+              onChange={handleWalletAddressChange}
+              value={walletAddressValue ?? ""}
+              placeholder={`Адрес кошелька в сети ${netValue?.name}`}
             />
           </InputWrapper>
         </div>

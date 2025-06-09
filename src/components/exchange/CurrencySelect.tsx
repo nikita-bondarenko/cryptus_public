@@ -15,8 +15,8 @@ export type CurrencySelectProps = {
 };
 
 const ButtonDisplay = memo(({ icon, name }: CurrencyOption) => (
-  <span className="flex items-center gap-6 overflow-hidden text-ellipsis whitespace-nowrap text-16">
-    <Icon src={icon} className="w-24 h-24" />
+  <span className="flex items-start gap-6 overflow-hidden text-ellipsis text-16 ">
+    <Icon src={icon} className="w-24 h-24 shrink-0" />
     {name}
   </span>
 ));
@@ -33,7 +33,7 @@ const CurrencySelect = memo(({ options, onChange, value: selected }: CurrencySel
       onChange={onChange}
       isOpen={isOpen}
       onOpenChange={setIsOpen}
-      className="[&]:w-128"
+      className="[&]:w-160"
       dropdownTop="top-[120%]"
       maxHeight={200}
       renderTrigger={({ isOpen }) => (

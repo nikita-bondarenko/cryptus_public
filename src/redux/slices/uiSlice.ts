@@ -1,7 +1,7 @@
 // src/lib/features/uiSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface uiState {
+export type uiState = {
   pageName: string | null;
   isLoading: boolean;
 }

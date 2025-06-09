@@ -1,13 +1,13 @@
 import Icon from "@/components/helpers/Icon";
 import clsx from "clsx";
 
-interface ProgressBarProps {
+type ProgressBarProps = {
   currentStep: number;
   isBackward?: boolean;
   totalSteps?: number;
 }
 
-interface StepProps {
+type StepProps = {
   isActive: boolean;
   isCompleted: boolean;
   delay?: boolean;
@@ -36,7 +36,7 @@ const Step: React.FC<StepProps> = ({ isActive, isCompleted, delay }) => (
   </div>
 );
 
-interface ProgressLineProps {
+type ProgressLineProps = {
   currentStep: number;
   stepNumber: number;
   isBackward?: boolean;

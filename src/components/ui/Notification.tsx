@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Icon from "../helpers/Icon";
 
-interface NotificationProps {
+type NotificationProps = {
   isVisible: boolean;
   message: string;
   iconSrc?: string;

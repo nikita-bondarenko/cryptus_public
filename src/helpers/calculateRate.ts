@@ -1,7 +1,7 @@
 import { Rate } from "@/redux/slices/exchangeInput/types";
 
 
-interface CalculateRateProps {
+type CalculateRateProps = {
   course: number;
   currencyGive: string;
   currencyGet: string;

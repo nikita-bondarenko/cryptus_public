@@ -4,7 +4,9 @@ import {
   setCities,
   setCurrenciesBuy,
   setCurrenciesSell,
+  setCurrencyBuyAmountValue,
   setCurrencyBuyTypeOptions,
+  setCurrencySellAmountValue,
   setExchangeRate,
   setNetworks,
   setSelectedCityValue,
@@ -16,9 +18,11 @@ import {
 } from "../exchangeSlice";
 import { api } from "@/api/api";
 import { RootState } from "@/redux/store";
-import { DirectionType } from "@/api/types";
+import { DirectionType, ExchangeRate } from "@/api/types";
+import { ListenerEffect } from "@reduxjs/toolkit";
+import { roundTo8 } from "@/redux/helpers";
 
-export const exchangeSliceListener = createListenerMiddleware();
+const exchangeSliceListener = createListenerMiddleware();
 
 exchangeSliceListener.startListening({
   actionCreator: setSelectedCurrencySellType,
@@ -192,3 +196,60 @@ exchangeSliceListener.startListening({
     listenerApi.dispatch(setExchangeRate(rate.data));
   },
 });
+
+const calculateInputAmountBasedOnAnotherOne = (
+  amount: number | null,
+  rate: ExchangeRate | null,
+  position: 'given' | 'received'
+): number | null => {
+  if (!amount || !rate) return null;
+
+  const { course, course_view } = rate;
+  const actualRate = course_view || course;
+
+  return position === 'given' 
+    ? roundTo8((amount * actualRate))
+    : roundTo8((amount / actualRate));
+};
+
+exchangeSliceListener.startListening({
+  actionCreator: setCurrencySellAmountValue,
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    const { exchangeRate, activeInputType } = state.exchange;
+    
+    if (!exchangeRate || activeInputType !== 'given') return;
+
+    const calculatedAmount = calculateInputAmountBasedOnAnotherOne(
+      action.payload,
+      exchangeRate,
+      'given'
+    );
+
+    if (calculatedAmount !== null) {
+      listenerApi.dispatch(setCurrencyBuyAmountValue(calculatedAmount));
+    }
+  },
+});
+
+exchangeSliceListener.startListening({
+  actionCreator: setCurrencyBuyAmountValue,
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    const { exchangeRate, activeInputType } = state.exchange;
+    
+    if (!exchangeRate || activeInputType !== 'received') return;
+
+    const calculatedAmount = calculateInputAmountBasedOnAnotherOne(
+      action.payload,
+      exchangeRate,
+      'received'
+    );
+
+    if (calculatedAmount !== null) {
+      listenerApi.dispatch(setCurrencySellAmountValue(calculatedAmount));
+    }
+  },
+});
+
+export { exchangeSliceListener };
