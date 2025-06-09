@@ -49,7 +49,7 @@ export default memo(function Page() {
         className={clsx("flex flex-col gap-30 mb-22 ")}
       >
         <ExchangeInput position={'given'} type={givenType}></ExchangeInput>
-        {/* <ExchangeInput position={'received'} type={receivedType}></ExchangeInput> */}
+        <ExchangeInput position={'received'} type={receivedType}></ExchangeInput>
       </div>
       <Button type="primary" onClick={onSubmit}>
         Далее

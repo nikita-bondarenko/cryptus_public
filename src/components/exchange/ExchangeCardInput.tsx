@@ -14,32 +14,25 @@ import {
   selectCardNumberError,
   selectAreErrorsVisible,
 } from "@/redux/selectors";
-import {
-  setActiveInputType,
-  setCardCurrency,
-  setCardBank,
-  setCardNumber as setCardNumberAction,
-} from "@/redux/slices/exchangeInput/exchangeInputSlice";
+
 import { usePlaceholder } from "@/hooks/usePlaceholder";
 import SectionHeading from "../ui/SectionHeading";
 import { InputWrapper } from "../ui/InputWrapper";
 import { Input } from "../ui/Input";
-import BankSelect, { BankOption } from "./BankSelect";
+import BankSelect, { BankOption, SelectOption } from "./BankSelect";
 import { formatWithSpacesCardNumber, normalizeInput } from "@/helpers/valueMask";
 import { useExchangeInput } from "@/hooks/useExchangeInput";
+import { setCardNumberValue, setSelectedBankValue } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export type ExchangeCardInputProps = {
   position: CurrencyPosition;
 };
 
 const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) => {
-  const [bank, setBank] = useState<BankOption | null>(null);
-  const [cardNumber, setCardNumber] = useState<string | null>(null);
   
   const dispatch = useAppDispatch();
   const {
     selectedCurrency,
-    setSelectedCurrency,
     isInitialLoad,
     setIsInitialLoad,
     globalStateValue,
@@ -47,17 +40,17 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
     areErrorsVisible,
     onSelectChange,
     onInputChange
-  } = useExchangeInput("BANK");
+  } = useExchangeInput(position);
 
   const sectionHeadingProps = useAppSelector(
     selectSectionHeadingProps(position)
   );
 
-  const currencyOptions = useAppSelector(selectCurrencyOptions("BANK"));
+  const currencyOptions = useAppSelector(selectCurrencyOptions(position));
   const bankOptions = useAppSelector(selectBankOptions);
   const bankValue = useAppSelector(selectBankValue);
+  const banks = useAppSelector(state => state.exchange.banks);
   const cardNumberValue = useAppSelector(selectCardNumberValue);
-  const selectedCardCurrency = useAppSelector(selectCardCurrency);
   const bankError = useAppSelector(selectBankError);
   const cardNumberError = useAppSelector(selectCardNumberError);
 
@@ -73,9 +66,8 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
   }, []);
 
   const handleCardNumberChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setActiveInputType("BANK"));
     const raw = normalizeInput(e.target.value);
-    setCardNumber(formatWithSpacesCardNumber(raw));
+    dispatch(setCardNumberValue(formatWithSpacesCardNumber(raw)));
   }, [dispatch]);
 
   useEffect(() => {
@@ -84,46 +76,17 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
       return;
     }
 
-    if (!selectedCurrency) return;
+  }, []);
 
-    if (selectedCurrency.value !== selectedCardCurrency?.value) {
-      dispatch(setCardCurrency(selectedCurrency));
-    }
-  }, [selectedCurrency, selectedCardCurrency, isInitialLoad, dispatch]);
-
-  useEffect(() => {
+  const handleBankChange = (option: SelectOption | null) => {
+    if (!option) return;
     if (isInitialLoad) return;
-    if (!bank) return;
-    if (bank.value === bankValue?.value) return;
-
-    dispatch(setCardBank(bank));
-  }, [bank, bankValue, isInitialLoad, dispatch]);
-
-  useEffect(() => {
-    if (isInitialLoad) return;
-    if (!cardNumber) return;
-    if (cardNumber === cardNumberValue) return;
-
-    dispatch(setCardNumberAction(cardNumber));
-  }, [cardNumber, cardNumberValue, isInitialLoad, dispatch]);
-
-  useEffect(() => {
-    if (bank?.value !== bankValue?.value) {
-      setBank(bankValue);
+    const bank = banks?.find(bank => bank.title === option.name);
+    if (bank) {
+      dispatch(setSelectedBankValue(bank));
     }
-  }, [bankValue]);
+  }
 
-  useEffect(() => {
-    if (cardNumber !== cardNumberValue) {
-      setCardNumber(cardNumberValue);
-    }
-  }, [cardNumberValue]);
-
-  useEffect(() => {
-    if (JSON.stringify(selectedCurrency) !== JSON.stringify(selectedCardCurrency)) {
-      setSelectedCurrency(selectedCardCurrency);
-    }
-  }, [selectedCardCurrency, selectedCurrency, setSelectedCurrency]);
 
   return (
     <div className="flex flex-col">
@@ -143,23 +106,20 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
         />
       </div>
 
-      {/* <BankSelect
+  { bankOptions.length > 0 &&    <BankSelect
         value={bankValue}
         options={bankOptions || []}
-        onChange={(option) => {
-          dispatch(setActiveInputType("BANK"));
-          setBank(option);
-        }}
+        onChange={handleBankChange}
         placeholder="Выберите банк получения"
         error={bankError && areErrorsVisible ? bankError : null}
-      /> */}
+      />}
       {position === "received" && (
         <div className="-mb-16">
           <InputWrapper error={cardNumberError && areErrorsVisible ? cardNumberError : null}>
             <Input
               onChange={handleCardNumberChange}
               onKeyDown={handleKeyDown}
-              value={cardNumber ?? ""}
+              value={cardNumberValue ?? ""}
               type="text"
               className=" border border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 w-full"
               placeholder="Номер карты"

@@ -21,6 +21,7 @@ import { Input } from "../ui/Input";
 import CryptoNetSelect, { CryptoNetOption } from "./CryptoNetSelect";
 import { useExchangeInput } from "@/hooks/useExchangeInput";
 import { setSelectedCurrencySell, setSelectedCurrencyBuy, setActiveInputType, setSelectedNetworkValue, setWalletAddressValue } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import clsx from "clsx";
 
 export type ExchangeCryptoInputProps = {
   position: CurrencyPosition;
@@ -107,14 +108,16 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
       )}
       
       {position === "received" && (
-        <div className="mt-20">
+        <div className={clsx("mt-0", {
+          "mt-20": netsOptions.length > 0
+        })}>
           <InputWrapper error={walletAddressError && areErrorsVisible ? walletAddressError : null}>
             <Input
               className="border border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 pr-30 w-full"
               type="text"
               onChange={handleWalletAddressChange}
               value={walletAddressValue ?? ""}
-              placeholder={`Адрес кошелька в сети ${netValue?.name}`}
+              placeholder={netValue ?`Адрес кошелька в сети ${netValue?.name}` : `Адрес кошелька`}
             />
           </InputWrapper>
         </div>

@@ -8,6 +8,10 @@ import { translateNetworks } from "../helpers/exchangeInputListener/translateNet
 import { CurrencyPosition } from "@/components/request/RequestDetails";
 import { translateCurrency } from "@/helpers/translateCurrency";
 import { translateNetwork } from "@/helpers/translateNetwork";
+import { calculateCity, translateCities } from "../helpers/translateCities";
+import { City } from "@/api/types";
+import { calculateBank, translateBanks } from "../helpers/translateBanks";
+import { ExchangeBank } from "../slices/exchangeSlice/exchangeSlice";
 
 // Section Heading Props Selector
 export const selectSectionHeadingProps = (position: "given" | "received") =>
@@ -41,14 +45,14 @@ export const selectCurrencyOptions = (position: "given" | "received") =>
 
 // Bank Options Selector
 export const selectBankOptions = createSelector(
-  (state: RootState) => state.exchangeInput.options,
-  (options) => options.bankOptions
+  (state: RootState) => state.exchange,
+  (exchange) => exchange.banks ? translateBanks(exchange.banks) : []
 );
 
 // City Options Selector
 export const selectCityOptions = createSelector(
-  (state: RootState) => state.exchangeInput.options,
-  (options) => options.cityOptions
+  (state: RootState) => state.exchange,
+  (exchange) => exchange.cities ? translateCities(exchange.cities) : []
 );
 
 // Nets Options Selector
@@ -67,13 +71,13 @@ export const selectInputValue = (position: CurrencyPosition) =>
   );
 
 // Bank Value Selector
-export const selectBankValue = (state: RootState) => state.exchangeInput.cardInput.bank.value;
+export const selectBankValue = (state: RootState) =>  calculateBank(state.exchange.selectedBank.value as ExchangeBank);
 
 // City Value Selector
-export const selectCityValue = (state: RootState) => state.exchangeInput.cashInput.city.value;
+export const selectCityValue = (state: RootState) => state.exchange.selectedCity ? calculateCity(state.exchange.selectedCity.value as City) : null;
 
 // Card Number Value Selector
-export const selectCardNumberValue = (state: RootState) => state.exchangeInput.cardInput.cardNumber.value;
+export const selectCardNumberValue = (state: RootState) => state.exchange.cardNumber.value;
 
 // Net Value Selector
   export const selectNetValue = (state: RootState) =>   translateNetwork(state.exchange.selectedNetwork?.value) ;
@@ -106,11 +110,10 @@ export const selectValueError = (position: CurrencyPosition) =>
     }
   );
 
-export const selectBankError = (state: RootState) => state.exchangeInput.cardInput.bank.error;
+export const selectBankError = (state: RootState) =>  state.exchange.selectedBank.error || null;
+export const selectCardNumberError = (state: RootState) => state.exchange.cardNumber.error;
 
-export const selectCardNumberError = (state: RootState) => state.exchangeInput.cardInput.cardNumber.error;
-
-export const selectCityError = (state: RootState) => state.exchangeInput.cashInput.city.error;
+export const selectCityError = (state: RootState) => state.exchange.selectedCity ? state.exchange.selectedCity.error : null;
 
 export const selectWalletAddressError = (state: RootState) => state.exchange.walletAddress.error;
 

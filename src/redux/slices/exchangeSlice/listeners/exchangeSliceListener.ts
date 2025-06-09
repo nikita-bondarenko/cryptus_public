@@ -58,7 +58,6 @@ exchangeSliceListener.startListening({
     const selectedCurrency = action.payload[0];
 
     listenerApi.dispatch(setSelectedCurrencySell(selectedCurrency));
-   
   },
 });
 
@@ -67,57 +66,60 @@ exchangeSliceListener.startListening({
   effect: async (action, listenerApi) => {
     if (!action.payload) return;
     const state = listenerApi.getState() as RootState;
-    const { selectedCurrencyBuyType, selectedCurrencySellType, selectedCurrencyBuy } =
-    state.exchange;
-    const selectedCurrencySell = action.payload
+    const {
+      selectedCurrencyBuyType,
+      selectedCurrencySellType,
+      selectedCurrencyBuy,
+    } = state.exchange;
+    const selectedCurrencySell = action.payload;
     const currencyType = state.exchange.selectedCurrencyBuyType;
 
-    if (
-        action.payload.directions.length !== 0 &&
-        action.payload.type === "COIN" && 
-        action.payload.directions[0]
-      ) {
-        listenerApi.dispatch(setNetworks(action.payload.directions));
-        listenerApi.dispatch(setSelectedNetworkValue(action.payload.directions[0]));
-      }
+    if (action.payload.type === "COIN") {
+      listenerApi.dispatch(setNetworks(action.payload.directions));
+      listenerApi.dispatch(
+        setSelectedNetworkValue(action.payload.directions[0] || null)
+      );
+    }
 
     if (!currencyType || !selectedCurrencySell.id) return;
     const currenciesBuy = await listenerApi.dispatch(
-        api.endpoints.getCurrenciesBuy.initiate({
-          give_currency_id: selectedCurrencySell.id,
-          currency_type: currencyType,
-        })
-      );
-  
-      if (!currenciesBuy.data) return;
-      listenerApi.dispatch(setCurrenciesBuy(currenciesBuy.data));
-      listenerApi.dispatch(setSelectedCurrencyBuy(currenciesBuy.data[0]));
+      api.endpoints.getCurrenciesBuy.initiate({
+        give_currency_id: selectedCurrencySell.id,
+        currency_type: currencyType,
+      })
+    );
 
-      if (
-        selectedCurrencyBuyType !== "CASH" &&
-        selectedCurrencySellType !== "CASH"
-      ) {
-        if (!selectedCurrencyBuy?.id) return;
-        const rate = await listenerApi.dispatch(
-          api.endpoints.getExchangeRate.initiate({
-            give_currency: selectedCurrencySell.id,
-            get_currency: selectedCurrencyBuy.id,
-            direction:
-              `${selectedCurrencySellType} - ${selectedCurrencyBuyType}` as DirectionType,
-          })
-        );
-        if (!rate.data) return;
-        listenerApi.dispatch(setExchangeRate(rate.data));
-        return;
-      }
-      const cities = await listenerApi.dispatch(
-        api.endpoints.getCities.initiate({
-          currency_give: selectedCurrencySell.id,
-          currency_get: action.payload.id,
+    if (!currenciesBuy.data) return;
+    const updatedSelectedCurrencyBuy = currenciesBuy.data[0];
+    listenerApi.dispatch(setCurrenciesBuy(currenciesBuy.data));
+    listenerApi.dispatch(setSelectedCurrencyBuy(currenciesBuy.data[0]));
+
+    console.log(selectedCurrencySell, updatedSelectedCurrencyBuy);
+    if (
+      selectedCurrencyBuyType !== "CASH" &&
+      selectedCurrencySellType !== "CASH"
+    ) {
+      if (!updatedSelectedCurrencyBuy?.id) return;
+      const rate = await listenerApi.dispatch(
+        api.endpoints.getExchangeRate.initiate({
+          give_currency: selectedCurrencySell.id,
+          get_currency: updatedSelectedCurrencyBuy.id,
+          direction:
+            `${selectedCurrencySellType} - ${selectedCurrencyBuyType}` as DirectionType,
         })
       );
-      if (!cities.data) return;
-      listenerApi.dispatch(setCities(cities.data));
+      if (!rate.data) return;
+      listenerApi.dispatch(setExchangeRate(rate.data));
+      return;
+    }
+    const cities = await listenerApi.dispatch(
+      api.endpoints.getCities.initiate({
+        currency_give: action.payload.id,
+        currency_get: updatedSelectedCurrencyBuy.id,
+      })
+    );
+    if (!cities.data) return;
+    listenerApi.dispatch(setCities(cities.data));
   },
 });
 
@@ -131,13 +133,11 @@ exchangeSliceListener.startListening({
       state.exchange;
     if (!selectedCurrencySellId) return;
 
-    if (
-      action.payload.directions.length !== 0 &&
-      action.payload.type === "COIN" && 
-      action.payload.directions[0]
-    ) {
+    if (action.payload.type === "COIN") {
       listenerApi.dispatch(setNetworks(action.payload.directions));
-      listenerApi.dispatch(setSelectedNetworkValue(action.payload.directions[0]));
+      listenerApi.dispatch(
+        setSelectedNetworkValue(action.payload.directions[0] || null)
+      );
     }
 
     if (
@@ -176,11 +176,7 @@ exchangeSliceListener.startListening({
     const selectedCurrencyBuyId = state.exchange.selectedCurrencyBuy?.id;
     const { selectedCurrencyBuyType, selectedCurrencySellType } =
       state.exchange;
-    if (
-      !action.payload ||
-      !selectedCurrencySellId ||
-      !selectedCurrencyBuyId
-    )
+    if (!action.payload || !selectedCurrencySellId || !selectedCurrencyBuyId)
       return;
 
     const rate = await listenerApi.dispatch(
@@ -200,16 +196,16 @@ exchangeSliceListener.startListening({
 const calculateInputAmountBasedOnAnotherOne = (
   amount: number | null,
   rate: ExchangeRate | null,
-  position: 'given' | 'received'
+  position: "given" | "received"
 ): number | null => {
   if (!amount || !rate) return null;
 
-  const { course, course_view } = rate;
-  const actualRate = course_view || course;
+  const { course } = rate;
+  const actualRate = course;
 
-  return position === 'given' 
-    ? roundTo8((amount * actualRate))
-    : roundTo8((amount / actualRate));
+  console.log(amount, course);
+  const res = position === "given" ? amount * actualRate : amount / actualRate;
+  return roundTo8(res);
 };
 
 exchangeSliceListener.startListening({
@@ -217,13 +213,13 @@ exchangeSliceListener.startListening({
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     const { exchangeRate, activeInputType } = state.exchange;
-    
-    if (!exchangeRate || activeInputType !== 'given') return;
+
+    if (!exchangeRate || activeInputType !== "given") return;
 
     const calculatedAmount = calculateInputAmountBasedOnAnotherOne(
       action.payload,
       exchangeRate,
-      'given'
+      "given"
     );
 
     if (calculatedAmount !== null) {
@@ -237,13 +233,13 @@ exchangeSliceListener.startListening({
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     const { exchangeRate, activeInputType } = state.exchange;
-    
-    if (!exchangeRate || activeInputType !== 'received') return;
+
+    if (!exchangeRate || activeInputType !== "received") return;
 
     const calculatedAmount = calculateInputAmountBasedOnAnotherOne(
       action.payload,
       exchangeRate,
-      'received'
+      "received"
     );
 
     if (calculatedAmount !== null) {
@@ -251,5 +247,13 @@ exchangeSliceListener.startListening({
     }
   },
 });
+
+const formatNumber = (num: number, decimals: number = 8) => {
+  return num.toLocaleString("fullwide", {
+    useGrouping: false,
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+};
 
 export { exchangeSliceListener };

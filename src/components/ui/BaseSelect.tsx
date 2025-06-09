@@ -72,7 +72,7 @@ const BaseSelect = <T,>({
           <SimpleBar style={{ maxHeight }} className="custom-scrollbar">
             <div className="flex flex-col py-6 gap-0">
               {filteredOptions.length === 0 ? (
-                <div className="px-18 py-9 text-13 text-neutral-gray-700">
+                <div className="px-18 py-9 text-16 text-neutral-gray-700">
                   ничего не нашлось
                 </div>
               ) : (
