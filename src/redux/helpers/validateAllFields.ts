@@ -1,106 +1,114 @@
 import { AppDispatch } from "../store";
 import { RootState } from "../store";
 import {
-  setCryptoAmountError,
-  setCryptoWalletAddressError,
-  setCardAmountError,
-  setCardBankError,
+  setSelectedBankError,
   setCardNumberError,
-  setCashAmountError,
-  setCashCityError,
+  setSelectedCityError,
+  setCurrencySellAmountError,
+  setCurrencyBuyAmountError,
+  setWalletAddressError,
   setAreErrors,
-} from "../slices/exchangeInput/exchangeInputSlice";
+} from "../slices/exchangeSlice/exchangeSlice";
 import { validateExchangeInput } from "./validateExchangeInput";
 
 export const validateAllFields = (
   state: RootState,
   dispatch: AppDispatch
 ) => {
-  const { selectedGiveType, selectedReceieveType } = state.exchangeType;
-  const { minValue } = state.exchangeInput;
+  const { selectedCurrencySellType, selectedCurrencyBuyType } = state.exchange;
   let hasErrors = false;
 
   // Validate crypto fields
-  if (selectedGiveType === "COIN" || selectedReceieveType === "COIN") {
-    const { amount, walletAddress } = state.exchangeInput.cryptoInput;
-    const position = selectedGiveType === "COIN" ? "given" : "received";
+  if (selectedCurrencySellType === "COIN" || selectedCurrencyBuyType === "COIN") {
+    const { currencySellAmount, currencyBuyAmount, walletAddress, exchangeRate } = state.exchange;
+    const position = selectedCurrencySellType === "COIN" ? "given" : "received";
 
     const amountError = validateExchangeInput({
-      value: amount.value,
+      value: position === "given" ? currencySellAmount.value : currencyBuyAmount.value,
       inputType: "amount",
       position,
-      minValue,
+      minValue: exchangeRate?.min_amount || 0,
     });
 
     const walletAddressError = validateExchangeInput({
       value: walletAddress.value,
       inputType: "walletAddress",
       position,
-      minValue,
+      minValue: 0,
     });
 
-    dispatch(setCryptoAmountError(amountError));
-    dispatch(setCryptoWalletAddressError(walletAddressError));
-// console.log(amountError, walletAddressError);
-    hasErrors =  !!(amountError || walletAddressError);
+    if (position === "given") {
+      dispatch(setCurrencySellAmountError(amountError));
+    } else {
+      dispatch(setCurrencyBuyAmountError(amountError));
+    }
+    dispatch(setWalletAddressError(walletAddressError));
+
+    hasErrors = !!(amountError || walletAddressError);
   }
 
   // Validate card fields
-  if (selectedGiveType === "BANK" || selectedReceieveType === "BANK") {
-    const { amount, bank, cardNumber } = state.exchangeInput.cardInput;
-    const position = selectedGiveType === "BANK" ? "given" : "received";
+  if (selectedCurrencySellType === "BANK" || selectedCurrencyBuyType === "BANK") {
+    const { currencySellAmount, currencyBuyAmount, selectedBank, cardNumber } = state.exchange;
+    const position = selectedCurrencySellType === "BANK" ? "given" : "received";
 
     const amountError = validateExchangeInput({
-      value: amount.value,
+      value: position === "given" ? currencySellAmount.value : currencyBuyAmount.value,
       inputType: "amount",
       position,
-      minValue,
+      minValue: 0,
     });
 
-    // const bankError = validateExchangeInput({
-    //   value: bank.value,
-    //   inputType: "bank",
-    //   position,
-    //   minValue,
-    // });
-
-    const bankError = null
+    const bankError = validateExchangeInput({
+      value: selectedBank.value,
+      inputType: "bank",
+      position,
+      minValue: 0,
+    });
 
     const cardNumberError = validateExchangeInput({
       value: cardNumber.value,
       inputType: "cardNumber",
       position,
-      minValue,
+      minValue: 0,
     });
 
-    dispatch(setCardAmountError(amountError));
-    dispatch(setCardBankError(bankError));
+    if (position === "given") {
+      dispatch(setCurrencySellAmountError(amountError));
+    } else {
+      dispatch(setCurrencyBuyAmountError(amountError));
+    }
+    dispatch(setSelectedBankError(bankError));
     dispatch(setCardNumberError(cardNumberError));
 
     hasErrors = hasErrors || !!(amountError || bankError || cardNumberError);
   }
 
   // Validate cash fields
-  if (selectedGiveType === "CASH" || selectedReceieveType === "CASH") {
-    const { amount, city } = state.exchangeInput.cashInput;
-    const position = selectedGiveType === "CASH" ? "given" : "received";
+  if (selectedCurrencySellType === "CASH" || selectedCurrencyBuyType === "CASH") {
+    const { currencySellAmount, currencyBuyAmount, selectedCity } = state.exchange;
+    const position = selectedCurrencySellType === "CASH" ? "given" : "received";
 
     const amountError = validateExchangeInput({
-      value: amount.value,
+      value: position === "given" ? currencySellAmount.value : currencyBuyAmount.value,
       inputType: "amount",
       position,
-      minValue,
+      minValue: 0,
     });
 
     const cityError = validateExchangeInput({
-      value: city.value,
+      value: selectedCity.value,
       inputType: "city",
       position,
-      minValue,
+      minValue: 0,
     });
 
-    dispatch(setCashAmountError(amountError));
-    dispatch(setCashCityError(cityError));
+    if (position === "given") {
+      dispatch(setCurrencySellAmountError(amountError));
+    } else {
+      dispatch(setCurrencyBuyAmountError(amountError));
+    }
+    dispatch(setSelectedCityError(cityError));
 
     hasErrors = hasErrors || !!(amountError || cityError);
   }

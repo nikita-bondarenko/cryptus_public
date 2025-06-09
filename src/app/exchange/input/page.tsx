@@ -7,7 +7,6 @@ import {
 import Button from "@/components/ui/Button";
 import { usePrepareExchangeInputPage } from "@/hooks/usePrepareExchangeInputPage";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setAreErrorsVisible } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { setIsLoading, setPageName } from "@/redux/slices/uiSlice";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -16,6 +15,7 @@ import { store } from "@/redux/store";
 import ExchangeInput from "@/components/exchange/ExchangeInput";
 import { validateAllFields } from "@/redux/helpers/validateAllFields";
 import { selectCurrencyTypes } from "@/redux/selectors";
+import { setAreErrorsVisible } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export default memo(function Page() {
   const dispatch = useAppDispatch();
