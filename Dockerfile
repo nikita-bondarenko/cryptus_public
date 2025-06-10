@@ -4,15 +4,15 @@ FROM node:18
 WORKDIR /usr/src/app
 
 
-# RUN npm i -g pnpm
+RUN npm i -g pnpm
 
 COPY package.json ./
 
-RUN  npm install
+RUN  pnpm install
 
 COPY . .
 
-RUN  npm build
+RUN  pnpm build
 
 # Экспонируем порт
 EXPOSE 3000
