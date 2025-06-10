@@ -97,14 +97,11 @@ const dispatch = useAppDispatch()
   const state = useAppSelector(state => state.exchange)
 
 useEffect(() => {
+  if (isAppReady) {
   dispatch(setSelectedCurrencySellType("COIN"))
   dispatch(setSelectedCurrencyBuyType("BANK"))
-}, [])
-
-useEffect(() => {
-  console.log(state)
-}, [state])
-
+}
+}, [isAppReady])
   return (
     <div
       className={clsx(
