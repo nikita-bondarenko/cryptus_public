@@ -4,9 +4,9 @@ import { useMemo } from "react";
 
 export const useUserAvatar = () => {
   const userId = useAppSelector((state) => state.userData.userId);
-  
+  const isAppReady = useAppSelector((state) => state.ui.isAppReady);
   const { data: userDetail, isLoading } = useGetUserDetailQuery(userId ?? 0, {
-    skip: !userId,
+    skip: !userId || !isAppReady,
   });
 
   const avatar = useMemo(() => {
@@ -26,7 +26,7 @@ export const useUserAvatar = () => {
 
     // Если аватар - это путь к файлу, добавляем базовый URL
     return `${process.env.NEXT_PUBLIC_API_URL}${userDetail.profile_picture}`;
-  }, [userDetail?.profile_picture]);
+  }, [userDetail?.profile_picture, isAppReady]);
 
   return {
     avatar,

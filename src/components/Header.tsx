@@ -21,7 +21,6 @@ const EXCHANGE_STEPS = [
 ];
 
 export default function Header() {
-  const {webApp} = useTelegramWebApp();
   const pathname = usePathname();
   const pageName = useAppSelector((state) => state.ui.pageName);
   const isHome = useMemo(() => pathname === "/", [pathname]);
@@ -29,6 +28,7 @@ export default function Header() {
     () => pathname === "/exchange/result",
     [pathname]
   );
+  const isAppReady = useAppSelector((state) => state.ui.isAppReady);
   const isProfile = useMemo(() => pathname.includes("profile"), [pathname]);
   const isExchange = useMemo(
     () => pathname.startsWith("/exchange"),
@@ -41,14 +41,13 @@ export default function Header() {
 
   useEffect(() => {
     setTimeout(() => {setIsBackward(false)}, 200)
-    
   }, [pathname])
 
-
   const onBackButtonClick = () => {    
+    if (!isAppReady) return;
 
     if (isHome) {
-      webApp?.close();
+      window.Telegram.WebApp.close();
     } else if (isExchangeResult) {
       router.push("/");
     } else {
@@ -84,16 +83,16 @@ export default function Header() {
 const dispatch = useAppDispatch()
 
   useEffect(() => {
-
+    if (!isAppReady) return;
     
-    if (webApp?.initDataUnsafe.user) {
-      dispatch(setUserId(webApp.initDataUnsafe.user.id));
+    if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+      dispatch(setUserId(window.Telegram.WebApp.initDataUnsafe.user.id));
     }
 
     if (process.env.NODE_ENV === "development") {
       dispatch(setUserId(TEST_USER_ID));
     }
-  }, [webApp, dispatch]);
+  }, [ dispatch, isAppReady]);
 
   const state = useAppSelector(state => state.exchange)
 

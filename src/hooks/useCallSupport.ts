@@ -6,9 +6,11 @@ import { selectCurrencyTypes } from "@/redux/selectors";
 export const useCallSupport = () => {
   const [callOperator] = useCallingOperatorMutation();
   const userId = useAppSelector((state) => state.userData.userId);
-  const {webApp} = useTelegramWebApp();
+  const isAppReady = useAppSelector((state) => state.ui.isAppReady);
   const {exchangeRate} = useAppSelector(state => state.exchange);
+  
   const callSupport = async () => {
+    if (!isAppReady) return;
     if (!userId) {
       console.error("User ID is required");
       return;
@@ -21,7 +23,7 @@ export const useCallSupport = () => {
       }).unwrap();
 
       // Закрываем Telegram WebApp
-      webApp?.close();
+      window.Telegram.WebApp.close();
     } catch (error) {
       console.error("Error calling support:", error);
     }

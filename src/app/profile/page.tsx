@@ -17,6 +17,7 @@ import { FormProvider, useForm } from "react-hook-form";
 export default function Page() {
   const dispatch = useAppDispatch();
   const [showSuccess, setShowSuccess] = useState(false);
+  const isAppReady = useAppSelector((state) => state.ui.isAppReady);
 
   useEffect(() => {
     dispatch(setPageName("Данные профиля"));
@@ -46,7 +47,7 @@ export default function Page() {
   });
 
   const { data, isLoading, error } = useGetUserDetailQuery(userId || 0, {
-    skip: !userId,
+    skip: !userId || !isAppReady,
   });
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function Page() {
   }, [data, methods]);
 
 const {data: exchanges} = useGetUserExchangesQuery({user_id: userId || 0, limit: 150}, {
-  skip: !userId,
+  skip: !userId || !isAppReady,
 })
 
   return (

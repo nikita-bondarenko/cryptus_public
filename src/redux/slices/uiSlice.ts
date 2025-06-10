@@ -5,9 +5,10 @@ export type uiState = {
   pageName: string | null;
   isLoading: boolean;
   exchangeId: number | null;
+  isAppReady: boolean;
 }
 
-const initialState: uiState = { pageName: "", isLoading: true, exchangeId: null };
+const initialState: uiState = { pageName: "", isLoading: true, exchangeId: null, isAppReady: false };
 
 export const uiSlice = createSlice({
   name: "ui",
@@ -22,8 +23,11 @@ export const uiSlice = createSlice({
     setExchangeId(state, action: PayloadAction<number | null>) {
       state.exchangeId = action.payload;
     },
+    setIsAppReady(state, action: PayloadAction<boolean>) {
+      state.isAppReady = action.payload;
+    },
   },
 });
 
-export const { setPageName, setIsLoading, setExchangeId } = uiSlice.actions;
+export const { setPageName, setIsLoading, setExchangeId, setIsAppReady } = uiSlice.actions;
 export default uiSlice.reducer;

@@ -101,35 +101,35 @@ export function useTelegramWebApp() {
   const [webApp, setWebApp] = useState<typeof window.Telegram.WebApp | null>(null)
   const [isReady, setIsReady] = useState(false)
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return
+  // useEffect(() => {
+  //   if (typeof window === 'undefined') return
 
-    const initWebApp = () => {
-      if (window.Telegram?.WebApp) {
-        const tg = window.Telegram.WebApp
-        tg.ready()
-        tg.expand()
-        setWebApp(tg)
-        setIsReady(true)
-      }
-    }
+  //   const initWebApp = () => {
+  //     if (window.Telegram?.WebApp) {
+  //       const tg = window.Telegram.WebApp
+  //       tg.ready()
+  //       tg.expand()
+  //       setWebApp(tg)
+  //       setIsReady(true)
+  //     }
+  //   }
 
-    // Если скрипт уже загружен
-    if (window.Telegram?.WebApp) {
-      initWebApp()
-    } else {
-      // Если скрипт еще не загружен, ждем его загрузки
-      const script = document.createElement('script')
-      script.src = 'https://telegram.org/js/telegram-web-app.js'
-      script.async = true
-      script.onload = initWebApp
-      document.body.appendChild(script)
+  //   // Если скрипт уже загружен
+  //   if (window.Telegram?.WebApp) {
+  //     initWebApp()
+  //   } else {
+  //     // Если скрипт еще не загружен, ждем его загрузки
+  //     const script = document.createElement('script')
+  //     script.src = 'https://telegram.org/js/telegram-web-app.js'
+  //     script.async = true
+  //     script.onload = initWebApp
+  //     document.body.appendChild(script)
 
-      return () => {
-        document.body.removeChild(script)
-      }
-    }
-  }, [])
+  //     return () => {
+  //       document.body.removeChild(script)
+  //     }
+  //   }
+  // }, [])
 
   return { webApp, isReady }
 }

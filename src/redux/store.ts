@@ -59,7 +59,6 @@ store.subscribe(() => {
   // Only persist specific parts of the state that we want to keep
   saveState({
     exchange: state.exchange,
-    userData: state.userData,
     requestDetails: state.requestDetails,
   });
 });
