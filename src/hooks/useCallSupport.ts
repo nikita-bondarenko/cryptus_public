@@ -7,7 +7,7 @@ export const useCallSupport = () => {
   const [callOperator] = useCallingOperatorMutation();
   const userId = useAppSelector((state) => state.userData.userId);
   const tg = useTelegramWebApp();
-  const {givenType, receivedType} = useAppSelector(selectCurrencyTypes);
+  const {exchangeRate} = useAppSelector(state => state.exchange);
   const callSupport = async () => {
     if (!userId) {
       console.error("User ID is required");
@@ -17,7 +17,7 @@ export const useCallSupport = () => {
     try {
       await callOperator({
         user_id: userId,
-        type_direction: givenType === "CASH" || receivedType === "CASH" ? "CASH" : 'CASHLESS',
+        type_direction: exchangeRate?.direction.includes("CASH") ? "CASH" : "CASHLESS",
       }).unwrap();
 
       // Закрываем Telegram WebApp

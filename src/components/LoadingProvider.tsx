@@ -15,7 +15,12 @@ export const LoadingProvider: FC<{ children: React.ReactNode }> = ({ children })
         dispatch(setIsLoading(false))
     }
   }, [isLoading]);
-  return <div className={clsx("shimmer-on-loading",{"loading":isLoading || isInitLoading})}>{children}</div>;
+
+  useEffect(() => {
+   console.log('isInitLoading', isInitLoading, isLoading)
+  }, [isInitLoading, isLoading]);
+
+  return <div className={clsx("shimmer-on-loading flex-grow",{"loading":isLoading || isInitLoading})}>{children}</div>;
 };
 
 LoadingProvider.displayName = "LoadingProvider";

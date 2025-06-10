@@ -61,7 +61,7 @@ export const api = createApi({
     }),
 
     // Exchanges
-    createExchange: builder.mutation<ApiResponse<Exchange>, CreateExchangeParams>({
+    createExchange: builder.mutation<{id: number}, CreateExchangeParams>({
       query: (data) => ({
         url: '/exchanges/',
         method: 'POST',

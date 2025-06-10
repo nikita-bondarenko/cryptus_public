@@ -1,38 +1,46 @@
 "use client";
 import Icon from "@/components/helpers/Icon";
 import Button from "@/components/ui/Button";
-import { callSupport } from "@/helpers/callSupport";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Notification } from "@/components/ui/Notification";
 import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setIsLoading } from "@/redux/slices/uiSlice";
+import { clearAll, setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import { useCallSupport } from "@/hooks/useCallSupport";
 
-const REQUEST_ID = "#151473";
 
 export default function ExchangeResultPage() {
   const [copied, setCopied] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const exchangeId = useAppSelector(state => state.ui.exchangeId);
+
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(REQUEST_ID);
+    await navigator.clipboard.writeText(exchangeId?.toString() || "");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleGoHome = () => {
+
     router.push("/");
   };
+
+  const {callSupport} = useCallSupport();
 
   const handleGoChat = () => {
     callSupport();
   };
 
   useEffect(() => {
-    dispatch(resetExchangeInput());
-  }, [dispatch]);
+    dispatch(clearAll());
+    dispatch(setSelectedCurrencySellType("COIN"))
+    dispatch(setSelectedCurrencyBuyType("BANK"))
+  }, []);
 
   return (
     <div className="container h-full  ">
@@ -56,7 +64,7 @@ export default function ExchangeResultPage() {
               >
                 <Icon src={"copy.svg"} className="w-15 h-15 translate-y-1" />
                 <span className="text-16 font-medium text-neutral-gray-1000 select-all">
-                  {REQUEST_ID}
+                  {exchangeId?.toString() || ""}
                 </span>
               </button>
             </div>

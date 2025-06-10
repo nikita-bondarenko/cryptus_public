@@ -3,7 +3,7 @@ import type { City, ExchangeRate, GroupedCurrency } from "@/api/types";
 import { ExchangeTypeItemProps } from "@/components/exchange/ExchangeTypeItem";
 import { CurrencyPosition, CurrencyType } from "@/components/request/RequestDetails";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
-import { Input } from "../exchangeInput/types";
+import { Input, Network } from "../exchangeInput/types";
 import { ExchangeInputType } from "@/hooks/useExchangeInput";
 
 export type ExchangeInput<T> = {
@@ -22,13 +22,7 @@ export type ExchangeNetwork = {
   weight: number;
 };
 
-export type ExchangeBank = {
-    id:number
-    title:string
-    code:string
-    weight:number
-    directions:string
-  }
+export type ExchangeBank = Network
 
 export type ExchangeState = {
   currenciesSell: GroupedCurrency[];

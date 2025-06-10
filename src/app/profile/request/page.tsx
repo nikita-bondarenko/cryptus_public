@@ -35,7 +35,7 @@ const router = useRouter()
         name: request.currency_give,
         value: valueMask(roundTo8(request.amount_give)),
         type: calculateCurrencyTypeFromDirection(request.direction as Direction, "given"),
-        typeLabel: request.currency_give,
+        typeLabel: calculateCurrencyTypeFromDirection(request.direction as Direction, "given") === "CASH" ? "Наличные" : "",
         position: "given",
 
       },
@@ -53,7 +53,7 @@ const router = useRouter()
         name: request.currency_get,
         value: valueMask(roundTo8(request.amount_get)),
         type: calculateCurrencyTypeFromDirection(request.direction as Direction, "received"),
-        typeLabel: request.currency_give,
+        typeLabel: calculateCurrencyTypeFromDirection(request.direction as Direction, "received") === "CASH" ? "Наличные" : "",
         position: "received",
         wayDetails: calculateWayDetails({
           direction: request.direction as Direction,

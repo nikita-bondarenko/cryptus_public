@@ -15,7 +15,7 @@ export const validateAllFields = (
   state: RootState,
   dispatch: AppDispatch
 ) => {
-  const { selectedCurrencySellType, selectedCurrencyBuyType } = state.exchange;
+  const { selectedCurrencySellType, selectedCurrencyBuyType, banks, cities } = state.exchange;
   let hasErrors = false;
 
   // Validate crypto fields
@@ -44,6 +44,8 @@ export const validateAllFields = (
     }
     dispatch(setWalletAddressError(walletAddressError));
 
+    console.log('amountError, walletAddressError',amountError, walletAddressError);
+
     hasErrors = !!(amountError || walletAddressError);
   }
 
@@ -59,12 +61,12 @@ export const validateAllFields = (
       minValue: 0,
     });
 
-    const bankError = validateExchangeInput({
+    const bankError = banks && banks.length > 0 ? validateExchangeInput({
       value: selectedBank.value,
       inputType: "bank",
       position,
       minValue: 0,
-    });
+    }) : null;
 
     const cardNumberError = validateExchangeInput({
       value: cardNumber.value,
@@ -80,6 +82,7 @@ export const validateAllFields = (
     }
     dispatch(setSelectedBankError(bankError));
     dispatch(setCardNumberError(cardNumberError));
+    console.log('amountError, bankError, cardNumberError',amountError, bankError, cardNumberError, banks);
 
     hasErrors = hasErrors || !!(amountError || bankError || cardNumberError);
   }
@@ -96,12 +99,12 @@ export const validateAllFields = (
       minValue: 0,
     });
 
-    const cityError = validateExchangeInput({
+    const cityError = cities && cities.length > 0 ? validateExchangeInput({
       value: selectedCity.value,
       inputType: "city",
       position,
       minValue: 0,
-    });
+    }) : null;
 
     if (position === "given") {
       dispatch(setCurrencySellAmountError(amountError));
@@ -109,6 +112,7 @@ export const validateAllFields = (
       dispatch(setCurrencyBuyAmountError(amountError));
     }
     dispatch(setSelectedCityError(cityError));
+    console.log('amountError, cityError',amountError, cityError);
 
     hasErrors = hasErrors || !!(amountError || cityError);
   }

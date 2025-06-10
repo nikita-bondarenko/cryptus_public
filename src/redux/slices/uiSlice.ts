@@ -4,9 +4,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type uiState = {
   pageName: string | null;
   isLoading: boolean;
+  exchangeId: number | null;
 }
 
-const initialState: uiState = { pageName: "", isLoading: true };
+const initialState: uiState = { pageName: "", isLoading: true, exchangeId: null };
 
 export const uiSlice = createSlice({
   name: "ui",
@@ -18,8 +19,11 @@ export const uiSlice = createSlice({
     setIsLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
     },
+    setExchangeId(state, action: PayloadAction<number | null>) {
+      state.exchangeId = action.payload;
+    },
   },
 });
 
-export const { setPageName, setIsLoading } = uiSlice.actions;
+export const { setPageName, setIsLoading, setExchangeId } = uiSlice.actions;
 export default uiSlice.reducer;

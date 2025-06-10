@@ -14,7 +14,8 @@ import userDataReducer from "./slices/userDataSlice";
 import requestDetailsReducer from "./slices/requestDetailsSlice";
 import { loadState, saveState } from "./persistConfig";
 import exchangeReducer from "./slices/exchangeSlice/exchangeSlice";
-import { exchangeSliceListener } from "./slices/exchangeSlice/listeners/exchangeSliceListener";
+import { exchangeSliceListener } from "./slices/exchangeSliceListeners/exchangeSliceListener";
+import { validateListener } from "./slices/exchangeSliceListeners/validateListener";
 
 const rootReducer = combineReducers({
   exchangeInput: exchangeInputReducer,
@@ -45,23 +46,23 @@ export const store = configureStore({
         // cityInputListener.middleware,
         // walletAddressInputListener.middleware,
         // exchangeTypeListener.middleware
-        exchangeSliceListener.middleware
+        exchangeSliceListener.middleware,
+        validateListener.middleware
       )
       .concat(api.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
 // Subscribe to store changes to save state
-// store.subscribe(() => {
-//   const state = store.getState();
-//   // Only persist specific parts of the state that we want to keep
-//   saveState({
-//     exchangeInput: state.exchangeInput,
-//     exchangeType: state.exchangeType,
-//     userData: state.userData,
-//     requestDetails: state.requestDetails,
-//   });
-// });
+store.subscribe(() => {
+  const state = store.getState();
+  // Only persist specific parts of the state that we want to keep
+  saveState({
+    exchange: state.exchange,
+    userData: state.userData,
+    requestDetails: state.requestDetails,
+  });
+});
 
 export type AppDispatch = typeof store.dispatch;
 

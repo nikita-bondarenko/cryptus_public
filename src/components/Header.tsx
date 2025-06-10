@@ -11,6 +11,7 @@ import { TEST_USER_ID } from "@/config";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import { setIsLoading } from "@/redux/slices/uiSlice";
 
 const EXCHANGE_STEPS = [
   { path: "/exchange/type", label: "Тип" },
@@ -40,10 +41,12 @@ export default function Header() {
 
   useEffect(() => {
     setTimeout(() => {setIsBackward(false)}, 200)
+    
   }, [pathname])
 
 
-  const onBackButtonClick = () => {
+  const onBackButtonClick = () => {    
+
     if (isHome) {
       webApp?.close();
     } else if (isExchangeResult) {

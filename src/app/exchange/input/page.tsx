@@ -30,6 +30,7 @@ export default memo(function Page() {
     if (areErrors) {
       return;
     }
+
     router.push("/exchange/details");
   }, [dispatch, router]);
 

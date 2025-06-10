@@ -97,12 +97,12 @@ const {data: exchanges} = useGetUserExchangesQuery({user_id: userId || 0, limit:
           </form>
         </FormProvider>
       </div>
-      <div>
+    {exchanges && exchanges.length > 0 && <div>
         <h2 className="heading">История обращений</h2>
         {exchanges?.map((exchange, index) => (
           <RequestStoryItem data={exchange} key={index} />
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

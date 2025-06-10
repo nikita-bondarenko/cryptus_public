@@ -15,6 +15,7 @@ import { POLICY_URL, TEST_USER_ID } from "@/config";
 import { useActiveRequest } from "@/hooks/useActiveRequest";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { TERMS_URL } from "@/config";
+import { setIsLoading } from "@/redux/slices/uiSlice";
 
 export default function Home() {
   const router = useRouter();
@@ -27,10 +28,12 @@ export default function Home() {
   }, [router]);
 
   const toExchangePage = useCallback(() => {
+
     router.push("/exchange/type");
   }, [router]);
 
   const toFaqPage = useCallback(() => {
+
     router.push("/faq");
   }, [router]);
 

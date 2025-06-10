@@ -26,7 +26,7 @@ export default function RootLayout({
         <StoreProvider>
           <Header></Header>
           <LoadingProvider>
-            <main className="pb-35 flex-grow overflow-x-hidden">{children}</main>
+            <main className="pb-35 flex-grow overflow-x-hidden h-full">{children}</main>
           </LoadingProvider>
         </StoreProvider>
       </body>

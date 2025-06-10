@@ -1,4 +1,5 @@
 import { Network } from "@/redux/slices/exchangeInput/types";
+import { ExchangeBank } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 // Базовые типы для API
 export type ApiResponse<T> = {
@@ -21,7 +22,7 @@ export type GroupedCurrency = {
   code: string;
   type: 'COIN' | 'BANK' | "CASH";
   weight: number;
-  directions: Network[];
+  directions: Network[] ;
 }
 
 export type DirectionType = 'COIN - BANK' | 'COIN - CASH' | 'BANK - COIN' | 'CASH - COIN';
@@ -39,16 +40,16 @@ export type Directions = {
 
 // Типы для обменов
 export type Exchange = {
-  user_id: number;
-  currency_give: string;
-  amount_give: number;
-  currency_get: string;
-  amount_get: number;
-  course: number;
-  direction: DirectionType;
-  course_title: string;
-  city?: string;
-  get_to?: string;
+  user_id: number | null | undefined;
+  currency_give: string | null | undefined;
+  amount_give: number | null | undefined;
+  currency_get: string | null | undefined;
+  amount_get: number | null | undefined;
+  course: number | null | undefined;
+  direction: DirectionType | null | undefined;
+  course_title: string | null | undefined;
+  city?: string | null | undefined;
+  get_to?: string | null | undefined;
 }
 
 export type UserExchange = {
@@ -120,7 +121,7 @@ export type CurrenciesBuyParams = {
 }
 
 export type CreateExchangeParams = Exchange & {
-  user_id: number;
+  user_id: number | null;
 }
 
 export type CreateSwiftExchangeParams = {

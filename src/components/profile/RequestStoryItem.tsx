@@ -9,6 +9,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { roundTo8 } from "@/redux/helpers";
 import { setRequestDetails } from "@/redux/slices/requestDetailsSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { calculateCurrencyTypeFromDirection, Direction } from "@/helpers/calculateCurrencyTypeFromDirection";
 
 export type RequestStoryItemProps = {
   data: UserExchange;
@@ -18,6 +19,7 @@ const RequestStoryItem: React.FC<RequestStoryItemProps> = memo(({ data }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const goToRequestDetails = () => {
+
     dispatch(setRequestDetails(data));
     router.push("/profile/request");
   };
@@ -32,12 +34,12 @@ const RequestStoryItem: React.FC<RequestStoryItemProps> = memo(({ data }) => {
           name={data.currency_give}
           value={valueMask(roundTo8(data.amount_give))}
           arrow
-          icon={findIcon(data.currency_give)}
+          icon={findIcon(calculateCurrencyTypeFromDirection(data.direction as Direction, "given"),data.currency_give)}
         ></StoryCryptoData>
         <StoryCryptoData
           name={data.currency_get}
           value={valueMask(roundTo8(data.amount_get))}
-          icon={findIcon(data.currency_get)}
+          icon={findIcon(calculateCurrencyTypeFromDirection(data.direction as Direction, "received"),data.currency_get)}
         ></StoryCryptoData>
         <Icon
           src="arrow-right.svg"

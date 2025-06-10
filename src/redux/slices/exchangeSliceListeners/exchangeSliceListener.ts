@@ -1,6 +1,7 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import {
   filterReceiveVariants,
+  setBanks,
   setCities,
   setCurrenciesBuy,
   setCurrenciesSell,
@@ -9,13 +10,14 @@ import {
   setCurrencySellAmountValue,
   setExchangeRate,
   setNetworks,
+  setSelectedBankValue,
   setSelectedCityValue,
   setSelectedCurrencyBuy,
   setSelectedCurrencyBuyType,
   setSelectedCurrencySell,
   setSelectedCurrencySellType,
   setSelectedNetworkValue,
-} from "../exchangeSlice";
+} from "../exchangeSlice/exchangeSlice";
 import { api } from "@/api/api";
 import { RootState } from "@/redux/store";
 import { DirectionType, ExchangeRate } from "@/api/types";
@@ -81,6 +83,13 @@ exchangeSliceListener.startListening({
       );
     }
 
+    if (action.payload.type === "BANK") {
+      listenerApi.dispatch(setBanks(action.payload.directions));
+      listenerApi.dispatch(
+        setSelectedBankValue( null)
+      );
+    }
+
     if (!currencyType || !selectedCurrencySell.id) return;
     const currenciesBuy = await listenerApi.dispatch(
       api.endpoints.getCurrenciesBuy.initiate({
@@ -93,8 +102,8 @@ exchangeSliceListener.startListening({
     const updatedSelectedCurrencyBuy = currenciesBuy.data[0];
     listenerApi.dispatch(setCurrenciesBuy(currenciesBuy.data));
     listenerApi.dispatch(setSelectedCurrencyBuy(currenciesBuy.data[0]));
+    
 
-    console.log(selectedCurrencySell, updatedSelectedCurrencyBuy);
     if (
       selectedCurrencyBuyType !== "CASH" &&
       selectedCurrencySellType !== "CASH"
@@ -139,6 +148,13 @@ exchangeSliceListener.startListening({
         setSelectedNetworkValue(action.payload.directions[0] || null)
       );
     }
+    if (action.payload.type === "BANK") {
+      listenerApi.dispatch(setBanks(action.payload.directions));
+      listenerApi.dispatch(
+        setSelectedBankValue(null)
+      );
+    }
+
 
     if (
       selectedCurrencyBuyType !== "CASH" &&
@@ -244,6 +260,27 @@ exchangeSliceListener.startListening({
 
     if (calculatedAmount !== null) {
       listenerApi.dispatch(setCurrencySellAmountValue(calculatedAmount));
+    }
+  },
+});
+
+exchangeSliceListener.startListening({
+  actionCreator: setExchangeRate,
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    const { currencySellAmount } = state.exchange;
+
+    if (!action.payload || currencySellAmount.value === null) return;
+
+    // Всегда пересчитываем сумму покупки на основе суммы продажи
+    const calculatedAmount = calculateInputAmountBasedOnAnotherOne(
+      currencySellAmount.value,
+      action.payload,
+      "given"
+    );
+
+    if (calculatedAmount !== null) {
+      listenerApi.dispatch(setCurrencyBuyAmountValue(calculatedAmount));
     }
   },
 });
