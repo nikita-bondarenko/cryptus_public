@@ -12,28 +12,22 @@ export function TelegramWebAppProvider({
 }) {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    // if (typeof window !== 'undefined') {
-    //   const script = document.createElement('script')
-    //   script.src = 'https://telegram.org/js/telegram-web-app.js'
-    //   script.async = true
-    //   script.onload = () => {
-    //     if (window.Telegram?.WebApp) {
-    //       window.Telegram.WebApp.ready()
-    //       window.Telegram.WebApp.expand()
-    //       dispatch(setIsAppReady(true))
-    //     }
-    //   }
-    //   document.body.appendChild(script)
+    const script = document.createElement('script');
+    script.src = 'https://telegram.org/js/telegram-web-app.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+        dispatch(setIsAppReady(true));
+      }
+    };
+    document.head.appendChild(script);
 
-    //   return () => {
-    //     document.body.removeChild(script)
-    //   }
-    // }
-    if (window.Telegram?.WebApp) {
-      window.Telegram.WebApp.ready();
-      window.Telegram.WebApp.expand();
-      dispatch(setIsAppReady(true));
-    }
+    return () => {
+      document.head.removeChild(script);
+    };
+ 
     // dispatch(setIsAppReady(true))
   }, []);
 

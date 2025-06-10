@@ -1,12 +1,11 @@
-'use client'
-
-import type { Metadata } from "next";
+'use client';
 import { Inter } from "next/font/google";
 import "./globals.css";
-import StoreProvider from "@/redux/StoreProvider";
 import Header from "@/components/Header";
 import { LoadingProvider } from "@/components/LoadingProvider";
 import { TelegramWebAppProvider } from "@/components/TelegramWebAppProvider";
+import StoreProvider from "@/redux/StoreProvider";
+import { useEffect } from "react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,14 +17,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://telegram.org/js/telegram-web-app.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+      }
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   return (
     <html>
       <head>
-        <script 
-          src="https://telegram.org/js/telegram-web-app.js" 
-          async={false}
-          defer={false}
-        />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <meta name="theme-color" content="#ffffff" />
         <title>Cryptus Exchange</title>
@@ -36,7 +47,9 @@ export default function RootLayout({
           <TelegramWebAppProvider>
             <Header></Header>
             <LoadingProvider>
-              <main className="pb-35 flex-grow overflow-x-hidden h-full">{children}</main>
+              <main className="pb-35 flex-grow overflow-x-hidden h-full">
+                {children}
+              </main>
             </LoadingProvider>
           </TelegramWebAppProvider>
         </StoreProvider>

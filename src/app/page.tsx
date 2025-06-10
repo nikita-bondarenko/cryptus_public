@@ -85,7 +85,7 @@ export default function Home() {
               </h1>
               <p className="text-16 font-medium mb-30">
                 Обменник, которым ты всегда хотел пользоваться, но нечего было
-                менять (test)
+                менять
               </p>
             </div>
             <ProfileButton onClick={toProfilePage} />
