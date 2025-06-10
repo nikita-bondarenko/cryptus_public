@@ -4,8 +4,8 @@ FROM node:18
 WORKDIR /usr/src/app
 
 
-RUN npm i -g pnpm
-
+RUN curl -fsSL https://get.pnpm.io/install.sh | sh -
+    
 COPY package.json ./
 
 RUN  pnpm install
