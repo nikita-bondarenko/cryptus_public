@@ -13,7 +13,6 @@ const inter = Inter({
   subsets: ["cyrillic", "latin"],
 });
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,6 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html>
+      <head>
+        <script 
+          src="https://telegram.org/js/telegram-web-app.js" 
+          async={false}
+          defer={false}
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta name="theme-color" content="#ffffff" />
+        <title>Cryptus Exchange</title>
+        <meta name="description" content="Cryptus Exchange - Telegram Mini App" />
+      </head>
       <body className={`${inter.variable} antialiased flex flex-col h-screen`}>
         <StoreProvider>
           <TelegramWebAppProvider>

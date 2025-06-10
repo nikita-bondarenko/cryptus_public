@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['cryptus-2025-3f67.vercel.app'],
+    domains: ['cryptus-2025.vercel.app'],
     unoptimized: true,
   },
   async headers() {
@@ -26,23 +26,7 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'https://cryptus-2.0.1362967-ci52663.tw1.ru/:path*',
-      },
-    ]
-  },
-  webpack: (config) => {
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-      net: false,
-      tls: false,
-    };
-    return config;
-  },
+
 };
 
 export default nextConfig;
