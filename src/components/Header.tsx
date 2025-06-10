@@ -85,6 +85,8 @@ const dispatch = useAppDispatch()
   const tg = useTelegramWebApp();
 
   useEffect(() => {
+
+    
     if (tg?.initDataUnsafe.user) {
       dispatch(setUserId(tg.initDataUnsafe.user.id));
     }
