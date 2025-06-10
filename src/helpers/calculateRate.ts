@@ -25,7 +25,7 @@ export const calculateRate = ({
         name: currencyGet,
       },
       to: {
-        value: 1 / baseRate,
+        value: Number((1 / baseRate).toFixed(2)),
         name: currencyGive,
       },
     };

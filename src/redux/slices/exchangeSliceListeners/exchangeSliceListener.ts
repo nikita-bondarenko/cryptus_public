@@ -29,7 +29,7 @@ const exchangeSliceListener = createListenerMiddleware();
 exchangeSliceListener.startListening({
   actionCreator: setSelectedCurrencySellType,
   effect: async (action, listenerApi) => {
-    console.log(action);
+    // console.log(action);
     if (!action.payload) return;
 
     const currencyBuyTypeOptions = filterReceiveVariants(action.payload);
@@ -49,7 +49,7 @@ exchangeSliceListener.startListening({
 exchangeSliceListener.startListening({
   actionCreator: setSelectedCurrencyBuyType,
   effect: async (action, listenerApi) => {
-    console.log(action);
+    // console.log(action);
   },
 });
 
@@ -219,7 +219,7 @@ const calculateInputAmountBasedOnAnotherOne = (
   const { course } = rate;
   const actualRate = course;
 
-  console.log(amount, course);
+  // console.log(amount, course);
   const res = position === "given" ? amount * actualRate : amount / actualRate;
   return roundTo8(res);
 };

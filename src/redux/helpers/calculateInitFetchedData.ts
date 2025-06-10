@@ -20,7 +20,7 @@ export const calculateInitFetchedData = async (
 ) => {
   const state = listenerApi.getState() as RootState;
   const { selectedGiveType, selectedReceieveType } = state.exchangeType;
-  // console.log(selectedGiveType, selectedReceieveType);
+  // // console.log(selectedGiveType, selectedReceieveType);
   if (!selectedGiveType || !selectedReceieveType) return;
 
   // Get currencies for sell
@@ -30,7 +30,7 @@ export const calculateInitFetchedData = async (
   );
 
   if (sellResponse.data) {
-    // console.log(sellResponse.data.map((item) => item.directions))
+    // // console.log(sellResponse.data.map((item) => item.directions))
     const sellCurrencies = translateCurrencies(sellResponse.data);
     const firstSellCurrency = sellResponse.data[0];
 
@@ -44,7 +44,7 @@ export const calculateInitFetchedData = async (
     );
 
     if (buyResponse.data) {
-        // console.log(buyResponse.data.map((item) => item))
+        // // console.log(buyResponse.data.map((item) => item))
 
       const buyCurrencies = translateCurrencies(buyResponse.data);
       const firstBuyCurrency = buyResponse.data[0];

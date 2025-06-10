@@ -27,7 +27,7 @@ export const useExchangeInput = (position: CurrencyPosition) => {
   const currenciesBuy = useAppSelector(state => state.exchange.currenciesBuy);
 
   const onSelectChange = useCallback((option: CurrencyOption) => {
-    console.log(option);
+    // console.log(option);
     dispatch(setActiveInputType(position));
 
     const currency = position === 'given' 

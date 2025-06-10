@@ -68,7 +68,7 @@ const BaseSelect = <T,>({
       })}
 
       {isOpen && (
-        <div className={`absolute left-0 ${dropdownTop} mt-1 w-full z-50 bg-neutral-white border border-neutral-gray-200 rounded-6 max-h-134 overflow-hidden ${dropdownClassName}`}>
+        <div  className={`absolute left-0 ${dropdownTop} mt-1 w-full z-50 bg-neutral-white border border-neutral-gray-200 rounded-6  overflow-hidden ${dropdownClassName}`}>
           <SimpleBar style={{ maxHeight }} className="custom-scrollbar">
             <div className="flex flex-col py-6 gap-0">
               {filteredOptions.length === 0 ? (

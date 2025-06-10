@@ -15,16 +15,16 @@ export const dispatchNonCrypto = ({
   rate,
 }: DispatchProps) => {
 
-    // console.log("rate", rate);
+    // // console.log("rate", rate);
   if (selectedGiveType === "COIN") {
     if (selectedReceiveType === "BANK") {
-      // console.log("selectedReceiveType", selectedReceiveType);
+      // // console.log("selectedReceiveType", selectedReceiveType);
       const translatedValue = translateCurrencyValue({
         value,
         rate,
         position: "received",
       });
-      // console.log("translatedValue", translatedValue);
+      // // console.log("translatedValue", translatedValue);
       dispatch(setAutomaticlyCardInputAmountValue(translatedValue));
     } else {
       dispatch(

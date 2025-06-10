@@ -25,7 +25,7 @@ export type RequestDetailsProps = {
 
 const RequestDetails: React.FC<RequestDetailsProps> = memo(
   ({ title, rate, currency }) => {
-    // console.log(rate, currency)
+    // // console.log(rate, currency)
     return (
       <div className="">
         <SectionHeading title={title} rate={rate}></SectionHeading>

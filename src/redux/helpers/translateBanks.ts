@@ -1,11 +1,13 @@
 import { ExchangeBank } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { SelectOption } from "@/components/exchange/BankSelect";
+import { banksMaskList } from "@/data/banksMaskList";
 
 export const calculateBank = (bank?: ExchangeBank | null) => {
     if (!bank) return null;
+    const bankMask = banksMaskList.find(bankMask => bankMask.title === bank.title)
     return {
         value: bank.id,
-        name: bank.title
+        name:bankMask?.label || bank.title
     };
 };
 
