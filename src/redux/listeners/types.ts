@@ -8,7 +8,7 @@ import { AppDispatch } from "../store";
 
 // Base Listener Types
 export type ListenerMiddleware = Middleware<
-  {}, // extra argument type
+  unknown, // extra argument type
   RootState // state type
 >;
 

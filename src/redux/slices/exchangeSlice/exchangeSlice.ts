@@ -63,7 +63,7 @@ export const filterReceiveVariants = (
   }
 };
 
-const initialState: ExchangeState = {
+export const initialState: ExchangeState = {
   currenciesSell: [],
   currenciesBuy: [],
   selectedCurrencySell: null,

@@ -31,21 +31,21 @@ export const calculateInputAmountBasedOnAnotherOne = ({
   // console.log("rate", rate);
   // console.log("action.type === setCryptoInputAmountValue.type", action.type === setCryptoInputAmountValue.type);
 
-  if (action.type === setCryptoInputAmountValue.type) {
-    dispatchNonCrypto({
-      selectedReceiveType: selectedReceieveType,
-      selectedGiveType,
-      value,
-      dispatch,
-      rate,
-    });
-  } else {
-    dispatchCrypto({
-      selectedReceiveType: selectedReceieveType,
-      selectedGiveType,
-      value,
-      dispatch,
-      rate,
-    });
-  }
+  // if (action.type === setCryptoInputAmountValue.type) {
+  //   dispatchNonCrypto({
+  //     selectedReceiveType: selectedReceieveType,
+  //     selectedGiveType,
+  //     value,
+  //     dispatch,
+  //     rate,
+  //   });
+  // } else {
+  //   dispatchCrypto({
+  //     selectedReceiveType: selectedReceieveType,
+  //     selectedGiveType,
+  //     value,
+  //     dispatch,
+  //     rate,
+  //   });
+  // }
 };

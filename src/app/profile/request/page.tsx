@@ -1,6 +1,5 @@
 "use client";
 import RequestDetails, { RequestDetailsProps } from "@/components/request/RequestDetails";
-import { requestDetails as requestDetailsStatic } from "@/data/requestDetails";
 import {  calculateCurrencyTypeFromDirection, Direction } from "@/helpers/calculateCurrencyTypeFromDirection";
 import { calculateRate } from "@/helpers/calculateRate";
 import { calculateWayDetails } from "@/helpers/calculateWayDetails";

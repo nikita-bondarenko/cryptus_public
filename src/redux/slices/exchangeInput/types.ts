@@ -71,7 +71,7 @@ export type Bank = {
   directions:string
 }
 
-export type ExchangeInputState {
+export type ExchangeInputState = {
   areErrorsVisible: boolean;
   areErrors: boolean;
   activeInputType: CurrencyType | null;

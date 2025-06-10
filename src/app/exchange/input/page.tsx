@@ -5,7 +5,6 @@ import {
   CurrencyType,
 } from "@/components/request/RequestDetails";
 import Button from "@/components/ui/Button";
-import { usePrepareExchangeInputPage } from "@/hooks/usePrepareExchangeInputPage";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setIsLoading, setPageName } from "@/redux/slices/uiSlice";
 import clsx from "clsx";
@@ -20,8 +19,6 @@ import { setAreErrorsVisible } from "@/redux/slices/exchangeSlice/exchangeSlice"
 export default memo(function Page() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-
-//  usePrepareExchangeInputPage();
 
   const onSubmit = useCallback(() => {
     dispatch(setAreErrorsVisible(true));
