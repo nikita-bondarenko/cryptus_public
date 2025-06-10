@@ -33,7 +33,7 @@ const persistedState = loadState() as Partial<RootState> | undefined;
 
 export const store = configureStore({
   reducer: rootReducer,
-  // preloadedState: persistedState,
+  preloadedState: persistedState,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
