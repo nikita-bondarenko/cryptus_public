@@ -8,11 +8,11 @@ RUN npm i -g pnpm
 
 COPY package.json ./
 
-RUN  pnpm install
+RUN  npm install
 
 COPY . .
 
-RUN  pnpm build
+RUN  npm build
 
 # Экспонируем порт
 EXPOSE 3000
