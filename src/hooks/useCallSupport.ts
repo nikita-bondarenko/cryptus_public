@@ -6,7 +6,7 @@ import { selectCurrencyTypes } from "@/redux/selectors";
 export const useCallSupport = () => {
   const [callOperator] = useCallingOperatorMutation();
   const userId = useAppSelector((state) => state.userData.userId);
-  const tg = useTelegramWebApp();
+  const {webApp} = useTelegramWebApp();
   const {exchangeRate} = useAppSelector(state => state.exchange);
   const callSupport = async () => {
     if (!userId) {
@@ -21,7 +21,7 @@ export const useCallSupport = () => {
       }).unwrap();
 
       // Закрываем Telegram WebApp
-      tg?.close();
+      webApp?.close();
     } catch (error) {
       console.error("Error calling support:", error);
     }

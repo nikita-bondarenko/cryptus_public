@@ -21,7 +21,7 @@ const EXCHANGE_STEPS = [
 ];
 
 export default function Header() {
-  const webApp = useTelegramWebApp();
+  const {webApp} = useTelegramWebApp();
   const pathname = usePathname();
   const pageName = useAppSelector((state) => state.ui.pageName);
   const isHome = useMemo(() => pathname === "/", [pathname]);
@@ -82,19 +82,18 @@ export default function Header() {
     callSupport();
   };
 const dispatch = useAppDispatch()
-  const tg = useTelegramWebApp();
 
   useEffect(() => {
 
     
-    if (tg?.initDataUnsafe.user) {
-      dispatch(setUserId(tg.initDataUnsafe.user.id));
+    if (webApp?.initDataUnsafe.user) {
+      dispatch(setUserId(webApp.initDataUnsafe.user.id));
     }
 
     if (process.env.NODE_ENV === "development") {
       dispatch(setUserId(TEST_USER_ID));
     }
-  }, [tg, dispatch]);
+  }, [webApp, dispatch]);
 
   const state = useAppSelector(state => state.exchange)
 

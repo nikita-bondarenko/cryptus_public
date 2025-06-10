@@ -4,7 +4,7 @@ import "./globals.css";
 import StoreProvider from "@/redux/StoreProvider";
 import Header from "@/components/Header";
 import { LoadingProvider } from "@/components/LoadingProvider";
-import Script from "next/script";
+import { TelegramWebAppProvider } from "@/components/TelegramWebAppProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,18 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <head>
-        <Script
-          src="https://telegram.org/js/telegram-web-app.js"
-          strategy="beforeInteractive"
-        />
-      </head>
       <body className={`${inter.variable} antialiased flex flex-col h-screen`}>
         <StoreProvider>
-          <Header></Header>
-          <LoadingProvider>
-            <main className="pb-35 flex-grow overflow-x-hidden h-full">{children}</main>
-          </LoadingProvider>
+          <TelegramWebAppProvider>
+            <Header></Header>
+            <LoadingProvider>
+              <main className="pb-35 flex-grow overflow-x-hidden h-full">{children}</main>
+            </LoadingProvider>
+          </TelegramWebAppProvider>
         </StoreProvider>
       </body>
     </html>

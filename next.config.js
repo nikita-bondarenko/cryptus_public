@@ -13,11 +13,8 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://web.telegram.org https://telegram.org"
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'ALLOW-FROM https://web.telegram.org'
+            value: "frame-ancestors 'self' https://*.telegram.org https://t.me"
+
           },
           {
             key: 'Access-Control-Allow-Origin',
