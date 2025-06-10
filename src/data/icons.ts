@@ -11,7 +11,7 @@ export const icons = [
   { value: "DOGE", icon: "doge.svg" },
   { value: "TrueUSD", icon: "tusd.svg" },
 
-  { value: "AED", icon: "aed.svg" },
+  { value: "AED", icon: "aed1.svg" },
 
   { value: "ADA", icon: "ada.svg" },
 
@@ -31,5 +31,5 @@ export const icons = [
 
   { value: "RUB", icon: "rub.svg" },
   { value: "USD", icon: "usd.svg" },
-  { value: "EUR", icon: "eur.svg" },
+  { value: "EUR", icon: "eur1.svg" },
 ];

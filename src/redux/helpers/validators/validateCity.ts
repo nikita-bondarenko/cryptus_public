@@ -10,13 +10,6 @@ export const validateCity = ({ value, options }: ValidateCityProps): string | nu
     return "Выберите город";
   }
 
-  if (value.length < 2) {
-    return "Название города должно содержать минимум 2 символа";
-  }
-
-  if (!/^[а-яА-ЯёЁ\s-]+$/.test(value)) {
-    return "Название города должно содержать только русские буквы";
-  }
 
   return null;
 }; 
