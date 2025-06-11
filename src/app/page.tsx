@@ -71,9 +71,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="container">
+      <div className="container h-full flex flex-col">
         <div
-          className="rounded-6 px-23 pt-35 pb-28 mb-17"
+          className="rounded-6 px-23 pt-35 pb-28 mb-17 flex-grow"
           style={{
             background: "linear-gradient(45deg, #C7ECFF 0%, #B8D1F6 100%)",
           }}

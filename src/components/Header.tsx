@@ -107,7 +107,7 @@ useEffect(() => {
       className={clsx(
         "container pt-33 pb-23 flex items-end justify-between transition-all duration-500 relative",
         {
-          "[&]:h-30 [&]:opacity-0 [&]:pointer-events-none [&]:pt-10":
+          "[&]:h-18  [&]:opacity-0 [&]:pointer-events-none [&]:pt-9 [&]:pb-9":
             isHome,
         }
       )}

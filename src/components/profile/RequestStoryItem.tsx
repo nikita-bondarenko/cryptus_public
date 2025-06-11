@@ -18,6 +18,7 @@ export type RequestStoryItemProps = {
 const RequestStoryItem: React.FC<RequestStoryItemProps> = memo(({ data }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  
   const goToRequestDetails = () => {
 
     dispatch(setRequestDetails(data));

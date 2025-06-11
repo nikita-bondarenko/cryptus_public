@@ -26,6 +26,8 @@ const router = useRouter()
   
   const requestDetails:RequestDetailsProps[] = useMemo(() => {
     if (!request) return [];
+
+    
    return [
     {
       title: "Я отдал",

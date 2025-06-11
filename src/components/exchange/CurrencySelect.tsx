@@ -15,7 +15,7 @@ export type CurrencySelectProps = {
 };
 
 const ButtonDisplay = memo(({ icon, name }: CurrencyOption) => (
-  <span className="flex items-start gap-6 overflow-hidden text-ellipsis text-16 ">
+  <span className="button-display flex items-start gap-6 overflow-hidden text-ellipsis text-16 ">
     <Icon src={icon} className="w-24 h-24 shrink-0" />
     <span dangerouslySetInnerHTML={{__html:name}}></span>
   </span>
