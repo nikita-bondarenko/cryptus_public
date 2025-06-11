@@ -73,11 +73,12 @@ export default function Home() {
     <>
       <div className="container h-full flex flex-col">
         <div
-          className="rounded-6 px-23 pt-35 pb-28 mb-17 flex-grow"
+          className="rounded-6 px-23 pt-35 pb-28 mb-17 flex-grow flex flex-col"
           style={{
             background: "linear-gradient(45deg, #C7ECFF 0%, #B8D1F6 100%)",
           }}
         >
+          <div className="flex-grow flex flex-col justify-center">
           <div className="flex justify-between">
             <div className="max-w-205">
               <h1 className="font-bold text-32 mb-15 leading-normal">
@@ -107,6 +108,7 @@ export default function Home() {
                   key={request.id}
                 />
               ))}
+          </div>
           </div>
 
           <div className="grid grid-cols-2 gap-6">
