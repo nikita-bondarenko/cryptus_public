@@ -21,6 +21,7 @@ import type {
   ExchangeRate,
   ExchangeRateParams
 } from '@/api/types';
+import { Direction } from '@/helpers/calculateCurrencyTypeFromDirection';
 
 const API_URL = 'https://cryptus-2.0.1362967-ci52663.tw1.ru';
 
@@ -55,7 +56,7 @@ export const api = createApi({
       providesTags: ['Currency'],
     }),
 
-    getCurrenciesSell: builder.query<GroupedCurrency[], string>({
+    getCurrenciesSell: builder.query<GroupedCurrency[], Direction>({
       query: (currencyType) => `/currencies-sell/${currencyType}/`,
       providesTags: ['Currency'],
     }),

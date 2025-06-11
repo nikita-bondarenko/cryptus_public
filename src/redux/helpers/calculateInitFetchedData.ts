@@ -10,6 +10,7 @@ import { CurrencyType } from "@/components/request/RequestDetails";
 import { ListenerEffectAPI, PayloadAction } from "@reduxjs/toolkit";
 import { calculateCityId } from "./calculateCityId";
 import { translateCities } from "./translateCities";
+import { Direction } from "@/helpers/calculateCurrencyTypeFromDirection";
 
 export const calculateInitFetchedData = async (
   listenerApi: ListenerEffectAPI<
@@ -26,7 +27,7 @@ export const calculateInitFetchedData = async (
   // Get currencies for sell
   const sellType = calculateCurrencyTypeForFetching(selectedGiveType);
   const sellResponse = await listenerApi.dispatch(
-    api.endpoints.getCurrenciesSell.initiate(sellType)
+    api.endpoints.getCurrenciesSell.initiate(`${sellType} - ${selectedGiveType}` as Direction)
   );
 
   if (sellResponse.data) {

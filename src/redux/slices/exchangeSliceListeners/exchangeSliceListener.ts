@@ -23,33 +23,37 @@ import { RootState } from "@/redux/store";
 import { DirectionType, ExchangeRate } from "@/api/types";
 import { ListenerEffect } from "@reduxjs/toolkit";
 import { roundTo8 } from "@/redux/helpers";
+import { Direction } from "@/helpers/calculateCurrencyTypeFromDirection";
 
 const exchangeSliceListener = createListenerMiddleware();
 
 exchangeSliceListener.startListening({
   actionCreator: setSelectedCurrencySellType,
   effect: async (action, listenerApi) => {
-    // console.log(action);
     if (!action.payload) return;
-
     const currencyBuyTypeOptions = filterReceiveVariants(action.payload);
     listenerApi.dispatch(setCurrencyBuyTypeOptions(currencyBuyTypeOptions));
-    listenerApi.dispatch(
+        listenerApi.dispatch(
       setSelectedCurrencyBuyType(currencyBuyTypeOptions[0].type)
     );
-
-    const currenciesSell = await listenerApi.dispatch(
-      api.endpoints.getCurrenciesSell.initiate(action.payload)
-    );
-    if (!currenciesSell.data) return;
-    listenerApi.dispatch(setCurrenciesSell(currenciesSell.data));
   },
 });
 
 exchangeSliceListener.startListening({
   actionCreator: setSelectedCurrencyBuyType,
   effect: async (action, listenerApi) => {
-    // console.log(action);
+    if (!action.payload) return;
+    const state = listenerApi.getState() as RootState;
+    const selectedCurrencySellType = state.exchange.selectedCurrencySellType;
+    const currencyBuyType = action.payload;
+
+    const currenciesSell = await listenerApi.dispatch(
+      api.endpoints.getCurrenciesSell.initiate(
+        `${selectedCurrencySellType} - ${currencyBuyType}` as Direction
+      )
+    );
+    if (!currenciesSell.data) return;
+    listenerApi.dispatch(setCurrenciesSell(currenciesSell.data));
   },
 });
 
@@ -85,9 +89,7 @@ exchangeSliceListener.startListening({
 
     if (action.payload.type === "BANK") {
       listenerApi.dispatch(setBanks(action.payload.directions));
-      listenerApi.dispatch(
-        setSelectedBankValue( null)
-      );
+      listenerApi.dispatch(setSelectedBankValue(null));
     }
 
     if (!currencyType || !selectedCurrencySell.id) return;
@@ -102,7 +104,6 @@ exchangeSliceListener.startListening({
     const updatedSelectedCurrencyBuy = currenciesBuy.data[0];
     listenerApi.dispatch(setCurrenciesBuy(currenciesBuy.data));
     listenerApi.dispatch(setSelectedCurrencyBuy(currenciesBuy.data[0]));
-    
 
     if (
       selectedCurrencyBuyType !== "CASH" &&
@@ -150,11 +151,8 @@ exchangeSliceListener.startListening({
     }
     if (action.payload.type === "BANK") {
       listenerApi.dispatch(setBanks(action.payload.directions));
-      listenerApi.dispatch(
-        setSelectedBankValue(null)
-      );
+      listenerApi.dispatch(setSelectedBankValue(null));
     }
-
 
     if (
       selectedCurrencyBuyType !== "CASH" &&
