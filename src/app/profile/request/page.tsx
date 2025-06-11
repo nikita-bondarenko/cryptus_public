@@ -7,14 +7,18 @@ import { findIcon } from "@/helpers/findIcon";
 import { valueMask } from "@/helpers/valueMask";
 import { roundTo8 } from "@/redux/helpers/roundTo8";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
 import { setIsLoading, setPageName } from "@/redux/slices/uiSlice";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo } from "react";
+import { createSelector } from "@reduxjs/toolkit";
+
+const selectRequestDetails = (state: RootState) => state.requestDetails.data;
 
 const Page: React.FC = () => {
   const dispatch = useAppDispatch();
-  const request = useAppSelector((state) => state.requestDetails.data);
-const router = useRouter()
+  const request = useAppSelector(selectRequestDetails);
+  const router = useRouter()
   useEffect(() => {
     dispatch(setPageName(`заявка ${request?.id}`));
     dispatch(setIsLoading(false))
@@ -33,17 +37,17 @@ const router = useRouter()
       title: "Я отдал",
       currency: {
         icon: findIcon(calculateCurrencyTypeFromDirection(request.direction as Direction, "given"),request.currency_give),
-        name: request.currency_give,
+        name: request.currency_give_name,
         value: valueMask(roundTo8(request.amount_give)),
         type: calculateCurrencyTypeFromDirection(request.direction as Direction, "given"),
-        typeLabel: calculateCurrencyTypeFromDirection(request.direction as Direction, "given") === "CASH" ? "Наличные" : "",
+        typeLabel: calculateCurrencyTypeFromDirection(request.direction as Direction, "given") === "CASH" ? "Наличные" : request.currency_give_network || '',
         position: "given",
 
       },
       rate: calculateRate({
         course: request.course,
-        currencyGive: request.currency_give,
-        currencyGet: request.currency_get,
+        currencyGive: request.currency_give_name,
+        currencyGet: request.currency_get_name,
       }),
     },
     {
@@ -51,10 +55,10 @@ const router = useRouter()
   
       currency: {
         icon: findIcon(calculateCurrencyTypeFromDirection(request.direction as Direction, "received"),request.currency_get),
-        name: request.currency_get,
+        name: request.currency_get_name,
         value: valueMask(roundTo8(request.amount_get)),
         type: calculateCurrencyTypeFromDirection(request.direction as Direction, "received"),
-        typeLabel: calculateCurrencyTypeFromDirection(request.direction as Direction, "received") === "CASH" ? "Наличные" : "",
+        typeLabel: calculateCurrencyTypeFromDirection(request.direction as Direction, "received") === "CASH" ? "Наличные" : request.currency_get_network || '',
         position: "received",
         wayDetails: calculateWayDetails({
           direction: request.direction as Direction,

@@ -50,6 +50,7 @@ export type Exchange = {
   course_title: string | null | undefined;
   city?: string | null | undefined;
   get_to?: string | null | undefined;
+  direction_id?: number | null | undefined;
 }
 
 export type UserExchange = {
@@ -65,6 +66,10 @@ export type UserExchange = {
   city: string;
   get_to: string;
   status: string;
+  currency_give_name: string ;
+  currency_give_network: string | null;
+  currency_get_name: string;
+  currency_get_network: string | null;
 }
 
 export type SwiftExchange = {

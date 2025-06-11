@@ -1,5 +1,5 @@
 import { CurrencyType } from "@/components/request/RequestDetails";
-import { icons } from "@/data/icons";
+import { currencyMaskList } from "@/data/currencyMaskList";
 
 export const findIcon = (currencyType: CurrencyType, ...args: string[] | undefined[] | null[]): string => {
 
@@ -15,6 +15,8 @@ export const findIcon = (currencyType: CurrencyType, ...args: string[] | undefin
             defaultIcon = "card.svg"
             break
     }
-  return icons?.find((icon) => args.some((arg) => arg?.includes(icon.value)))?.icon || defaultIcon;
+   const currentMask = currencyMaskList?.find((currency) => args.some((arg) => arg === currency.title || arg?.includes(currency.label)   ))
+//    console.log(args,currentMask)
+  return currentMask?.icon || defaultIcon;
 };
 

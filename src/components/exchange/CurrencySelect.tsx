@@ -39,7 +39,7 @@ const CurrencySelect = memo(({ options, onChange, value: selected }: CurrencySel
       renderTrigger={({ isOpen }) => (
         <button
           type="button"
-          className="w-full flex items-center justify-between px-16 py-10 border-l border-neutral-gray-300 bg-white text-16"
+          className="w-full flex [&_.button-display]:items-center items-center justify-between px-16 py-10 border-l border-neutral-gray-300 bg-white text-16"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {selected ? (

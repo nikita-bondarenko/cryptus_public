@@ -8,6 +8,8 @@ import { roundTo8 } from "../helpers";
 import { CreateExchangeParams, GroupedCurrency } from "@/api/types";
 import { Rate } from "../slices/exchangeInput/types";
 import { ExchangeBank, ExchangeNetwork } from "../slices/exchangeSlice/exchangeSlice";
+import { calculateBank, translateBanks } from "../helpers/translateBanks";
+import { selectBankValue, selectNetValue } from ".";
 
 export const selectExchangeDetails = createSelector(
   (state: RootState) => state.exchange.selectedCurrencySellType,
@@ -18,10 +20,10 @@ export const selectExchangeDetails = createSelector(
   (state: RootState) => state.exchange.currencySellAmount,
   (state: RootState) => state.exchange.currencyBuyAmount,
   (state: RootState) => state.exchange.walletAddress,
-  (state: RootState) => state.exchange.selectedBank,
+  selectBankValue,
   (state: RootState) => state.exchange.cardNumber,
   (state: RootState) => state.exchange.selectedCity,
-  (state: RootState) => state.exchange.selectedNetwork,
+  selectNetValue,
   (
     selectedCurrencySellType,
     selectedCurrencyBuyType,
@@ -46,7 +48,7 @@ export const selectExchangeDetails = createSelector(
           icon: findIcon("COIN", selectedCurrencySell?.code || selectedCurrencySell?.title || "") || "crypt.svg",
           name: selectedCurrencySell?.code || selectedCurrencySell?.title || "",
           type: "COIN",
-          typeLabel: selectedNetwork?.value?.title || "",
+          typeLabel: selectedNetwork?.name || "",
           value: currencySellAmount.value ? valueMask(roundTo8(currencySellAmount.value)) : "",
           position: "given",
         },
@@ -59,7 +61,7 @@ export const selectExchangeDetails = createSelector(
           icon: findIcon("BANK", selectedCurrencySell?.code || selectedCurrencySell?.title || "") || "",
           name: selectedCurrencySell?.code || selectedCurrencySell?.title || "",
           type: "BANK",
-          typeLabel: selectedBank?.value?.title || "",
+          typeLabel: selectedBank?.name || "",
           value: currencySellAmount.value ? valueMask(roundTo8(currencySellAmount.value)) : "",
           position: "given",
           wayDetails: cardNumber.value
@@ -94,7 +96,7 @@ export const selectExchangeDetails = createSelector(
           icon: findIcon("COIN", selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "") || "crypt.svg",
           name: selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "",
           type: "COIN",
-          typeLabel: selectedNetwork?.value?.title || "",
+          typeLabel: selectedNetwork?.name || "",
           value: currencyBuyAmount.value ? valueMask(roundTo8(currencyBuyAmount.value)) : "",
           position: "received",
           wayDetails: walletAddress.value
@@ -109,7 +111,7 @@ export const selectExchangeDetails = createSelector(
           icon: findIcon("BANK", selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "") || "",
           name: selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "",
           type: "BANK",
-          typeLabel: selectedBank?.value?.title || "",
+          typeLabel: selectedBank?.name || "",
           value: currencyBuyAmount.value ? valueMask(roundTo8(currencyBuyAmount.value)) : "",
           position: "received",
           wayDetails: cardNumber.value
@@ -152,6 +154,7 @@ export const selectExchangeCreateData = createSelector(
   (state: RootState) => state.exchange.cardNumber,
   (state: RootState) => state.exchange.selectedNetwork,
   (state: RootState) => state.userData.userId,
+  (state: RootState) => state.exchange.exchangeRate?.id,
   (
     selectedCurrencySellType,
     selectedCurrencyBuyType,
@@ -165,7 +168,8 @@ export const selectExchangeCreateData = createSelector(
     selectedBank,
     cardNumber,
     selectedNetwork,
-    userId
+    userId,
+    exchangeRateId
   ): CreateExchangeParams => {
     return {
       currency_give: getCurrencyTitle({currency: selectedCurrencySell, network: selectedNetwork.value, currencyType: selectedCurrencySellType, bank: selectedBank.value}),
@@ -178,6 +182,7 @@ export const selectExchangeCreateData = createSelector(
       city: selectedCity?.value?.title,
       get_to: selectedCurrencyBuyType === "BANK" ? cardNumber.value : walletAddress.value,
       user_id: userId,
+      direction_id: exchangeRateId
     };
   }
 ); 

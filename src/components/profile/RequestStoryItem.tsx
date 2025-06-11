@@ -32,15 +32,15 @@ const RequestStoryItem: React.FC<RequestStoryItemProps> = memo(({ data }) => {
       </div>
       <div className="bg-white border border-neutral-gray-200 rounded-6 px-19 py-14 grid grid-cols-2 relative">
         <StoryCryptoData
-          name={data.currency_give}
+          name={data.currency_give_name || data.currency_give}
           value={valueMask(roundTo8(data.amount_give))}
           arrow
-          icon={findIcon(calculateCurrencyTypeFromDirection(data.direction as Direction, "given"),data.currency_give)}
+          icon={findIcon(calculateCurrencyTypeFromDirection(data.direction as Direction, "given"),data.currency_give_name)}
         ></StoryCryptoData>
         <StoryCryptoData
-          name={data.currency_get}
+          name={data.currency_get_name || data.currency_get}
           value={valueMask(roundTo8(data.amount_get))}
-          icon={findIcon(calculateCurrencyTypeFromDirection(data.direction as Direction, "received"),data.currency_get)}
+          icon={findIcon(calculateCurrencyTypeFromDirection(data.direction as Direction, "received"),data.currency_get_name)}
         ></StoryCryptoData>
         <Icon
           src="arrow-right.svg"
