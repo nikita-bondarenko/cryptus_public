@@ -1,3 +1,6 @@
+import {
+  ExchangeBank,
+} from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import {
   filterReceiveVariants,
@@ -24,6 +27,7 @@ import { DirectionType, ExchangeRate } from "@/api/types";
 import { ListenerEffect } from "@reduxjs/toolkit";
 import { roundTo8 } from "@/redux/helpers";
 import { Direction } from "@/helpers/calculateCurrencyTypeFromDirection";
+import { Network } from "../exchangeInput/types";
 
 const exchangeSliceListener = createListenerMiddleware();
 
@@ -33,7 +37,7 @@ exchangeSliceListener.startListening({
     if (!action.payload) return;
     const currencyBuyTypeOptions = filterReceiveVariants(action.payload);
     listenerApi.dispatch(setCurrencyBuyTypeOptions(currencyBuyTypeOptions));
-        listenerApi.dispatch(
+    listenerApi.dispatch(
       setSelectedCurrencyBuyType(currencyBuyTypeOptions[0].type)
     );
   },
@@ -118,6 +122,7 @@ exchangeSliceListener.startListening({
             `${selectedCurrencySellType} - ${selectedCurrencyBuyType}` as DirectionType,
         })
       );
+      console.log(rate.data);
       if (!rate.data) return;
       listenerApi.dispatch(setExchangeRate(rate.data));
       return;
@@ -161,11 +166,12 @@ exchangeSliceListener.startListening({
       const rate = await listenerApi.dispatch(
         api.endpoints.getExchangeRate.initiate({
           give_currency: selectedCurrencySellId,
-          get_currency: action.payload.id,
+          get_currency: action.payload?.id,
           direction:
             `${selectedCurrencySellType} - ${selectedCurrencyBuyType}` as DirectionType,
         })
       );
+      // console.log(rate.data);
       if (!rate.data) return;
       listenerApi.dispatch(setExchangeRate(rate.data));
       return;
@@ -282,6 +288,71 @@ exchangeSliceListener.startListening({
     }
   },
 });
+
+exchangeSliceListener.startListening({
+  actionCreator: setSelectedBankValue,
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    const selectedBankValue = action.payload as ExchangeBank | null;
+    const {
+      selectedCurrencyBuy,
+      selectedCurrencySell,
+      selectedCurrencyBuyType,
+      selectedCurrencySellType,
+      selectedNetwork
+    } = state.exchange;
+    if (!selectedCurrencySell || !selectedCurrencyBuy) return;
+    if (!selectedBankValue) return
+
+    const rate = await listenerApi.dispatch(
+      api.endpoints.getExchangeRate.initiate({
+        give_currency:
+          selectedCurrencySellType === "BANK"
+            ? selectedBankValue.id
+            : selectedCurrencySellType === "COIN" && selectedNetwork.value?.id ? selectedNetwork.value?.id : selectedCurrencySell.id,
+        get_currency:
+          selectedCurrencyBuyType === "BANK"
+            ? selectedBankValue.id
+            : selectedCurrencyBuy.id,
+        direction:
+          `${selectedCurrencySellType} - ${selectedCurrencyBuyType}` as DirectionType,
+      })
+    );
+    if (rate.data) listenerApi.dispatch(setExchangeRate(rate.data));
+  },
+});
+
+exchangeSliceListener.startListening({
+  actionCreator: setSelectedNetworkValue,
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    const selectedNetworkValue = action.payload as Network | null;
+    const {
+      selectedCurrencyBuy,
+      selectedCurrencySell,
+      selectedCurrencyBuyType,
+      selectedCurrencySellType,
+    } = state.exchange;
+    if (!selectedCurrencySell || !selectedCurrencyBuy) return;
+if (!selectedNetworkValue) return
+    const rate = await listenerApi.dispatch(
+      api.endpoints.getExchangeRate.initiate({
+        give_currency:
+          selectedCurrencySellType === "COIN"
+            ? selectedNetworkValue.id
+            : selectedCurrencySell.id,
+        get_currency:
+          selectedCurrencyBuyType === "COIN"
+            ? selectedNetworkValue.id
+            : selectedCurrencyBuy.id,
+        direction:
+          `${selectedCurrencySellType} - ${selectedCurrencyBuyType}` as DirectionType,
+      })
+    );
+    if (rate.data) listenerApi.dispatch(setExchangeRate(rate.data));
+  },
+});
+
 
 const formatNumber = (num: number, decimals: number = 8) => {
   return num.toLocaleString("fullwide", {

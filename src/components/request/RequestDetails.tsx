@@ -57,7 +57,7 @@ const RequestDetails: React.FC<RequestDetailsProps> = memo(
               <span
                 className={clsx("break-all text-16 leading-normal", {
                   "max-w-250": currency.type === "COIN",
-                  "tracking-5": currency.type === "BANK",
+                  "tracking-[4px]": currency.type === "BANK",
                 })}
               >
                 {currency.wayDetails.value}

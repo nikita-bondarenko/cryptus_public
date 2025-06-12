@@ -52,7 +52,7 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
   const walletAddressValue = useAppSelector(selectWalletAddressValue);
   const walletAddressError = useAppSelector(selectWalletAddressError);
 
-  const placeholder = usePlaceholder(position);
+  const placeholder = usePlaceholder(position, "COIN");
 
   // Обработка изменения валюты
   useEffect(() => {

@@ -38,7 +38,7 @@ const ExchangeTypeItem: React.FC<ExchangeTypeItemProps> = memo(
       >
         <div className="flex items-center gap-11">
           <Icon src={icon} className={clsx("w-19 h-19", {
-            "w-21 h-21": icon === 'cash.svg',
+            "[&]:w-21 [&]:h-21 [&]:mr-[-2px]": icon === 'cash.svg',
           })}></Icon>
           <span className="text-16 leading-normal">{name}</span>
         </div>

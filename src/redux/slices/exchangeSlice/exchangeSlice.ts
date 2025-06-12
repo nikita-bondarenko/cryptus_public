@@ -199,6 +199,7 @@ export const exchangeSlice = createSlice({
       state.activeInputType = action.payload;
     },
     setExchangeRate: (state, action: PayloadAction<ExchangeRate | null>) => {
+      console.log(action.payload)
       state.exchangeRate = action.payload;
     },
     setCurrencySellAmountValue: (state, action: PayloadAction<number | null>) => {

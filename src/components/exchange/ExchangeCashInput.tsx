@@ -54,7 +54,7 @@ const ExchangeCashInput: React.FC<ExchangeCashInputProps> = memo(({ position }) 
   
   const cityError = useAppSelector(selectCityError);
 
-  const placeholder = usePlaceholder(position);
+  const placeholder = usePlaceholder(position, "CASH");
 
   useEffect(() => {
     if (isInitialLoad) {

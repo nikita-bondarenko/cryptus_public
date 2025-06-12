@@ -54,7 +54,7 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
   const bankError = useAppSelector(selectBankError);
   const cardNumberError = useAppSelector(selectCardNumberError);
 
-  const placeholder = usePlaceholder(position);
+  const placeholder = usePlaceholder(position,"BANK");
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
