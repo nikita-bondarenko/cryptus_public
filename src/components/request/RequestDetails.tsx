@@ -4,6 +4,7 @@ import clsx from "clsx";
 import SectionHeading, { SectionHeadingProps } from "../ui/SectionHeading";
 import { CurrencyType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
+
 export type CurrencyPosition = "given" | "received";
 
 export type CurrencyDetails = {
