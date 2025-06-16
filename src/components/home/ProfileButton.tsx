@@ -1,9 +1,7 @@
 import { FC, memo } from "react";
 import Icon from "../helpers/Icon";
-import { useUserAvatar } from "@/hooks/useUserAvatar";
 
-const ProfileButton: FC<{ onClick?: () => void }> = memo(({ onClick }) => {
-  const { avatar: userAvatar } = useUserAvatar();
+const ProfileButton: FC<{ onClick?: () => void, avatar?: string }> = memo(({ onClick, avatar }) => {
   return (
     <button
       onClick={onClick}
@@ -13,10 +11,10 @@ const ProfileButton: FC<{ onClick?: () => void }> = memo(({ onClick }) => {
       <span className="absolute inset-0 rounded-full animation-wave border border-neutral-blue-cyan   wave2"></span>
       <span className="absolute inset-0 rounded-full animation-wave border border-neutral-blue-cyan  wave3"></span>
       <span className="absolute inset-0 rounded-full border border-neutral-blue-ice z-20"></span>
-      {!userAvatar && <Icon src="person.svg" className="w-15 h-17"></Icon>}
-      {userAvatar && (
+      {!avatar && <Icon src="person.svg" className="w-15 h-17"></Icon>}
+      {avatar && (
         <img
-          src={userAvatar}
+          src={avatar}
           alt="user avatar"
           className="w-full h-full object-cover rounded-full"
         />

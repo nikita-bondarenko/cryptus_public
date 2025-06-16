@@ -1,4 +1,5 @@
-import { Rate } from "@/redux/slices/exchangeInput/types";
+import { Rate } from "@/components/ui/SectionHeading";
+import { translateCurrency } from "./translateCurrency";
 
 
 type CalculateRateProps = {
@@ -14,6 +15,8 @@ export const calculateRate = ({
 }: CalculateRateProps): Rate => {
   // Вычисляем базовый курс
   const baseRate = course;
+
+ 
 
   // Определяем, какая валюта будет иметь значение 1
   // Если курс меньше 1, то currencyGet будет иметь значение 1

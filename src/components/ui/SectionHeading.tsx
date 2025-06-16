@@ -1,20 +1,28 @@
 import { valueMask } from '@/helpers/valueMask';
 import React, { memo } from 'react';
-import { Rate } from '@/redux/slices/exchangeInput/types';
 import clsx from 'clsx';
 import Icon from '../helpers/Icon';
-import { ExchangeRate } from '@/api/types';
 
-
+export type HeadingRate = {
+  from: {
+    value: number;
+    name: string;
+  };
+  to: {
+    value: number;
+    name: string;
+  };
+}
 
 export type SectionHeadingProps = {
     title: string;
-    rate?: Rate | undefined | null;
+    rate?: HeadingRate | undefined | null;
     minValue?: number | undefined;
     error?: boolean
 }
 
 const SectionHeading: React.FC<SectionHeadingProps> = memo(({title,rate, minValue, error}) => {
+
   return (
      <div className="flex items-end justify-between mb-10 pl-6  gap-10">
           <h2 className="text-16 font-medium leading-normal  shrink-0 min-w-100">{title}</h2>

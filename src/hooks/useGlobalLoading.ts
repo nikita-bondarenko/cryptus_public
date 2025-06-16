@@ -1,5 +1,5 @@
+import { api } from '@/redux/api/cryptusApi';
 import { useSelector } from 'react-redux';
-import { api } from '@/api/api';
 
 export const useGlobalLoading = () => {
   // Получаем количество активных запросов RTK Query

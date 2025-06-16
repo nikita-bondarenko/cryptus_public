@@ -1,15 +1,33 @@
-import { UserExchange } from "@/api/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export type RequestDetails = {
+  id?: string;
+  date?: string;
+  course?: number;
+  currency_give?: {
+    amount?: number;
+    name?: string;
+    icon?: string;
+    network?: string;
+  };
+  currency_get?: {
+    amount?: number;
+    name?: string;
+    icon?: string;
+    network?: string;
+  };
+}
+
+
 type RequestDetailsState = {
-    data: UserExchange | null;
+    data: RequestDetails | null;
 };
 
 export const requestDetailsSlice = createSlice({
   name: "requestDetails",
   initialState: { data: null } as RequestDetailsState,
   reducers: {
-    setRequestDetails: (state, action: PayloadAction<UserExchange>) => {
+    setRequestDetails: (state, action: PayloadAction<RequestDetails>) => {
         if(action.payload) {
             state.data = action.payload;
         }

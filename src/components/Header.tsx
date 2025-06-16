@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useTelegramWebApp } from "@/hooks/useTelegramWebApp";
 import clsx from "clsx";
 import useClickOutside from "@/hooks/useClickOutside";
-import { setUserId } from "@/redux/slices/userDataSlice";
+import { setUserId } from "@/redux/slices/userSlice/userSlice";
 import { TEST_USER_ID } from "@/config";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -94,7 +94,6 @@ const dispatch = useAppDispatch()
     }
   }, [ dispatch, isAppReady]);
 
-  const state = useAppSelector(state => state.exchange)
 
 useEffect(() => {
   if (isAppReady) {

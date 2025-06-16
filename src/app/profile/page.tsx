@@ -1,11 +1,11 @@
 "use client";
-import { useGetUserDetailQuery, useGetUserExchangesQuery, useUpdateProfileMutation } from "@/api/api";
 import RequestStoryItem, {
   RequestStoryItemProps,
 } from "@/components/profile/RequestStoryItem";
 import Button from "@/components/ui/Button";
 import { Notification } from "@/components/ui/Notification";
 import { InputField } from "@/components/ui/ProfileInputField";
+import { useUserUpdateCreateMutation } from "@/redux/api/cryptusApi";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setPageName } from "@/redux/slices/uiSlice";
 import { formSchema } from "@/schemas/formSchema";
@@ -27,17 +27,19 @@ export default function Page() {
     resolver: zodResolver(formSchema),
   });
 
-  const userId = useAppSelector((state) => state.userData.userId);
-  const [updateUser] = useUpdateProfileMutation();
+const {id: userId, data} = useAppSelector(state => state.user) 
+const [updateUser] = useUserUpdateCreateMutation()
 
   const onSubmit = methods.handleSubmit((data) => {
     if (!userId) return;
     
     updateUser({
-      user_id: userId,
-      full_name: data.name,
-      phone: data.phone,
-      email: data.email,
+  body: {
+    user_id: userId,
+    full_name: data.name,
+    phone: data.phone,
+    email: data.email,
+  }
     }).then(() => {
       setShowSuccess(true);
       setTimeout(() => {
@@ -46,23 +48,17 @@ export default function Page() {
     });
   });
 
-  const { data, isLoading, error } = useGetUserDetailQuery(userId || 0, {
-    skip: !userId || !isAppReady,
-  });
 
   useEffect(() => {
     if (data) {
       methods.reset({
-        name: data.full_name,
-        phone: data.phone,
-        email: data.email,
+        name: data?.user_data?.name,
+        phone: data?.user_data?.phone,
+        email: data?.user_data?.email,
       });
     }
   }, [data, methods]);
 
-const {data: exchanges} = useGetUserExchangesQuery({user_id: userId || 0, limit: 150}, {
-  skip: !userId || !isAppReady,
-})
 
   return (
     <div className="container mt-10">
@@ -98,9 +94,9 @@ const {data: exchanges} = useGetUserExchangesQuery({user_id: userId || 0, limit:
           </form>
         </FormProvider>
       </div>
-    {exchanges && exchanges.length > 0 && <div>
+    {data?.requests_all && data?.requests_all.length > 0 && <div>
         <h2 className="heading">История обращений</h2>
-        {exchanges?.map((exchange, index) => (
+        {data?.requests_all?.map((exchange, index) => (
           <RequestStoryItem data={exchange} key={index} />
         ))}
       </div>}

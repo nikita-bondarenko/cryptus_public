@@ -191,6 +191,24 @@ GET /currencies_get?queries
 
 queries: currency_give_id=...&direction_type=...
 
+ответ
+currencies_get: {
+        id
+        name
+        cities: {
+            name
+            id
+        }[]
+        banks: {
+            name
+            id
+        }[]
+        networks: {
+            name
+            id
+        }[]
+    }[]
+
 
 POST /exchange
 

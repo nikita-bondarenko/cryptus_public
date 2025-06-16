@@ -7,21 +7,18 @@ import ExpandableList from "@/components/home/ExpandableList";
 import Button from "@/components/ui/Button";
 import { useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hooks";
-import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
-import { useTelegramWebApp } from "@/hooks/useTelegramWebApp";
-import { setUserId } from "@/redux/slices/userDataSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
 import { POLICY_URL, TEST_USER_ID } from "@/config";
-import { useActiveRequest } from "@/hooks/useActiveRequest";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { TERMS_URL } from "@/config";
-import { setIsLoading } from "@/redux/slices/uiSlice";
 
 export default function Home() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { activeRequests } = useActiveRequest();
   const { callSupport } = useCallSupport();
+
+  const requestsInProcess = useAppSelector(state => state.user.data?.requests_in_process)
 
   const toProfilePage = useCallback(() => {
     router.push("/profile");
@@ -100,11 +97,11 @@ export default function Home() {
             ))}
           </ul>
           <div className="min-h-60 flex flex-col gap-11  mb-20">
-            {activeRequests &&
-              activeRequests.map((request) => (
+            {requestsInProcess &&
+              requestsInProcess.map((request) => (
                 <RequestStatus
                   isInProcess={true}
-                  id={request.id}
+                  id={request.id || ''}
                   key={request.id}
                 />
               ))}

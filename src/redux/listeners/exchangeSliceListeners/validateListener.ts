@@ -8,7 +8,7 @@ import {
   setSelectedCityValue,
   setSelectedCurrencySell,
   setSelectedCurrencyBuy,
-} from "../exchangeSlice/exchangeSlice";
+} from "../../slices/exchangeSlice/exchangeSlice";
 import { validateAllFields } from "../../helpers/validateAllFields";
 import { AppDispatch, RootState } from "../../store";
 import { PayloadAction } from "@reduxjs/toolkit";

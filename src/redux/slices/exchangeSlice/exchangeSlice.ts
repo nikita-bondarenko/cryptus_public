@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { City, ExchangeRate, GroupedCurrency } from "@/api/types";
 import { ExchangeTypeItemProps } from "@/components/exchange/ExchangeTypeItem";
 import { CurrencyPosition, CurrencyType } from "@/components/request/RequestDetails";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
-import { Input, Network } from "../exchangeInput/types";
 import { ExchangeInputType } from "@/hooks/useExchangeInput";
+import { Bank, City, Currency, Network, Rate } from "@/redux/api/types";
 
 export type ExchangeInput<T> = {
     value: T | null;
@@ -13,37 +12,29 @@ export type ExchangeInput<T> = {
 
 export type ExchangeCurrencyType = "COIN" | "CASH" | "BANK";
 
-export type ExchangeNetwork = {
-  code: string;
-  id: number;
-  title: string;
-  title_network: string;
-  type: ExchangeCurrencyType;
-  weight: number;
-};
 
-export type ExchangeBank = Network
+
 
 export type ExchangeState = {
-  currenciesSell: GroupedCurrency[];
-  currenciesBuy: GroupedCurrency[];
-  selectedCurrencySell: GroupedCurrency | null;
-  selectedCurrencyBuy: GroupedCurrency | null;
+  currenciesSell: Currency[];
+  currenciesBuy: Currency[];
+  selectedCurrencySell: Currency | null;
+  selectedCurrencyBuy: Currency | null;
   selectedCurrencySellType: ExchangeCurrencyType | null;
   selectedCurrencyBuyType: ExchangeCurrencyType | null;
   currencyBuyTypeOptions: ExchangeTypeItemProps[] | null;
   cities: City[] | null;
   selectedCity: ExchangeInput<City | null>;
-  networks: ExchangeNetwork[] | null;
-  selectedNetwork: ExchangeInput<ExchangeNetwork | null>;
-  banks: ExchangeBank[] | null;
-  selectedBank: ExchangeInput<ExchangeBank | null>;
+  networks: Network[] | null;
+  selectedNetwork: ExchangeInput<Network | null>;
+  banks: Bank[] | null;
+  selectedBank: ExchangeInput<Bank | null>;
   cardNumber: ExchangeInput<string | null>;
   walletAddress: ExchangeInput<string | null>;
   areErrorsVisible: boolean;
   areErrors: boolean;
   activeInputType: CurrencyPosition | null;
-  exchangeRate: ExchangeRate | null;
+  exchangeRate: Rate | null;
   currencySellAmount: ExchangeInput<number | null>;
   currencyBuyAmount: ExchangeInput<number | null>;
 };
@@ -112,21 +103,21 @@ export const exchangeSlice = createSlice({
   name: "exchange",
   initialState,
   reducers: {
-    setCurrenciesSell: (state, action: PayloadAction<GroupedCurrency[]>) => {
+    setCurrenciesSell: (state, action: PayloadAction<Currency[]>) => {
       state.currenciesSell = action.payload;
     },
-    setCurrenciesBuy: (state, action: PayloadAction<GroupedCurrency[]>) => {
+    setCurrenciesBuy: (state, action: PayloadAction<Currency[]>) => {
       state.currenciesBuy = action.payload;
     },
     setSelectedCurrencySell: (
       state,
-      action: PayloadAction<GroupedCurrency | null>
+      action: PayloadAction<Currency | null>
     ) => {
       state.selectedCurrencySell = action.payload;
     },
     setSelectedCurrencyBuy: (
       state,
-      action: PayloadAction<GroupedCurrency | null>
+      action: PayloadAction<Currency | null>
     ) => {
       state.selectedCurrencyBuy = action.payload;
     },
@@ -159,19 +150,19 @@ export const exchangeSlice = createSlice({
     setSelectedCityError: (state, action: PayloadAction<string | null>) => {
       state.selectedCity.error = action.payload;
     },
-    setNetworks: (state, action: PayloadAction<ExchangeNetwork[] | null>) => {
+    setNetworks: (state, action: PayloadAction<Network[] | null>) => {
       state.networks = action.payload;
     },
-    setSelectedNetworkValue: (state, action: PayloadAction<ExchangeNetwork | null>) => {
+    setSelectedNetworkValue: (state, action: PayloadAction<Network | null>) => {
       state.selectedNetwork.value = action.payload;
     },
     setSelectedNetworkError: (state, action: PayloadAction<string | null>) => {
       state.selectedNetwork.error = action.payload;
     },
-    setBanks: (state, action: PayloadAction<ExchangeBank[] | null>) => {
+    setBanks: (state, action: PayloadAction<Bank[] | null>) => {
       state.banks = action.payload;
     },
-    setSelectedBankValue: (state, action: PayloadAction<ExchangeBank | null>) => {
+    setSelectedBankValue: (state, action: PayloadAction<Bank | null>) => {
       state.selectedBank.value = action.payload;
     },
     setSelectedBankError: (state, action: PayloadAction<string | null>) => {
@@ -198,7 +189,7 @@ export const exchangeSlice = createSlice({
     setActiveInputType: (state, action: PayloadAction<CurrencyPosition | null>) => {
       state.activeInputType = action.payload;
     },
-    setExchangeRate: (state, action: PayloadAction<ExchangeRate | null>) => {
+    setExchangeRate: (state, action: PayloadAction<Rate | null>) => {
       console.log(action.payload)
       state.exchangeRate = action.payload;
     },

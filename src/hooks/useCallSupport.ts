@@ -1,13 +1,11 @@
-import { useCallingOperatorMutation } from "@/api/api";
 import { useAppSelector } from "@/redux/hooks";
-import { useTelegramWebApp } from "@/hooks/useTelegramWebApp";
-import { selectCurrencyTypes } from "@/redux/selectors";
+
+import { usePostCallingOperatorMutation } from "@/redux/api/cryptusApi";
 
 export const useCallSupport = () => {
-  const [callOperator] = useCallingOperatorMutation();
-  const userId = useAppSelector((state) => state.userData.userId);
+  const [callOperator] = usePostCallingOperatorMutation();
+  const userId = useAppSelector((state) => state.user.id);
   const isAppReady = useAppSelector((state) => state.ui.isAppReady);
-  const {exchangeRate} = useAppSelector(state => state.exchange);
   
   const callSupport = async () => {
     if (!isAppReady) return;
@@ -18,8 +16,9 @@ export const useCallSupport = () => {
 
     try {
       await callOperator({
-        user_id: userId,
-        type_direction: exchangeRate?.direction.includes("CASH") ? "CASH" : "CASHLESS",
+        body: {
+          user_id: userId,
+        }
       }).unwrap();
 
       // Закрываем Telegram WebApp

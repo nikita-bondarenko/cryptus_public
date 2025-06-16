@@ -36,32 +36,32 @@ const Page: React.FC = () => {
     {
       title: "Я отдал",
       currency: {
-        icon: findIcon(calculateCurrencyTypeFromDirection(request.direction as Direction, "given"),request.currency_give),
-        name: request.currency_give_name,
-        value: valueMask(roundTo8(request.amount_give)),
-        type: calculateCurrencyTypeFromDirection(request.direction as Direction, "given"),
-        typeLabel: calculateCurrencyTypeFromDirection(request.direction as Direction, "given") === "CASH" ? "Наличные" : request.currency_give_network || '',
+        icon: request.currency_give?.icon || '',
+        name: request.currency_give?.name || '',
+        value: valueMask(roundTo8(request.currency_give?.amount || 0)),
+        type: request.currency_give?.network || '',
+        typeLabel: request.currency_give?.network || "Наличные" ,
         position: "given",
 
       },
       rate: calculateRate({
-        course: request.course,
-        currencyGive: request.currency_give_name,
-        currencyGet: request.currency_get_name,
+        course: request.course || 0,
+        currencyGive: request.currency_give?.name || '',
+        currencyGet: request.currency_get?.name || '',
       }),
     },
     {
       title: "Я получил",
   
       currency: {
-        icon: findIcon(calculateCurrencyTypeFromDirection(request.direction as Direction, "received"),request.currency_get),
-        name: request.currency_get_name,
-        value: valueMask(roundTo8(request.amount_get)),
-        type: calculateCurrencyTypeFromDirection(request.direction as Direction, "received"),
-        typeLabel: calculateCurrencyTypeFromDirection(request.direction as Direction, "received") === "CASH" ? "Наличные" : request.currency_get_network || '',
+        icon: request.currency_get?.icon || '',
+        name: request.currency_get?.name || '',
+        value: valueMask(roundTo8(request.currency_get?.amount || 0)),
+        type: request.currency_get?.network || '',
+        typeLabel: request.currency_get?.network || "Наличные" ,
         position: "received",
         wayDetails: calculateWayDetails({
-          direction: request.direction as Direction,
+          direction: request.currency_get?.network || '',
           position: "received",
           type: calculateCurrencyTypeFromDirection(request.direction as Direction, "received"),
           address: request.get_to,
