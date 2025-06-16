@@ -1,4 +1,4 @@
-import { CurrencyType } from "@/components/request/RequestDetails";
+import { CurrencyType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export type Direction = "COIN - BANK" | "COIN - CASH" | "BANK - COIN" | "CASH - COIN";
 type Position = "given" | "received";

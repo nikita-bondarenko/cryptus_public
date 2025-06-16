@@ -27,7 +27,7 @@ export const validateAllFields = (
       value: position === "given" ? currencySellAmount.value : currencyBuyAmount.value,
       inputType: "amount",
       position,
-      minValue: exchangeRate?.min_amount || 0,
+      minValue: exchangeRate?.currency_give_min_value || 0,
     });
 
     const walletAddressError = validateExchangeInput({
@@ -44,7 +44,7 @@ export const validateAllFields = (
     }
     dispatch(setWalletAddressError(walletAddressError));
 
-    // console.log('amountError, walletAddressError',amountError, walletAddressError);
+    // // console.log('amountError, walletAddressError',amountError, walletAddressError);
 
     hasErrors = !!(amountError || walletAddressError);
   }
@@ -82,7 +82,7 @@ export const validateAllFields = (
     }
     dispatch(setSelectedBankError(bankError));
     dispatch(setCardNumberError(cardNumberError));
-    // console.log('amountError, bankError, cardNumberError',amountError, bankError, cardNumberError, banks);
+    // // console.log('amountError, bankError, cardNumberError',amountError, bankError, cardNumberError, banks);
 
     hasErrors = hasErrors || !!(amountError || bankError || cardNumberError);
   }
@@ -91,6 +91,8 @@ export const validateAllFields = (
   if (selectedCurrencySellType === "CASH" || selectedCurrencyBuyType === "CASH") {
     const { currencySellAmount, currencyBuyAmount, selectedCity } = state.exchange;
     const position = selectedCurrencySellType === "CASH" ? "given" : "received";
+
+    
 
     const amountError = validateExchangeInput({
       value: position === "given" ? currencySellAmount.value : currencyBuyAmount.value,
@@ -112,7 +114,7 @@ export const validateAllFields = (
       dispatch(setCurrencyBuyAmountError(amountError));
     }
     dispatch(setSelectedCityError(cityError));
-    // console.log('amountError, cityError',amountError, cityError);
+    // // console.log('amountError, cityError',amountError, cityError);
 
     hasErrors = hasErrors || !!(amountError || cityError);
   }

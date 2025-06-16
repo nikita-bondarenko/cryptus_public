@@ -20,7 +20,8 @@ export const uiSlice = createSlice({
     setIsLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
     },
-    setExchangeId(state, action: PayloadAction<number | null>) {
+    setExchangeId(state, action: PayloadAction<number | null | undefined>) {
+      if (!action.payload) return
       state.exchangeId = action.payload;
     },
     setIsAppReady(state, action: PayloadAction<boolean>) {

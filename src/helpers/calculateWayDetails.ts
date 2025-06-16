@@ -1,4 +1,4 @@
-import { CurrencyType } from "@/components/request/RequestDetails";
+import { CurrencyType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { Direction } from "./calculateCurrencyTypeFromDirection";
 
 type WayDetails = {

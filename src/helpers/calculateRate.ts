@@ -1,5 +1,4 @@
-import { Rate } from "@/components/ui/SectionHeading";
-import { translateCurrency } from "./translateCurrency";
+import { HeadingRate } from "@/components/ui/SectionHeading";
 
 
 type CalculateRateProps = {
@@ -12,7 +11,7 @@ export const calculateRate = ({
   course,
   currencyGive,
   currencyGet,
-}: CalculateRateProps): Rate => {
+}: CalculateRateProps): HeadingRate => {
   // Вычисляем базовый курс
   const baseRate = course;
 

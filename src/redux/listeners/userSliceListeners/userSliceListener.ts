@@ -6,13 +6,19 @@ import { cryptusApi } from "@/redux/api/cryptusApi";
 export const userSliceListener = createListenerMiddleware();
 
 userSliceListener.startListening({
-    actionCreator: setUserId,
-    effect: async (action, listenerApi) => {
-        const { data } = await listenerApi.dispatch(cryptusApi.endpoints.userList.initiate({
-            userId: action.payload,
-        }));
-        if(data) {
-            listenerApi.dispatch(setUserData(data));
-        }
+  actionCreator: setUserId,
+  effect: async (action, listenerApi) => {
+    const { data } = await listenerApi.dispatch(
+      cryptusApi.endpoints.userList.initiate(
+        {
+          userId: action.payload,
+        },
+        { forceRefetch: true }
+      )
+    );
+    // console.log("userSliceListener", data);
+    if (data) {
+      listenerApi.dispatch(setUserData(data));
     }
-})  
+  },
+});

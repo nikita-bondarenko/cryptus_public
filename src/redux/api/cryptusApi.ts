@@ -56,9 +56,9 @@ const injectedRtkApi = api.injectEndpoints({
       ExchangesCreateApiArg
     >({
       query: (queryArg) => ({
-        url: `/exchanges/`,
+        url: `/exchange/`,
         method: "POST",
-        body: queryArg.body,
+        body: queryArg,
       }),
     }),
     faqsList: build.query<FaqsListApiResponse, FaqsListApiArg>({
@@ -89,7 +89,7 @@ const injectedRtkApi = api.injectEndpoints({
       query: () => ({ url: `/jivo-messages/`, method: "POST" }),
     }),
     rateList: build.query<RateListApiResponse, RateListApiArg>({
-      query: (queryArg) => ({ url: `/rate/` }),
+      query: (queryArg) => ({ url: `/rate/`, params: queryArg }),
     }),
     userList: build.query<UserListApiResponse, UserListApiArg>({
       query: (queryArg) => ({

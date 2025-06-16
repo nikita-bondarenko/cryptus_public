@@ -1,15 +1,16 @@
 import { RootState } from "../store";
-import { CurrencyType, RequestDetailsProps } from "@/components/request/RequestDetails";
+import { RequestDetailsProps } from "@/components/request/RequestDetails";
 import { calculateRate } from "@/helpers/calculateRate";
 import { findIcon } from "@/helpers/findIcon";
 import { valueMask } from "@/helpers/valueMask";
 import { createSelector } from "@reduxjs/toolkit";
 import { roundTo8 } from "../helpers";
-import { CreateExchangeParams, GroupedCurrency } from "@/api/types";
-import { Rate } from "../slices/exchangeInput/types";
-import { ExchangeBank, ExchangeNetwork } from "../slices/exchangeSlice/exchangeSlice";
-import { calculateBank, translateBanks } from "../helpers/translateBanks";
+
 import { selectBankValue, selectNetValue } from ".";
+import {
+
+  ExchangesCreateApiArg,
+} from "../api/types";
 
 export const selectExchangeDetails = createSelector(
   (state: RootState) => state.exchange.selectedCurrencySellType,
@@ -43,26 +44,39 @@ export const selectExchangeDetails = createSelector(
     if (selectedCurrencySellType === "COIN") {
       give = {
         title: "Я отдаю",
-        rate: calculateRate({course: exchangeRate?.course || 0, currencyGive: selectedCurrencySell?.code || selectedCurrencySell?.title || "", currencyGet: selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || ""}) as Rate,
+        rate: calculateRate({
+          course: exchangeRate?.course || 0,
+          currencyGive: selectedCurrencySell?.name || "",
+          currencyGet: selectedCurrencyBuy?.name || "",
+        }),
         currency: {
-          icon: findIcon("COIN", selectedCurrencySell?.code || selectedCurrencySell?.title || "") || "crypt.svg",
-          name: selectedCurrencySell?.code || selectedCurrencySell?.title || "",
+          icon:
+          selectedCurrencySell?.icon || '' ,
+          name: selectedCurrencySell?.name || "",
           type: "COIN",
           typeLabel: selectedNetwork?.name || "",
-          value: currencySellAmount.value ? valueMask(roundTo8(currencySellAmount.value)) : "",
+          value: currencySellAmount.value
+            ? valueMask(roundTo8(currencySellAmount.value))
+            : "",
           position: "given",
         },
       };
     } else if (selectedCurrencySellType === "BANK") {
       give = {
         title: "Я отдаю",
-        rate: calculateRate({course: exchangeRate?.course || 0, currencyGive: selectedCurrencySell?.code || selectedCurrencySell?.title || "", currencyGet: selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || ""}) as Rate,
+        rate: calculateRate({
+          course: exchangeRate?.course || 0,
+          currencyGive: selectedCurrencySell?.name || "",
+          currencyGet: selectedCurrencyBuy?.name || "",
+        }),
         currency: {
-          icon: findIcon("BANK", selectedCurrencySell?.code || selectedCurrencySell?.title || "") || "",
-          name: selectedCurrencySell?.code || selectedCurrencySell?.title || "",
+          icon: selectedCurrencySell?.icon || "",
+          name: selectedCurrencySell?.name || "",
           type: "BANK",
           typeLabel: selectedBank?.name || "",
-          value: currencySellAmount.value ? valueMask(roundTo8(currencySellAmount.value)) : "",
+          value: currencySellAmount.value
+            ? valueMask(roundTo8(currencySellAmount.value))
+            : "",
           position: "given",
           wayDetails: cardNumber.value
             ? { title: "Карта отправления", value: cardNumber.value }
@@ -72,16 +86,22 @@ export const selectExchangeDetails = createSelector(
     } else if (selectedCurrencySellType === "CASH") {
       give = {
         title: "Я отдаю",
-        rate: calculateRate({course: exchangeRate?.course || 0, currencyGive: selectedCurrencySell?.code || selectedCurrencySell?.title || "", currencyGet: selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || ""}) as Rate,
+        rate: calculateRate({
+          course: exchangeRate?.course || 0,
+          currencyGive: selectedCurrencySell?.name || "",
+          currencyGet: selectedCurrencyBuy?.name || "",
+        }),
         currency: {
-          icon: findIcon("CASH", selectedCurrencySell?.code || selectedCurrencySell?.title || "") || "",
-          name: selectedCurrencySell?.code || selectedCurrencySell?.title || "",
+          icon: selectedCurrencySell?.icon || "",
+          name: selectedCurrencySell?.name || "",
           type: "CASH",
           typeLabel: "Наличные",
-          value: currencySellAmount.value ? valueMask(roundTo8(currencySellAmount.value)) : "",
+          value: currencySellAmount.value
+            ? valueMask(roundTo8(currencySellAmount.value))
+            : "",
           position: "given",
-          wayDetails: selectedCity?.value?.title
-            ? { title: "Город отправления", value: selectedCity.value.title }
+          wayDetails: selectedCity?.value?.name
+            ? { title: "Город отправления", value: selectedCity.value.name }
             : undefined,
         },
       };
@@ -93,11 +113,13 @@ export const selectExchangeDetails = createSelector(
       receive = {
         title: "Я получаю",
         currency: {
-          icon: findIcon("COIN", selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "") || "crypt.svg",
-          name: selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "",
+          icon: selectedCurrencyBuy?.icon || "",
+          name: selectedCurrencyBuy?.name || "",
           type: "COIN",
           typeLabel: selectedNetwork?.name || "",
-          value: currencyBuyAmount.value ? valueMask(roundTo8(currencyBuyAmount.value)) : "",
+          value: currencyBuyAmount.value
+            ? valueMask(roundTo8(currencyBuyAmount.value))
+            : "",
           position: "received",
           wayDetails: walletAddress.value
             ? { title: "Адрес получения", value: walletAddress.value }
@@ -108,11 +130,13 @@ export const selectExchangeDetails = createSelector(
       receive = {
         title: "Я получаю",
         currency: {
-          icon: findIcon("BANK", selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "") || "",
-          name: selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "",
+          icon: selectedCurrencyBuy?.icon || "",
+          name: selectedCurrencyBuy?.name || "",
           type: "BANK",
           typeLabel: selectedBank?.name || "",
-          value: currencyBuyAmount.value ? valueMask(roundTo8(currencyBuyAmount.value)) : "",
+          value: currencyBuyAmount.value
+            ? valueMask(roundTo8(currencyBuyAmount.value))
+            : "",
           position: "received",
           wayDetails: cardNumber.value
             ? { title: "Карта получения", value: cardNumber.value }
@@ -123,14 +147,16 @@ export const selectExchangeDetails = createSelector(
       receive = {
         title: "Я получаю",
         currency: {
-          icon: findIcon("CASH", selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "") || "",
-          name: selectedCurrencyBuy?.code || selectedCurrencyBuy?.title || "",
+          icon: selectedCurrencyBuy?.icon || "",
+          name: selectedCurrencyBuy?.name || "",
           type: "CASH",
           typeLabel: "Наличные",
-          value: currencyBuyAmount.value ? valueMask(roundTo8(currencyBuyAmount.value)) : "",
+          value: currencyBuyAmount.value
+            ? valueMask(roundTo8(currencyBuyAmount.value))
+            : "",
           position: "received",
-          wayDetails: selectedCity?.value?.title
-            ? { title: "Город получения", value: selectedCity.value.title }
+          wayDetails: selectedCity?.value?.name
+            ? { title: "Город получения", value: selectedCity.value.name }
             : undefined,
         },
       };
@@ -141,62 +167,28 @@ export const selectExchangeDetails = createSelector(
 );
 
 export const selectExchangeCreateData = createSelector(
-  (state: RootState) => state.exchange.selectedCurrencySellType,
-  (state: RootState) => state.exchange.selectedCurrencyBuyType,
-  (state: RootState) => state.exchange.exchangeRate,
-  (state: RootState) => state.exchange.selectedCurrencySell,
-  (state: RootState) => state.exchange.selectedCurrencyBuy,
   (state: RootState) => state.exchange.currencySellAmount,
   (state: RootState) => state.exchange.currencyBuyAmount,
-  (state: RootState) => state.exchange.selectedCity,
   (state: RootState) => state.exchange.walletAddress,
-  (state: RootState) => state.exchange.selectedBank,
   (state: RootState) => state.exchange.cardNumber,
-  (state: RootState) => state.exchange.selectedNetwork,
-  (state: RootState) => state.userData.userId,
+  (state: RootState) => state.user.id,
   (state: RootState) => state.exchange.exchangeRate?.id,
   (
-    selectedCurrencySellType,
-    selectedCurrencyBuyType,
-    exchangeRate,
-    selectedCurrencySell,
-    selectedCurrencyBuy,
     currencySellAmount,
     currencyBuyAmount,
-    selectedCity,
     walletAddress,
-    selectedBank,
     cardNumber,
-    selectedNetwork,
     userId,
     exchangeRateId
-  ): CreateExchangeParams => {
+  ): ExchangesCreateApiArg => {
     return {
-      currency_give: getCurrencyTitle({currency: selectedCurrencySell, network: selectedNetwork.value, currencyType: selectedCurrencySellType, bank: selectedBank.value}),
-      amount_give: currencySellAmount.value ,
-      currency_get: getCurrencyTitle({currency: selectedCurrencyBuy, network: selectedNetwork.value, currencyType: selectedCurrencyBuyType, bank: selectedBank.value}),
-      amount_get: currencyBuyAmount.value,
-      course: exchangeRate?.course,
-      direction: exchangeRate?.direction,
-      course_title: exchangeRate?.course_title,
-      city: selectedCity?.value?.title,
-      get_to: selectedCurrencyBuyType === "BANK" ? cardNumber.value : walletAddress.value,
-      user_id: userId,
-      direction_id: exchangeRateId
+      user_id: userId || -1,
+      direction_id: exchangeRateId || -1,
+      currency_give_amount: currencySellAmount.value || -1,
+      currency_get_amount: currencyBuyAmount.value || -1,
+      card: cardNumber.value || "",
+      wallet: walletAddress.value || "",
     };
   }
-); 
-
-const getCurrencyTitle = ({currency, network, currencyType, bank}: {currency: GroupedCurrency | null, network: ExchangeNetwork | null, currencyType: CurrencyType | null, bank: ExchangeBank | null}) => {
-  if (currency?.directions.length === 0) {
-    return currency?.title;
-  }
-  if (currencyType === "COIN") {
-    return network?.title;
-  }
-  if (currencyType === "BANK") {
-    return bank?.title;
-  }
-  return currency?.title;
-}
+);
 

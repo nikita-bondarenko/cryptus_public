@@ -1,10 +1,8 @@
 import clsx from "clsx";
 import React, { memo } from "react";
+import { Network } from "@/redux/api/types";
 
-export type CryptoNetOption = {
-  name:string ;
-  value: number;
-};
+export type CryptoNetOption = Network;
 
 export type CryptoNetSelectProps = {
   options: CryptoNetOption[];
@@ -24,7 +22,7 @@ const CryptoNetSelect: React.FC<CryptoNetSelectProps> = memo(
               "border  border-neutral-gray-200 rounded-full bg-white text-neutral-gray-400 text-13 leading-normal duration-500 px-20 py-9",
               {
                 "[&]:border-primary-blue [&]:bg-primary-blue [&]:text-white pointer-events-none":
-                  value?.value === option?.value,
+                  value?.id === option?.id,
               }
             )}
           >

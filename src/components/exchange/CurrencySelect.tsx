@@ -1,22 +1,19 @@
 import React, { memo, useState } from "react";
 import Icon from "../helpers/Icon";
 import BaseSelect from "../ui/BaseSelect";
+import { Currency } from "@/redux/api/types";
 
-export type CurrencyOption = {
-  value: number;
-  icon: string;
-  name: string;
-};
+
 
 export type CurrencySelectProps = {
-  options: CurrencyOption[];
-  onChange: (value: CurrencyOption) => void;
-  value: CurrencyOption;
+  options: Currency[];
+  onChange: (value: Currency) => void;
+  value: Currency;
 };
 
-const ButtonDisplay = memo(({ icon, name }: CurrencyOption) => (
+const ButtonDisplay = memo(({ icon, name }: Currency) => (
   <span className="button-display flex items-start gap-6 overflow-hidden text-ellipsis text-16 ">
-    <Icon src={icon} className="w-24 h-24 shrink-0" />
+    <Icon src={icon} server className="w-24 h-24 shrink-0" />
     <span dangerouslySetInnerHTML={{__html:name}}></span>
   </span>
 ));
@@ -25,7 +22,6 @@ ButtonDisplay.displayName = "ButtonDisplay";
 
 const CurrencySelect = memo(({ options, onChange, value: selected }: CurrencySelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <BaseSelect
       options={options}
@@ -67,7 +63,7 @@ const CurrencySelect = memo(({ options, onChange, value: selected }: CurrencySel
       renderOption={({ option, onClick }) => (
         <button
           className="shrink-0 px-16 py-4 text-left w-full"
-          key={option.value}
+            key={option.id}
           onClick={onClick}
         >
           <ButtonDisplay {...option} />

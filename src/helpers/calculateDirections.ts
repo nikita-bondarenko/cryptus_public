@@ -1,5 +1,5 @@
-import { Directions, DirectionType } from "@/api/types";
-import { CurrencyType } from "@/components/request/RequestDetails";
+import { DirectionType } from "@/redux/api/types";
+import { CurrencyType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export const calculateDirections = (giveType: CurrencyType, getType: CurrencyType) : DirectionType => {
     if (giveType === "COIN" && getType === "BANK") {

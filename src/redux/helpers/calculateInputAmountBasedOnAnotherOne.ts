@@ -1,51 +1,18 @@
+import { HeadingRate } from "@/components/ui/SectionHeading";
+import { roundTo8 } from "./roundTo8";
+import { Rate } from "../api/types";
 
-import { setCryptoInputAmountValue } from "../slices/exchangeInput/exchangeInputSlice";
-import { RootState, AppDispatch } from "../store";
-import { dispatchCrypto } from "./dispatchCrypto";
-import { dispatchNonCrypto } from "./dispatchNonCrypto";
-import { getCurrencyTypeFromAction } from "./getCurrencyTypeFromAction";
-import { ValidateAmountInputProps } from "./validateAmountInput";
+export const calculateInputAmountBasedOnAnotherOne = (
+  amount: number | null,
+  rate: Rate | null,
+  position: "given" | "received"
+): number | null => {
+  if (!amount || !rate) return null;
 
-export type CalculateInputAmountBasedOnAnotherOneProps = ValidateAmountInputProps;
+  const { course } = rate;
+  const actualRate = course;
 
-export const calculateInputAmountBasedOnAnotherOne = ({
-  action,
-  listenerApi,
-}: CalculateInputAmountBasedOnAnotherOneProps) => {
-  const state = listenerApi.getState() as RootState;
-  const dispatch = listenerApi.dispatch as AppDispatch;
-
-  const { selectedGiveType, selectedReceieveType } = state.exchangeType;
-  const rate = state.exchangeInput.rate;
-  const value = action.payload as number;
-  const activeInputType = state.exchangeInput.activeInputType;
-  const sourseType = getCurrencyTypeFromAction(action.type);
-
-  // Validate only if the input type is currently selected
-
-  if (activeInputType !== sourseType) {
-    return;
-  }
-
-  // // console.log("value", value);
-  // // console.log("rate", rate);
-  // // console.log("action.type === setCryptoInputAmountValue.type", action.type === setCryptoInputAmountValue.type);
-
-  // if (action.type === setCryptoInputAmountValue.type) {
-  //   dispatchNonCrypto({
-  //     selectedReceiveType: selectedReceieveType,
-  //     selectedGiveType,
-  //     value,
-  //     dispatch,
-  //     rate,
-  //   });
-  // } else {
-  //   dispatchCrypto({
-  //     selectedReceiveType: selectedReceieveType,
-  //     selectedGiveType,
-  //     value,
-  //     dispatch,
-  //     rate,
-  //   });
-  // }
+  // // console.log(amount, course);
+  const res = position === "given" ? amount * actualRate : amount / actualRate;
+  return roundTo8(res);
 };

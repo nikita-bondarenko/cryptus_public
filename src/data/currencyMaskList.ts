@@ -1,4 +1,3 @@
-import { CurrencyOption } from "@/components/exchange/CurrencySelect";
 
 export const currencyMaskList: {icon: string, label: string, title: string}[] = [
     // Bank currencies

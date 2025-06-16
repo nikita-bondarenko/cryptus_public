@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { CurrencyPosition } from "../request/RequestDetails";
 import CurrencyInput from "./CurrencyInput";
-import { CurrencyOption } from "./CurrencySelect";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   selectSectionHeadingProps,
@@ -22,6 +21,7 @@ import CryptoNetSelect, { CryptoNetOption } from "./CryptoNetSelect";
 import { useExchangeInput } from "@/hooks/useExchangeInput";
 import { setSelectedCurrencySell, setSelectedCurrencyBuy, setActiveInputType, setSelectedNetworkValue, setWalletAddressValue } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import clsx from "clsx";
+import { Currency } from "@/redux/api/types";
 
 export type ExchangeCryptoInputProps = {
   position: CurrencyPosition;
@@ -45,7 +45,7 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
   );
 
   const currencyOptions = useAppSelector(selectCurrencyOptions(position));
- 
+  // console.log(currencyOptions)
   const netsOptions = useAppSelector(selectNetsOptions);
   const networks = useAppSelector(state => state.exchange.networks);
   const netValue = useAppSelector(selectNetValue);
@@ -68,7 +68,7 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
 
 
   const handleNetChange = (net: CryptoNetOption) => {
-    const network = networks?.find((network) => network.id === net.value);
+    const network = networks?.find((network) => network.id === net.id);
     if (network) {
       dispatch(setSelectedNetworkValue(network));
     }
@@ -90,7 +90,7 @@ const ExchangeCryptoInput: React.FC<ExchangeCryptoInputProps> = memo(({ position
           inputValue={globalStateValue}
           onInputChange={onInputChange}
           onSelectChange={onSelectChange}
-          selectValue={selectedCurrency as CurrencyOption}
+          selectValue={selectedCurrency as Currency}
           options={currencyOptions || []}
           error={!!valueError && areErrorsVisible}
         />

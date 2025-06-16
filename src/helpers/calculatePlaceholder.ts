@@ -1,11 +1,13 @@
-import { CurrencyPosition, CurrencyType } from "@/components/request/RequestDetails";
+import { CurrencyPosition } from "@/components/request/RequestDetails";
+import { HeadingRate } from "@/components/ui/SectionHeading";
+import { Rate } from "@/redux/api/types";
 import { roundTo8 } from "@/redux/helpers";
-import { Rate } from "@/redux/slices/exchangeInput/types";
+import { CurrencyType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 type calculatePlaceholderProps = {
   position: CurrencyPosition;
   minValue: number;
-  rate: Rate | null;
+  rate: HeadingRate | null;
   currencyType: CurrencyType
 };
 export const calculatePlaceholder = ({

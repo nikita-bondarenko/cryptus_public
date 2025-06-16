@@ -8,17 +8,20 @@ export type PostCallingOperatorApiArg = {
     /** ID пользователя */
     user_id: number;
   };
-};  
+};
+export type City = SecondaryPropertiesOption;
+export type Bank = SecondaryPropertiesOption;
+export type Network = SecondaryPropertiesOption;
+export type Currency = {
+  id: number;
+  icon: string;
+  name: string;
+  cities: City[];
+  banks: Bank[];
+  networks: Network[];
+};
 
-
-export type GetCurrenciesGetApiResponse =
-  /** status 200 Список доступных направлений обмена */ {
-    id: number;
-    name: string;
-    cities?: object[];
-    banks?: object[];
-    networks?: object[];
-  }[];
+export type GetCurrenciesGetApiResponse = Currency[];
 export type GetCurrenciesGetApiArg = {
   /** Идентификатор отдаваемой валюты */
   giveCurrencyId: number;
@@ -27,22 +30,10 @@ export type GetCurrenciesGetApiArg = {
 };
 
 type SecondaryPropertiesOption = {
-    name: string;
-    /** ID сети */
-    id: number;
-}
-
-export type City = SecondaryPropertiesOption
-export type Bank = SecondaryPropertiesOption
-export type Network = SecondaryPropertiesOption
-export type Currency = {
-    id: number;
-    icon: string;
-    name: string;
-    cities: City[];
-    banks: Bank[];
-    networks: Network[];
-  }
+  name: string;
+  /** ID сети */
+  id: number;
+};
 
 export type GetDirectionInitialDataByDirectionTypeApiResponse =
   /** status 200 Успешный ответ */ {
@@ -59,7 +50,7 @@ export type GetDirectionInitialDataByDirectionTypeApiResponse =
       city: City;
       bank: Bank;
       /** Тип направления обмена */
-      direction_type: string;
+      direction_type: DirectionType;
       currency_give: Currency;
       currency_get: Currency;
     };
@@ -83,33 +74,15 @@ export type PostExchangesOtherApiArg = {
 };
 export type ExchangesCreateApiResponse = /** status 201 Успешное создание */ {
   status?: string;
-  id?: number;
+  exchange_id?: number;
 };
 export type ExchangesCreateApiArg = {
-  body: {
-    /** ID пользователя */
     user_id: number;
-    /** ID направления */
-    direction_id: number;
-    /** Валюта, которую отдаете */
-    currency_give: string;
-    /** Сумма, которую отдаете */
-    amount_give: number;
-    /** Валюта, которую получаете */
-    currency_get: string;
-    /** Сумма, которую получаете */
-    amount_get: number;
-    /** Курс обмена */
-    course: number;
-    /** Направление обмена */
-    direction: string;
-    /** Название курса */
-    course_title: string;
-    /** Город */
-    city?: string;
-    /** Куда получить */
-    get_to?: string;
-  };
+    direction_id: number
+    currency_give_amount: number
+    currency_get_amount: number
+    card?: string
+    wallet?: string
 };
 export type FaqsListApiResponse = /** status 200 Успешный ответ */ {
   /** Сортировка */
@@ -135,23 +108,29 @@ export type GetGetRequisitesApiArg = {
   typeReq?: string;
 };
 
+export type DirectionType =
+  | "COIN - BANK"
+  | "COIN - CASH"
+  | "BANK - COIN"
+  | "CASH - COIN"
+
 export type Rate = {
-    /** ID направления обмена */
-    id: number;
-    /** Текущий курс обмена */
-    course: number;
-    /** Формат отображаемого курса */
-    course_view: string;
-    /** Минимальная сумма для обмена */
-    currency_give_min_value: number;
-    network: Network;
-    city: City;
-    bank: Bank;
-    /** Тип направления обмена */
-    direction_type: string;
-    currency_give: Currency;
-    currency_get: Currency;
-  }
+  /** ID направления обмена */
+  id: number;
+  /** Текущий курс обмена */
+  course: number;
+  /** Формат отображаемого курса */
+  course_view: string;
+  /** Минимальная сумма для обмена */
+  currency_give_min_value: number;
+  network: Network;
+  city: City;
+  bank: Bank;
+  /** Тип направления обмена */
+  direction_type: DirectionType;
+  currency_give: Currency;
+  currency_get: Currency;
+};
 export type GetJivoMessagesApiResponse = unknown;
 export type GetJivoMessagesApiArg = void;
 export type PostJivoMessagesApiResponse = unknown;
@@ -160,8 +139,12 @@ export type RateListApiResponse = /** status 200 Успешный ответ */ 
   rate?: Rate;
 };
 export type RateListApiArg = {
-  /** Тип направления обмена, состоящий из двух частей ('тип-отдаваемой-валюты - тип-получаемой-валюты') */
-  directionType: string;
+  direction_type: DirectionType;
+  currency_give_id: number;
+  currency_get_id: number;
+  network_id?: number;
+  bank_id?: number;
+  city_id?: number;
 };
 
 export type RequestCurrency = {
@@ -169,18 +152,24 @@ export type RequestCurrency = {
     name?: string;
     icon?: string;
     network?: string;
-  }
+    bank?: string
+  };
 
 export type Request = {
     id?: string;
     date?: string;
     course?: number;
+    wallet?: string
+    direction_type: DirectionType
+    card?: string
+    city?: string
     currency_give?: RequestCurrency;
     currency_get?: RequestCurrency;
-  }
+  };
 export type UserListApiResponse =
   /** status 200 Информация о пользователе и его транзакциях */ {
     user_data?: {
+      profile_picture?: string;
       name?: string;
       email?: string;
       phone?: string;

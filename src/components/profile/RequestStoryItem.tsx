@@ -18,8 +18,10 @@ const RequestStoryItem: React.FC<RequestStoryItemProps> = memo(({ data }) => {
   const dispatch = useAppDispatch();
   
   const goToRequestDetails = () => {
+    // console.log('goToRequestDetails',data)
 
     dispatch(setRequestDetails(data));
+
     router.push("/profile/request");
   };
   return (

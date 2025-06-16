@@ -1,22 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Bank, DirectionType, Request } from "../api/types";
 
-export type RequestDetails = {
-  id?: string;
-  date?: string;
-  course?: number;
-  currency_give?: {
-    amount?: number;
-    name?: string;
-    icon?: string;
-    network?: string;
-  };
-  currency_get?: {
-    amount?: number;
-    name?: string;
-    icon?: string;
-    network?: string;
-  };
-}
+export type RequestDetails = Request
 
 
 type RequestDetailsState = {
@@ -28,9 +13,8 @@ export const requestDetailsSlice = createSlice({
   initialState: { data: null } as RequestDetailsState,
   reducers: {
     setRequestDetails: (state, action: PayloadAction<RequestDetails>) => {
-        if(action.payload) {
             state.data = action.payload;
-        }
+     
     },
   },
 });

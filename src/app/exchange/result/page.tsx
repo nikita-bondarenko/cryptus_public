@@ -5,19 +5,23 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Notification } from "@/components/ui/Notification";
-import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setIsLoading } from "@/redux/slices/uiSlice";
-import { clearAll, setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import {
+  clearAll,
+  setSelectedCurrencyBuyType,
+  setSelectedCurrencySellType,
+} from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { useCallSupport } from "@/hooks/useCallSupport";
-
+import { setUserId } from "@/redux/slices/userSlice/userSlice";
 
 export default function ExchangeResultPage() {
   const [copied, setCopied] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const exchangeId = useAppSelector(state => state.ui.exchangeId);
+  const exchangeId = useAppSelector((state) => state.ui.exchangeId);
+  const userId = useAppSelector((state) => state.user.id);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(exchangeId?.toString() || "");
@@ -26,20 +30,28 @@ export default function ExchangeResultPage() {
   };
 
   const handleGoHome = () => {
-
     router.push("/");
   };
 
-  const {callSupport} = useCallSupport();
+  const { callSupport } = useCallSupport();
 
   const handleGoChat = () => {
     callSupport();
   };
 
+  const updateUserData = () => {
+    if (userId) dispatch(setUserId(userId));
+  };
+
   useEffect(() => {
     dispatch(clearAll());
-    dispatch(setSelectedCurrencySellType("COIN"))
-    dispatch(setSelectedCurrencyBuyType("BANK"))
+    dispatch(setSelectedCurrencySellType("COIN"));
+    dispatch(setSelectedCurrencyBuyType("BANK"));
+
+    return () => {
+      updateUserData()
+    }
+    
   }, []);
 
   return (
@@ -71,11 +83,11 @@ export default function ExchangeResultPage() {
           </div>
         </div>
         <div className="flex flex-col flex-grow gap-32 justify-between">
-            <Notification
-              isVisible={copied}
-              message="номер заявки скопирован"
-              iconSrc="sign.svg"
-            />
+          <Notification
+            isVisible={copied}
+            message="номер заявки скопирован"
+            iconSrc="sign.svg"
+          />
           <div className="flex flex-col gap-12">
             <Button
               onClick={handleGoChat}

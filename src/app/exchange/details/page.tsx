@@ -6,7 +6,7 @@ import { selectExchangeCreateData, selectExchangeDetails } from "@/redux/selecto
 import React, { useCallback, useEffect } from "react";
 import ExchangePageLayout from "@/components/exchange/ExchangePageLayout";
 import { useRouter } from "next/navigation";
-import { useCreateExchangeMutation } from "@/api/api";
+import { useExchangesCreateMutation } from "@/redux/api/cryptusApi";
 
 export default function ExchangeDetailsPage() {
   const dispatch = useAppDispatch();
@@ -16,14 +16,14 @@ export default function ExchangeDetailsPage() {
     dispatch(setPageName("подтверждение заявки"));
   }, [dispatch]);
 const createExchangeData = useAppSelector(selectExchangeCreateData)
-  const [createExchange] = useCreateExchangeMutation();
+  const [createExchange] = useExchangesCreateMutation();
 
   const onSubmit = useCallback(() => { 
     createExchange(createExchangeData).unwrap().then((res) => {
-      dispatch(setExchangeId(res.id));
+      dispatch(setExchangeId(res.exchange_id));
       router.push("/exchange/result");
     })
-  }, [router, dispatch, createExchange, createExchangeData]);
+  }, [router, dispatch,  createExchangeData]);
 
   return (
     <ExchangePageLayout onMainButtonClick={onSubmit} buttonText="Оставить заявку">

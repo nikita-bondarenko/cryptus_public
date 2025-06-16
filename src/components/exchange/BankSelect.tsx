@@ -2,13 +2,9 @@ import React, { memo, useState } from "react";
 import clsx from "clsx";
 import { InputWrapper } from "../ui/InputWrapper";
 import BaseSelect from "../ui/BaseSelect";
+import { Bank } from "@/redux/api/types";
 
-export type SelectOption = {
-  name: string;
-  value: string | number;
-};
-
-export type BankOption = SelectOption;
+export type BankOption = Bank;
 
 export type BankSelectProps = {
   options: BankOption[];
@@ -66,7 +62,7 @@ const BankSelect: React.FC<BankSelectProps> = memo(
         renderOption={({ option, onClick }) => (
           <button
             className="shrink-0 px-18 py-9 text-left w-full not-last:border-b not-last:border-neutral-gray-500"
-            key={option.value}
+            key={option.id}
             onClick={onClick}
           >
             {option.name}

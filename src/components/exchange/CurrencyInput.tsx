@@ -4,17 +4,17 @@ import {
   valueMask,
 } from "@/helpers/valueMask";
 import React, { memo, useEffect, useState, useCallback } from "react";
-import CurrencySelect, { CurrencyOption } from "./CurrencySelect";
-import clsx from "clsx";
+import CurrencySelect from "./CurrencySelect";
 import { InputWrapper } from "../ui/InputWrapper";
 import { Input } from "../ui/Input";
+import { Currency } from "@/redux/api/types";
 
 export type CurrencyInputProps = {
   inputValue: number | null;
   onInputChange: (value: number | null) => void;
-  onSelectChange: (option: CurrencyOption) => void;
-  selectValue: CurrencyOption;
-  options: CurrencyOption[];
+  onSelectChange: (option: Currency) => void;
+  selectValue: Currency;
+  options: Currency[];
   placeholder?: string;
   error?: boolean;
 };

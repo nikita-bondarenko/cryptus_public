@@ -1,40 +1,25 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
-import {
-  ExchangeInputState,
-  CryptoInput,
-  CashInput,
-  CardInput,
-} from "@/redux/slices/exchangeInput/types";
+
 import { selectCurrencyTypes } from "./currencyTypesSelector";
 import { calculateRate } from "@/helpers/calculateRate";
-import { translateCurrencies } from "@/helpers/translateCurrencies";
-import { translateNetworks } from "../helpers/exchangeInputListener/translateNetworks";
 import { CurrencyPosition } from "@/components/request/RequestDetails";
-import { translateCurrency } from "@/helpers/translateCurrency";
-import { translateNetwork } from "@/helpers/translateNetwork";
-import { calculateCity, translateCities } from "../helpers/translateCities";
-import { City } from "@/api/types";
-import { calculateBank, translateBanks } from "../helpers/translateBanks";
-import { ExchangeBank } from "../slices/exchangeSlice/exchangeSlice";
+
 
 // Section Heading Props Selector
 export const selectSectionHeadingProps = (position: "given" | "received") =>
   createSelector(
     (state: RootState) => state.exchange,
     (exchange) => {
-      console.log(exchange.selectedCurrencySell);
-      const currencySellMask = translateCurrency(exchange.selectedCurrencySell);
-      const currencyBuyMask = translateCurrency(exchange.selectedCurrencyBuy);
-      // console.log(currencySellMask);
+    
 
       return position === "given"
-        ? { title: "Я отдаю", minValue: exchange.exchangeRate?.min_amount }
+        ? { title: "Я отдаю", minValue: exchange.exchangeRate?.currency_give_min_value }
         : {
             title: "Я получаю",
             rate: calculateRate({
-              currencyGive: currencySellMask?.name || "",
-              currencyGet: currencyBuyMask?.name || "",
+              currencyGive: exchange.selectedCurrencySell?.name || "",
+              currencyGet: exchange.selectedCurrencyBuy?.name || "",
               course: exchange.exchangeRate?.course || 0,
             }),
           };
@@ -51,9 +36,9 @@ export const selectCurrencyOptions = (position: "given" | "received") =>
     (exchange) => {
       switch (position) {
         case "given":
-          return translateCurrencies(exchange.currenciesSell);
+          return exchange.currenciesSell;
         case "received":
-          return translateCurrencies(exchange.currenciesBuy);
+          return exchange.currenciesBuy;
         default:
           return [];
       }
@@ -63,19 +48,19 @@ export const selectCurrencyOptions = (position: "given" | "received") =>
 // Bank Options Selector
 export const selectBankOptions = createSelector(
   (state: RootState) => state.exchange,
-  (exchange) => (exchange.banks ? translateBanks(exchange.banks) : [])
+  (exchange) => (exchange.banks ? exchange.banks : [])
 );
 
 // City Options Selector
 export const selectCityOptions = createSelector(
   (state: RootState) => state.exchange,
-  (exchange) => (exchange.cities ? translateCities(exchange.cities) : [])
+  (exchange) =>  exchange.cities
 );
 
 // Nets Options Selector
 export const selectNetsOptions = createSelector(
   (state: RootState) => state.exchange,
-  (exchange) => (exchange.networks ? translateNetworks(exchange.networks) : [])
+  (exchange) => (exchange.networks ? exchange.networks : [])
 );
 
 // Input Value Selector
@@ -90,14 +75,11 @@ export const selectInputValue = (position: CurrencyPosition) =>
   );
 
 // Bank Value Selector
-export const selectBankValue = (state: RootState) =>
-  calculateBank(state.exchange.selectedBank.value as ExchangeBank);
+export const selectBankValue = (state: RootState) =>state.exchange.selectedBank.value;
 
 // City Value Selector
 export const selectCityValue = (state: RootState) =>
   state.exchange.selectedCity
-    ? calculateCity(state.exchange.selectedCity.value as City)
-    : null;
 
 // Card Number Value Selector
 export const selectCardNumberValue = (state: RootState) =>
@@ -105,26 +87,21 @@ export const selectCardNumberValue = (state: RootState) =>
 
 // Net Value Selector
 export const selectNetValue = (state: RootState) =>
-  translateNetwork(state.exchange.selectedNetwork?.value);
+  state.exchange.selectedNetwork.value;
 
 // Wallet Address Value Selector
 export const selectWalletAddressValue = (state: RootState) =>
   state.exchange.walletAddress.value;
 
-// Selected Currency Selectors
-export const selectCardCurrency = (state: RootState) =>
-  state.exchangeInput.cardInput.currency;
-
-export const selectCashCurrency = (state: RootState) =>
-  state.exchangeInput.cashInput.currency;
+// Selected Currency Selector
 
 export const selectCurrency = (position: CurrencyPosition) =>
   createSelector(
     (state: RootState) => state.exchange,
     (exchange) =>
       position === "given"
-        ? translateCurrency(exchange.selectedCurrencySell)
-        : translateCurrency(exchange.selectedCurrencyBuy)
+        ? exchange.selectedCurrencySell
+        : exchange.selectedCurrencyBuy
   );
 
 export const selectRate = () =>
@@ -132,8 +109,8 @@ export const selectRate = () =>
     (state: RootState) => state.exchange,
     (exchange) =>
       calculateRate({
-        currencyGive: exchange.selectedCurrencySell?.title || "",
-        currencyGet: exchange.selectedCurrencyBuy?.title || "",
+        currencyGive: exchange.selectedCurrencySell?.name || "",
+        currencyGet: exchange.selectedCurrencyBuy?.name || "",
         course: exchange.exchangeRate?.course || 0,
       })
   );

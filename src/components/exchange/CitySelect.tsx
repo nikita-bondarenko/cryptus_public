@@ -1,10 +1,10 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { InputWrapper } from "../ui/InputWrapper";
 import BaseSelect from "../ui/BaseSelect";
 import clsx from "clsx";
-import { SelectOption } from "./BankSelect";
+import { City } from "@/redux/api/types";
 
-export type CityOption = SelectOption;
+export type CityOption = City;
 
 export type CitySelectProps = {
   options: CityOption[];
@@ -33,7 +33,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
       
       // Check if the input value exactly matches any city name
       const exactMatch = options.find(option => option.name.toLowerCase() === val.toLowerCase());
-      // // // console.log(exactMatch)
+      // // // // console.log(exactMatch)
       onChange(exactMatch ? exactMatch.name : null);
     };
 
@@ -50,10 +50,16 @@ const CitySelect: React.FC<CitySelectProps> = memo(
       );
     };
 
+    useEffect(() => {
+if (value !== searchValue) {
+  setSearchValue(value)
+}
+    }, [value])
+
     return (
       <BaseSelect
         options={options}
-        value={options.find(opt => opt.value === value) || null}
+        value={options.find(opt => opt.name === value) || null}
         onChange={handleSelect}
         isOpen={isOpen}
         onOpenChange={setIsOpen}
@@ -113,7 +119,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
         renderOption={({ option, onClick }) => (
           <button
             className="shrink-0 px-18 py-9 text-left w-full not-last:border-b not-last:border-neutral-gray-500"
-            key={option.value}
+            key={option.id}
             onClick={onClick}
           >
             {option.name}

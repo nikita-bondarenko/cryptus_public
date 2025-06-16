@@ -101,6 +101,8 @@ useEffect(() => {
   dispatch(setSelectedCurrencyBuyType("BANK"))
 }
 }, [isAppReady])
+
+
   return (
     <div
       className={clsx(

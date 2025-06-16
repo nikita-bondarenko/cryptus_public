@@ -1,10 +1,9 @@
 import React, { memo } from "react";
-import { CurrencyPosition, CurrencyType } from "../request/RequestDetails";
+import { CurrencyPosition } from "../request/RequestDetails";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { selectGiveType, selectReceiveType } from "@/redux/slices/exchangeTypeSlice";
 import clsx from "clsx";
 import Icon from "../helpers/Icon";
-import { setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import { CurrencyType, setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export type ExchangeTypeItemProps = {
   icon: string;

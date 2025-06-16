@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { CurrencyPosition } from "../request/RequestDetails";
 import CurrencyInput from "./CurrencyInput";
-import { CurrencyOption } from "./CurrencySelect";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   selectSectionHeadingProps,
@@ -9,7 +8,6 @@ import {
   selectBankOptions,
   selectBankValue,
   selectCardNumberValue,
-  selectCardCurrency,
   selectBankError,
   selectCardNumberError,
   selectAreErrorsVisible,
@@ -19,10 +17,11 @@ import { usePlaceholder } from "@/hooks/usePlaceholder";
 import SectionHeading from "../ui/SectionHeading";
 import { InputWrapper } from "../ui/InputWrapper";
 import { Input } from "../ui/Input";
-import BankSelect, { BankOption, SelectOption } from "./BankSelect";
+import BankSelect, { BankOption } from "./BankSelect";
 import { formatWithSpacesCardNumber, normalizeInput } from "@/helpers/valueMask";
 import { useExchangeInput } from "@/hooks/useExchangeInput";
 import { setCardNumberValue, setSelectedBankValue } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import { Currency } from "@/redux/api/types";
 
 export type ExchangeCardInputProps = {
   position: CurrencyPosition;
@@ -78,12 +77,12 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
 
   }, []);
 
-  const handleBankChange = (option: SelectOption | null) => {
+  const handleBankChange = (option: BankOption | null) => {
    
     if (!option) return;
     if (isInitialLoad) return;
-    const bank = banks?.find(bank => bank.id === option.value);
-    console.log(option, bank)
+    const bank = banks?.find(bank => bank.id === option.id);
+    // console.log(option, bank)
     if (bank) {
       dispatch(setSelectedBankValue(bank));
     }
@@ -102,7 +101,7 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
           inputValue={globalStateValue}
           onInputChange={onInputChange}
           onSelectChange={onSelectChange}
-          selectValue={selectedCurrency as CurrencyOption}
+          selectValue={selectedCurrency as Currency}
           options={currencyOptions || []}
           error={!!valueError && areErrorsVisible}
         />

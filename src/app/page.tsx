@@ -18,7 +18,9 @@ export default function Home() {
   const dispatch = useAppDispatch();
   const { callSupport } = useCallSupport();
 
-  const requestsInProcess = useAppSelector(state => state.user.data?.requests_in_process)
+  const requestsInProcess = useAppSelector(state => state.user.data?.requests_in_process || [])
+  const profilePicture = useAppSelector(state => state.user.data?.user_data?.profile_picture)
+
 
   const toProfilePage = useCallback(() => {
     router.push("/profile");
@@ -86,7 +88,7 @@ export default function Home() {
                 менять
               </p>
             </div>
-            <ProfileButton onClick={toProfilePage} />
+            <ProfileButton avatar={profilePicture || ""} onClick={toProfilePage} />
           </div>
 
           <ul className="flex flex-col gap-11 mb-16">

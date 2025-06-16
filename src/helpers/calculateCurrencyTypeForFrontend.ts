@@ -1,4 +1,4 @@
-import { CurrencyType } from "@/components/request/RequestDetails";
+import { CurrencyType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { ServerCurrencyType } from "./calculateCurrencyTypeForFetching";
 
 export const calculateCurrencyTypeForFrontend = (currencyType: ServerCurrencyType): CurrencyType => {

@@ -4,8 +4,6 @@ import ExchangeTypeBlock from "@/components/exchange/ExchangeTypeBlock";
 import { exchangeTypesButtons } from "@/data/exchangeTypesButtons";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { resetExchangeInput } from "@/redux/slices/exchangeInput/exchangeInputSlice";
-import { setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { setIsLoading, setPageName } from "@/redux/slices/uiSlice";
 import { store, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";

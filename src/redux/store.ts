@@ -32,8 +32,8 @@ export const store = configureStore({
       immutableCheck: false,
     })
       .prepend(
-        // exchangeSliceListener.middleware,
-        // validateListener.middleware,
+        exchangeSliceListener.middleware,
+        validateListener.middleware,
         userSliceListener.middleware
       )
       .concat(api.middleware),

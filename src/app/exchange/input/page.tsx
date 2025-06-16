@@ -1,9 +1,4 @@
 "use client";
-
-import {
-  CurrencyPosition,
-  CurrencyType,
-} from "@/components/request/RequestDetails";
 import Button from "@/components/ui/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setIsLoading, setPageName } from "@/redux/slices/uiSlice";

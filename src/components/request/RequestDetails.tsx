@@ -2,8 +2,8 @@ import React, { memo } from "react";
 import Icon from "../helpers/Icon";
 import clsx from "clsx";
 import SectionHeading, { SectionHeadingProps } from "../ui/SectionHeading";
+import { CurrencyType } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
-export type CurrencyType = "CASH" | "BANK" | "COIN";
 export type CurrencyPosition = "given" | "received";
 
 export type CurrencyDetails = {
@@ -25,7 +25,6 @@ export type RequestDetailsProps = {
 
 const RequestDetails: React.FC<RequestDetailsProps> = memo(
   ({ title, rate, currency }) => {
-    // // console.log(rate, currency)
     return (
       <div className="">
         <SectionHeading title={title} rate={rate}></SectionHeading>
@@ -35,6 +34,7 @@ const RequestDetails: React.FC<RequestDetailsProps> = memo(
               <div className="flex  items-center gap-6">
                 <Icon
                   src={currency.icon}
+                  server
                   className={clsx("w-24 h-24", {
                  
                   })}

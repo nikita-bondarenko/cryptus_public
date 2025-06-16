@@ -7,10 +7,9 @@ import {
   selectCurrencyTypes,
   selectCurrency
 } from "@/redux/selectors";
-
-import { CurrencyOption } from "@/components/exchange/CurrencySelect";
 import { CurrencyPosition } from "@/components/request/RequestDetails";
 import { setActiveInputType, setCurrencyBuyAmountValue, setCurrencySellAmountValue, setSelectedCurrencyBuy, setSelectedCurrencySell } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import { Currency } from "@/redux/api/types";
 
 export type ExchangeInputType = "BANK" | "CASH" | "COIN";
 
@@ -26,13 +25,13 @@ export const useExchangeInput = (position: CurrencyPosition) => {
   const currenciesSell = useAppSelector(state => state.exchange.currenciesSell);  
   const currenciesBuy = useAppSelector(state => state.exchange.currenciesBuy);
 
-  const onSelectChange = useCallback((option: CurrencyOption) => {
-    // console.log(option);
+  const onSelectChange = useCallback((option: Currency) => {
+    // // console.log(option);
     dispatch(setActiveInputType(position));
 
     const currency = position === 'given' 
-      ? currenciesSell.find((currency) => currency.id === option.value)
-      : currenciesBuy.find((currency) => currency.id === option.value);
+      ? currenciesSell.find((currency) => currency.id === option.id)
+      : currenciesBuy.find((currency) => currency.id === option.id);
 
     if (currency) {
       dispatch(position === 'given' ? setSelectedCurrencySell(currency) : setSelectedCurrencyBuy(currency));
