@@ -24,6 +24,7 @@ const BankSelect: React.FC<BankSelectProps> = memo(
         value={value}
         onChange={onChange}
         isOpen={isOpen}
+        maxHeight={176}
         onOpenChange={setIsOpen}
         className="[&_button]:text-16 "
         renderTrigger={({ isOpen }) => (

@@ -10,8 +10,12 @@ import { setUserId } from "@/redux/slices/userSlice/userSlice";
 import { TEST_USER_ID } from "@/config";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { ProgressBar } from "@/components/ui/ProgressBar";
-import { setSelectedCurrencyBuyType, setSelectedCurrencySellType } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import {
+  setSelectedCurrencyBuyType,
+  setSelectedCurrencySellType,
+} from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { setIsLoading } from "@/redux/slices/uiSlice";
+import { backButtonPathData } from "@/data/backButtonPathData";
 
 const EXCHANGE_STEPS = [
   { path: "/exchange/type", label: "Тип" },
@@ -37,34 +41,38 @@ export default function Header() {
   const router = useRouter();
 
   const backButton = useRef<HTMLButtonElement>(null);
-  const [isBackward,setIsBackward] = useState(false)
+  const [isBackward, setIsBackward] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {setIsBackward(false)}, 200)
-  }, [pathname])
+    setTimeout(() => {
+      setIsBackward(false);
+    }, 200);
+  }, [pathname]);
 
-  const onBackButtonClick = () => {    
+  const onBackButtonClick = () => {
     if (!isAppReady) return;
-
+    const backButtonPath = backButtonPathData[pathname];
     if (isHome) {
       window.Telegram.WebApp.close();
-    } else if (isExchangeResult) {
-      router.push("/");
     } else {
-      setIsBackward(true)
-      router.back();
+      setIsBackward(true);
+      router.push(backButtonPath);
     }
   };
 
   // --- Dropdown menu logic ---
   const [menuOpen, setMenuOpen] = useState(false);
   const handleMenuToggle = () => {
-   setMenuOpen((v) => !v)
+    setMenuOpen((v) => !v);
   };
 
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  useClickOutside<HTMLDivElement, HTMLButtonElement>(menuRef, menuButtonRef, () => setMenuOpen(false));
+  useClickOutside<HTMLDivElement, HTMLButtonElement>(
+    menuRef,
+    menuButtonRef,
+    () => setMenuOpen(false)
+  );
 
   // --- Stepper logic ---
   const currentStep = useMemo(() => {
@@ -74,17 +82,16 @@ export default function Header() {
     return idx === -1 ? null : idx;
   }, [pathname]);
 
+  const { callSupport } = useCallSupport();
 
-  const {callSupport} = useCallSupport()
-  
   const handleMakeQuestion = () => {
     callSupport();
   };
-const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!isAppReady) return;
-    
+
     if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
       dispatch(setUserId(window.Telegram.WebApp.initDataUnsafe.user.id));
     }
@@ -92,16 +99,14 @@ const dispatch = useAppDispatch()
     if (process.env.NODE_ENV === "development") {
       dispatch(setUserId(TEST_USER_ID));
     }
-  }, [ dispatch, isAppReady]);
+  }, [dispatch, isAppReady]);
 
-
-useEffect(() => {
-  if (isAppReady) {
-  dispatch(setSelectedCurrencySellType("COIN"))
-  dispatch(setSelectedCurrencyBuyType("BANK"))
-}
-}, [isAppReady])
-
+  useEffect(() => {
+    if (isAppReady) {
+      dispatch(setSelectedCurrencySellType("COIN"));
+      dispatch(setSelectedCurrencyBuyType("BANK"));
+    }
+  }, [isAppReady]);
 
   return (
     <div
@@ -121,7 +126,9 @@ useEffect(() => {
       >
         <Icon src="header-arrow.svg" className="w-13 h-13" />
       </button>
-      {isProfile && <span className="header__text translate-y-5">{pageName}</span>}
+      {isProfile && (
+        <span className="header__text translate-y-5">{pageName}</span>
+      )}
       {/* Stepper */}
       {isExchange && (
         <div className="flex items-center gap-5 [&_*]:transition-all [&_*]:duration-500">
@@ -137,7 +144,7 @@ useEffect(() => {
           className="flex items-center justify-center"
         >
           <Icon
-            src="menu.svg"  
+            src="menu.svg"
             className={clsx("w-14 h-14 transition-all duration-500 ", {
               "opacity-0": menuOpen,
               "opacity-100": !menuOpen,
@@ -145,17 +152,17 @@ useEffect(() => {
           />
           <Icon
             src="close.svg"
-            className={clsx(
-              "w-10 h-10 transition-all duration-500 center",
-              {
-                "opacity-100": menuOpen,
-                "opacity-0": !menuOpen,
-              }
-            )}
+            className={clsx("w-10 h-10 transition-all duration-500 center", {
+              "opacity-100": menuOpen,
+              "opacity-0": !menuOpen,
+            })}
           />
         </button>
         {menuOpen && (
-          <div ref={menuRef} className="absolute right-0 top-[120%] z-50 min-w-180 bg-white rounded-10 shadow-lg border border-neutral-gray-200  flex flex-col animate-fade-in rounded-6">
+          <div
+            ref={menuRef}
+            className="absolute right-0 top-[120%] z-50 min-w-180 bg-white rounded-10 shadow-lg border border-neutral-gray-200  flex flex-col animate-fade-in rounded-6"
+          >
             <button
               className="flex items-center gap-8 px-11 py-13  rounded-6"
               onClick={handleMakeQuestion}
@@ -169,9 +176,7 @@ useEffect(() => {
               onClick={() => window.location.reload()}
             >
               <Icon src="reload.svg" className="w-15 h-15" />
-              <span className="text-13 leading-normal">
-                Обновить страницу
-              </span>
+              <span className="text-13 leading-normal">Обновить страницу</span>
             </button>
           </div>
         )}
