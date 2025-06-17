@@ -28,12 +28,8 @@ export default function Header() {
   const pathname = usePathname();
   const pageName = useAppSelector((state) => state.ui.pageName);
   const isHome = useMemo(() => pathname === "/", [pathname]);
-  const isExchangeResult = useMemo(
-    () => pathname === "/exchange/result",
-    [pathname]
-  );
   const isAppReady = useAppSelector((state) => state.ui.isAppReady);
-  const isProfile = useMemo(() => pathname.includes("profile"), [pathname]);
+
   const isExchange = useMemo(
     () => pathname.startsWith("/exchange"),
     [pathname]
@@ -107,7 +103,12 @@ export default function Header() {
       dispatch(setSelectedCurrencyBuyType("BANK"));
     }
   }, [isAppReady]);
+  const isPageNameVisible = useMemo(
+    () => pathname.includes("profile") || pathname === "/faq",
+    [pathname]
+  );
 
+  useEffect(() => {console.log(isPageNameVisible)}, [isPageNameVisible])
   return (
     <div
       className={clsx(
@@ -126,10 +127,9 @@ export default function Header() {
       >
         <Icon src="header-arrow.svg" className="w-13 h-13" />
       </button>
-      {isProfile && (
+      {isPageNameVisible && (
         <span className="header__text translate-y-5">{pageName}</span>
       )}
-      {/* Stepper */}
       {isExchange && (
         <div className="flex items-center gap-5 [&_*]:transition-all [&_*]:duration-500">
           <ProgressBar currentStep={currentStep ?? 0} isBackward={isBackward} />

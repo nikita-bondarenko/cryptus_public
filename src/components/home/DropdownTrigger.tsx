@@ -1,20 +1,24 @@
+"use client"
 import clsx from "clsx";
 import { FC, ReactNode } from "react";
 import Icon from "../helpers/Icon";
 
-const AdditionallySectionButton: FC<{
+const DropdownTrigger: FC<{
   onClick?: () => void;
   children: ReactNode;
   arrow?: boolean;
   arrowPosition?: "top" | "bottom";
   border?: boolean;
-}> = ({ onClick, children, arrowPosition, arrow, border }) => {
+  className?: string
+}> = ({ onClick, children, arrowPosition, arrow, border,className }) => {
   return (
     <button
       className={clsx(
         "flex items-center justify-center gap-5 w-full h-50 bg-white",
+        className,
         {
           "border-top": border,
+          
         }
       )}
       onClick={onClick}
@@ -35,4 +39,4 @@ const AdditionallySectionButton: FC<{
   );
 };
 
-export default AdditionallySectionButton
+export default DropdownTrigger

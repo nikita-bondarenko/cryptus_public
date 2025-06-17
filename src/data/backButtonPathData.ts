@@ -4,6 +4,7 @@ export const backButtonPathData: {[key in string]: string} = {
 '/exchange/type' : '/',
 '/exchange/input': '/exchange/type',
 '/exchange/details': '/exchange/input',
-'/exchange/result' : '/'
+'/exchange/result' : '/',
+'/faq' : '/'
 
 }

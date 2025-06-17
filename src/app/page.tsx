@@ -2,7 +2,6 @@
 
 import DescriptionItem from "@/components/home/DescriptionItem";
 import ProfileButton from "@/components/home/ProfileButton";
-import RequestStatus from "@/components/home/RequestStatus";
 import ExpandableList from "@/components/home/ExpandableList";
 import Button from "@/components/ui/Button";
 import { useCallback, useEffect, useRef } from "react";
@@ -12,27 +11,31 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { POLICY_URL, TEST_USER_ID } from "@/config";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { TERMS_URL } from "@/config";
-
+import dynamic from "next/dynamic";
+const RequestStatus = dynamic(() => import('@/components/home/RequestStatus'), {
+  ssr: false,
+});
 export default function Home() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { callSupport } = useCallSupport();
 
-  const requestsInProcess = useAppSelector(state => state.user.data?.requests_in_process || [])
-  const profilePicture = useAppSelector(state => state.user.data?.user_data?.profile_picture)
-
+  const requestsInProcess = useAppSelector(
+    (state) => state.user.data?.requests_in_process || []
+  );
+  const profilePicture = useAppSelector(
+    (state) => state.user.data?.user_data?.profile_picture
+  );
 
   const toProfilePage = useCallback(() => {
     router.push("/profile");
   }, [router]);
 
   const toExchangePage = useCallback(() => {
-
     router.push("/exchange/type");
   }, [router]);
 
   const toFaqPage = useCallback(() => {
-
     router.push("/faq");
   }, [router]);
 
@@ -78,36 +81,38 @@ export default function Home() {
           }}
         >
           <div className="flex-grow flex flex-col justify-center">
-          <div className="flex justify-between">
-            <div className="max-w-205">
-              <h1 className="font-bold text-32 mb-15 leading-normal">
-                CRYPTUS EXCHANGE
-              </h1>
-              <p className="text-16 font-medium mb-30">
-                Обменник, которым ты всегда хотел пользоваться, но нечего было
-                менять
-              </p>
+            <div className="flex justify-between">
+              <div className="max-w-205">
+                <h1 className="font-bold text-32 mb-15 leading-normal">
+                  CRYPTUS EXCHANGE
+                </h1>
+                <p className="text-16 font-medium mb-30">
+                  Обменник, которым ты всегда хотел пользоваться, но нечего было
+                  менять
+                </p>
+              </div>
+              <ProfileButton
+                avatar={profilePicture || ""}
+                onClick={toProfilePage}
+              />
             </div>
-            <ProfileButton avatar={profilePicture || ""} onClick={toProfilePage} />
-          </div>
 
-          <ul className="flex flex-col gap-11 mb-16">
-            {descriptionItems.current.map((item, index) => (
-              <DescriptionItem icon={item.icon} key={index}>
-                {item.text}
-              </DescriptionItem>
-            ))}
-          </ul>
-          <div className="min-h-60 flex flex-col gap-11  mb-20">
-            {requestsInProcess &&
-              requestsInProcess.map((request) => (
+            <ul className="flex flex-col gap-11 mb-16">
+              {descriptionItems.current.map((item, index) => (
+                <DescriptionItem icon={item.icon} key={index}>
+                  {item.text}
+                </DescriptionItem>
+              ))}
+            </ul>
+            <div className="min-h-60 flex flex-col gap-11  mb-20">
+              {requestsInProcess.map((request) => (
                 <RequestStatus
                   isInProcess={true}
-                  id={request.id || ''}
+                  id={request.id || ""}
                   key={request.id}
                 />
               ))}
-          </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-6">

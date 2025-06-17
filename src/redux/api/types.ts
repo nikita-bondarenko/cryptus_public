@@ -84,20 +84,22 @@ export type ExchangesCreateApiArg = {
     card?: string
     wallet?: string
 };
+
+export type Faq = {
+  /** Сортировка */
+  weight: number;
+  /** Вопрос */
+  title: string;
+  /** Ответ */
+  description: string;
+}
 export type FaqsListApiResponse = /** status 200 Успешный ответ */ {
   /** Сортировка */
   weight: number;
   /** Название раздела */
   title: string;
   /** Список вопросов и ответов */
-  faqs: {
-    /** Сортировка */
-    weight: number;
-    /** Вопрос */
-    title: string;
-    /** Ответ */
-    description: string;
-  }[];
+  faqs: Faq[];
 }[];
 export type FaqsListApiArg = void;
 export type GetGetRequisitesApiResponse = /** status 200  */ UsersRequisites[];

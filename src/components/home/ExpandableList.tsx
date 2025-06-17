@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import clsx from "clsx";
-import AdditionallySectionButton from "./AdditionallySectionButton";
+
+import AdditionallySectionButton from "./DropdownTrigger";
+import ExpandableElement from "./ExpandableElement";
 
 type ExpandableListProps = {
   items: Array<{
@@ -8,48 +8,23 @@ type ExpandableListProps = {
     onClick: () => void;
   }>;
   title: string;
-}
+};
 
 export default function ExpandableList({ items, title }: ExpandableListProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const listRef = useRef<HTMLUListElement>(null);
-  const [listHeight, setListHeight] = useState(0);
-
-  const openList = () => {
-    if (listRef.current) {
-      setListHeight(listRef.current.clientHeight);
-    }
-  };
-
-  const closeList = () => {
-    setListHeight(0);
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      openList();
-    } else {
-      closeList();
-    }
-  }, [isOpen]);
-
   return (
-    <div className="overflow-hidden rounded-8">
-      <AdditionallySectionButton
-        onClick={() => setIsOpen((prev) => !prev)}
-        arrowPosition={isOpen ? "bottom" : "top"}
-        arrow
-      >
-        {title}
-      </AdditionallySectionButton>
-      <div
-        className={clsx(
-          "transition-all duration-500 border-neutral-gray-400 relative overflow-hidden",
-          { "border-top": isOpen }
+    <>
+      <ExpandableElement
+        triggerRender={({ onClick, isOpen }) => (
+          <AdditionallySectionButton
+            onClick={onClick}
+            arrowPosition={isOpen ? "bottom" : "top"}
+            arrow
+          >
+            {title}
+          </AdditionallySectionButton>
         )}
-        style={{ height: listHeight }}
       >
-        <ul className="absolute w-full bottom-0 left-0" ref={listRef}>
+        <ul className="w-full">
           {items.map((item, index) => (
             <li key={index}>
               <AdditionallySectionButton border onClick={item.onClick}>
@@ -58,7 +33,7 @@ export default function ExpandableList({ items, title }: ExpandableListProps) {
             </li>
           ))}
         </ul>
-      </div>
-    </div>
+      </ExpandableElement>
+    </>
   );
-} 
+}
