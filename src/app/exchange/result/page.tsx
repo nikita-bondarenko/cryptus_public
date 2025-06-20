@@ -33,10 +33,8 @@ export default function ExchangeResultPage() {
     router.push("/");
   };
 
-  const { callSupport } = useCallSupport();
-
   const handleGoChat = () => {
-    callSupport();
+  window.Telegram.WebApp.close();
   };
 
   const updateUserData = () => {
@@ -49,9 +47,8 @@ export default function ExchangeResultPage() {
     dispatch(setSelectedCurrencyBuyType("BANK"));
 
     return () => {
-      updateUserData()
-    }
-    
+      updateUserData();
+    };
   }, []);
 
   return (
