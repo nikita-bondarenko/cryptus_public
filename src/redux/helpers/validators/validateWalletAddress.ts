@@ -12,14 +12,12 @@ export const validateWalletAddress = ({ value, options }: ValidateWalletAddressP
     return null;
   }
   
-  if (!value) {
+  if (!value || value.trim().length < 3) {
     return "Введите адрес кошелька";
   }
 
   // Basic Ethereum address validation
-  if (!/^0x[a-fA-F0-9]{40}$/.test(value)) {
-    return "Неверный формат адреса кошелька";
-  }
+ 
 
   return null;
 }; 

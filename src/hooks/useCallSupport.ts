@@ -13,16 +13,20 @@ export const useCallSupport = () => {
       console.error("User ID is required");
       return;
     }
-
+  
     try {
       await callOperator({
         body: {
           user_id: userId,
         }
       }).unwrap();
-
-      // Закрываем Telegram WebApp
-      window.Telegram.WebApp.close();
+  
+      // Пробуем закрыть WebApp после успешного запроса
+      if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.close === "function") {
+        window.Telegram.WebApp.close();
+      } else {
+        alert("Вы можете закрыть это окно вручную");
+      }
     } catch (error) {
       console.error("Error calling support:", error);
     }
