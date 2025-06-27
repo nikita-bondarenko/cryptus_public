@@ -45,7 +45,7 @@ const CurrencySelect = memo(({ options, onChange, value: selected }: CurrencySel
           )}
           <svg
             className={`ml-2 w-15 h-15 transition-transform ${
-              !isOpen ? "rotate-180" : ""
+              isOpen ? "rotate-180" : ""
             }`}
             fill="none"
             stroke="#999999"
