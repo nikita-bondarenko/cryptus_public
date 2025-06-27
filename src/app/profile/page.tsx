@@ -10,9 +10,9 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setPageName } from "@/redux/slices/uiSlice";
 import { formSchema } from "@/schemas/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-
 
 export default function Page() {
   const dispatch = useAppDispatch();
@@ -27,19 +27,19 @@ export default function Page() {
     resolver: zodResolver(formSchema),
   });
 
-const {id: userId, data} = useAppSelector(state => state.user) 
-const [updateUser] = useUserUpdateCreateMutation()
+  const { id: userId, data } = useAppSelector((state) => state.user);
+  const [updateUser] = useUserUpdateCreateMutation();
 
   const onSubmit = methods.handleSubmit((data) => {
     if (!userId) return;
-    
+
     updateUser({
-  body: {
-    user_id: userId,
-    full_name: data.name,
-    phone: data.phone,
-    email: data.email,
-  }
+      body: {
+        user_id: userId,
+        full_name: data.name,
+        phone: data.phone,
+        email: data.email,
+      },
     }).then(() => {
       setShowSuccess(true);
       setTimeout(() => {
@@ -47,7 +47,6 @@ const [updateUser] = useUserUpdateCreateMutation()
       }, 3000);
     });
   });
-
 
   useEffect(() => {
     if (data) {
@@ -59,47 +58,50 @@ const [updateUser] = useUserUpdateCreateMutation()
     }
   }, [data, methods]);
 
-
   return (
-    <div className="container mt-10">
-      <div className="mb-35">
+    <div className="container mt-20">
+      <div className="mb-35 relative">
         <FormProvider {...methods}>
-          <form className="relative" onSubmit={onSubmit}>
+          <form className={clsx("relative ")} onSubmit={onSubmit}>
             <h2 className="heading">Контактная информация</h2>
-            <div className="flex flex-col mb-7">
-              <InputField
-                name="name"
-                type="text"
-                placeholder="ФИО"
-              />
-              <InputField
-                name="phone"
-                type="tel"
-                placeholder="Номер телефона"
-              />
-              <InputField
-                name="email"
-                type="email"
-                placeholder="Электронная почта"
+            <div className="relative">
+              <div
+                className={clsx("flex flex-col mb-7 relative transition-all", {
+                  "blur-sm": showSuccess,
+                })}
+              >
+                <InputField name="name" type="text" placeholder="ФИО" />
+                <InputField
+                  name="phone"
+                  type="tel"
+                  placeholder="Номер телефона"
+                />
+                <InputField
+                  name="email"
+                  type="email"
+                  placeholder="Электронная почта"
+                />
+              </div>
+              <Notification
+                className="center w-full mt-20"
+                isVisible={showSuccess}
+                message="данные успешно сохранены"
               />
             </div>
             <Button submit type="primary">
               Сохранить
             </Button>
-            <Notification 
-              className="center w-[calc(100%-40px)]"
-              isVisible={showSuccess}
-              message="данные успешно сохранены"
-            />
           </form>
         </FormProvider>
       </div>
-    {data?.requests_all && data?.requests_all.length > 0 && <div>
-        <h2 className="heading">История обращений</h2>
-        {data?.requests_all?.map((exchange, index) => (
-          <RequestStoryItem data={exchange} key={index} />
-        ))}
-      </div>}
+      {data?.requests_all && data?.requests_all.length > 0 && (
+        <div>
+          <h2 className="heading">История обращений</h2>
+          {data?.requests_all?.map((exchange, index) => (
+            <RequestStoryItem data={exchange} key={index} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
