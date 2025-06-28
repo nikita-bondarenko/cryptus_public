@@ -140,3 +140,15 @@ export const selectWalletAddressError = (state: RootState) =>
 // Errors Visibility Selector
 export const selectAreErrorsVisible = (state: RootState) =>
   state.exchange.areErrorsVisible;
+
+// Currency Type Selection Selectors
+export const selectIsSelectedCurrencyType = (position: "given" | "received", type: string) =>
+  createSelector(
+    (state: RootState) => position === "received" 
+      ? state.exchange.selectedCurrencyBuyType 
+      : state.exchange.selectedCurrencySellType,
+    (selectedType) => selectedType === type
+  );
+
+// Profile picture selector - простая функция без createSelector
+export const profilePictureSelector = (state: RootState) => state.user?.data?.user_data?.profile_picture;

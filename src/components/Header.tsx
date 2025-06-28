@@ -70,6 +70,11 @@ export default function Header() {
     () => setMenuOpen(false)
   );
 
+  const isExchangeResult = useMemo(
+    () => pathname.startsWith("/exchange/result"),
+    [pathname]
+  );
+
   // --- Stepper logic ---
   const currentStep = useMemo(() => {
     const idx = EXCHANGE_STEPS.findIndex((step) =>
@@ -108,7 +113,6 @@ export default function Header() {
     [pathname]
   );
 
-  useEffect(() => {console.log(isPageNameVisible)}, [isPageNameVisible])
   return (
     <div
       className={clsx(
@@ -120,13 +124,17 @@ export default function Header() {
       )}
     >
       {/* Back button */}
-      <button
-        ref={backButton}
-        onClick={onBackButtonClick}
-        className="flex gap-2 items-center"
-      >
-        <Icon src="header-arrow.svg" className="w-13 h-13" />
-      </button>
+      <div>
+        {!isExchangeResult && (
+          <button
+            ref={backButton}
+            onClick={onBackButtonClick}
+            className="flex gap-2 items-center"
+          >
+            <Icon src="header-arrow.svg" className="w-17 h-17" />
+          </button>
+        )}
+      </div>
       {isPageNameVisible && (
         <span className="header__text translate-y-5">{pageName}</span>
       )}
@@ -135,9 +143,20 @@ export default function Header() {
           <ProgressBar currentStep={currentStep ?? 0} isBackward={isBackward} />
         </div>
       )}
-
+ {isExchangeResult && (
+        <button
+          ref={backButton}
+          onClick={onBackButtonClick}
+          className="flex items-center justify-center relative w-16 h-16"
+        >
+          <Icon
+            src="close.svg"
+            className={clsx("w-12 h-12 transition-all duration-500 center")}
+          />
+        </button>
+      )}
       {/* Right side: menu */}
-      <div className="flex justify-end relative">
+     {!isExchangeResult && <div className="flex justify-end relative">
         <button
           onClick={handleMenuToggle}
           ref={menuButtonRef}
@@ -180,7 +199,7 @@ export default function Header() {
             </button>
           </div>
         )}
-      </div>
+      </div>}
     </div>
   );
 }

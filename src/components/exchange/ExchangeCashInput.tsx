@@ -61,10 +61,8 @@ const ExchangeCashInput: React.FC<ExchangeCashInputProps> = memo(({ position }) 
   const onSelectCity = (cityName: string | null) => {
     if (isInitialLoad) return;
 
-    const city = cities?.find(city => city.name === cityName);
-    if (city) {
-      dispatch(setSelectedCityValue(city));
-    }
+    const city = cities?.find(city => city.name === cityName) || null;
+    dispatch(setSelectedCityValue(city));
   }
 
   useEffect(() => {

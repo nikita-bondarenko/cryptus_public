@@ -4,7 +4,7 @@ import DescriptionItem from "@/components/home/DescriptionItem";
 import ProfileButton from "@/components/home/ProfileButton";
 import ExpandableList from "@/components/home/ExpandableList";
 import Button from "@/components/ui/Button";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
@@ -12,7 +12,10 @@ import { POLICY_URL, TEST_USER_ID } from "@/config";
 import { useCallSupport } from "@/hooks/useCallSupport";
 import { TERMS_URL } from "@/config";
 import dynamic from "next/dynamic";
-const RequestStatus = dynamic(() => import('@/components/home/RequestStatus'), {
+import { createSelector } from "reselect";
+import { RootState } from "@/redux/store";
+import { profilePictureSelector } from "@/redux/selectors";
+const RequestStatus = dynamic(() => import("@/components/home/RequestStatus"), {
   ssr: false,
 });
 export default function Home() {
@@ -20,12 +23,19 @@ export default function Home() {
   const dispatch = useAppDispatch();
   const { callSupport } = useCallSupport();
 
+  // Принудительный ререндер
+
   const requestsInProcess = useAppSelector(
     (state) => state.user.data?.requests_in_process || []
   );
-  const profilePicture = useAppSelector(
+ const profilePicture = useAppSelector(
     (state) => state.user.data?.user_data?.profile_picture
   );
+  const [forceRender, setForceRender] = useState(0);
+
+  useEffect(() => {
+    setForceRender(prev => prev + 1);
+  }, [profilePicture]);
 
   const toProfilePage = useCallback(() => {
     router.push("/profile");
@@ -91,9 +101,10 @@ export default function Home() {
                   менять
                 </p>
               </div>
-              <ProfileButton
-                avatar={profilePicture || ""}
+              <ProfileButton 
+                avatar={profilePicture} 
                 onClick={toProfilePage}
+                key={forceRender} // Принудительный ререндер
               />
             </div>
 

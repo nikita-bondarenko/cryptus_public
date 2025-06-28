@@ -20,7 +20,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
     const [isOpen, setIsOpen] = useState(false);
     const [focused, setFocused] = useState(false);
     const [searchValue, setSearchValue] = useState(value);
-
+   
     const handleSelect = (option: CityOption) => {
       setSearchValue(option.name);
       onChange(option.name);
@@ -33,7 +33,7 @@ const CitySelect: React.FC<CitySelectProps> = memo(
       
       // Check if the input value exactly matches any city name
       const exactMatch = options.find(option => option.name.toLowerCase() === val.toLowerCase());
-      // // // // console.log(exactMatch)
+      console.log(exactMatch)
       onChange(exactMatch ? exactMatch.name : null);
     };
 
@@ -44,8 +44,20 @@ const CitySelect: React.FC<CitySelectProps> = memo(
 
     const showCustomPlaceholder = !searchValue;
 
+    const [showFullOptionsArray, setShowFullOptionsArray] = useState(false)
+
+    useEffect(() => {
+      setShowFullOptionsArray(false)
+    }, [searchValue])
+
+    useEffect(() => {
+      if(!isOpen) {
+        setShowFullOptionsArray(true)
+      }
+    }, [isOpen])
+
     const filterOptions = (options: CityOption[], searchValue: string) => {
-      return options.filter((option) =>
+      return showFullOptionsArray ? options : options.filter((option) =>
         option.name.toLowerCase().includes(searchValue.toLowerCase())
       );
     };
