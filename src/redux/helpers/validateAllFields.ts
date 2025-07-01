@@ -51,14 +51,14 @@ export const validateAllFields = (
 
   // Validate card fields
   if (selectedCurrencySellType === "BANK" || selectedCurrencyBuyType === "BANK") {
-    const { currencySellAmount, currencyBuyAmount, selectedBank, cardNumber } = state.exchange;
+    const { currencySellAmount, currencyBuyAmount, selectedBank, cardNumber, exchangeRate } = state.exchange;
     const position = selectedCurrencySellType === "BANK" ? "given" : "received";
 
     const amountError = validateExchangeInput({
       value: position === "given" ? currencySellAmount.value : currencyBuyAmount.value,
       inputType: "amount",
       position,
-      minValue: 0,
+      minValue: exchangeRate?.currency_give_min_value || 0,
     });
 
     const bankError = banks && banks.length > 0 ? validateExchangeInput({
@@ -89,7 +89,7 @@ export const validateAllFields = (
 
   // Validate cash fields
   if (selectedCurrencySellType === "CASH" || selectedCurrencyBuyType === "CASH") {
-    const { currencySellAmount, currencyBuyAmount, selectedCity } = state.exchange;
+    const { currencySellAmount, currencyBuyAmount, selectedCity, exchangeRate } = state.exchange;
     const position = selectedCurrencySellType === "CASH" ? "given" : "received";
 
     
@@ -98,7 +98,7 @@ export const validateAllFields = (
       value: position === "given" ? currencySellAmount.value : currencyBuyAmount.value,
       inputType: "amount",
       position,
-      minValue: 0,
+      minValue: exchangeRate?.currency_give_min_value || 0,
     });
 
     const cityError = cities && cities.length > 0 ? validateExchangeInput({
