@@ -1,4 +1,4 @@
-import { calculateSecondaryProperties, CurrencyType, setInitialData } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import { calculateSecondaryProperties, CurrencyType, setInitialData, setIsRateBeingPulled } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
 import {
   setBanks,
@@ -336,6 +336,45 @@ exchangeSliceListener.startListening({
     dispatch(setCurrencyBuyAmountValue(currencyBuyAmount));
   },
 });
+
+// exchangeSliceListener.startListening({
+//   actionCreator: setIsRateBeingPulled,
+//   effect: async (actionAsyncStorage, listenerApi) => {
+//     const dispatch = listenerApi.dispatch as AppDispatch;
+//     const state = listenerApi.getState() as RootState;
+//     const {
+//       selectedCurrencySell,
+//       selectedCurrencySellType,
+//       selectedCurrencyBuyType,
+//       selectedNetwork,
+//       selectedBank,
+//       selectedCurrencyBuy,
+//       selectedCity
+//     } = state.exchange;
+
+//     if (
+//       !selectedCurrencySell?.id ||
+//       !selectedCurrencyBuy?.id ||
+//       !selectedCurrencySellType ||
+//       !selectedCurrencyBuyType 
+//     )
+//       return;
+
+//     const { data } = await listenerApi.dispatch(
+//       cryptusApi.endpoints.rateList.initiate({
+//         direction_type:
+//           `${selectedCurrencySellType} - ${selectedCurrencyBuyType}` as DirectionType,
+//         currency_give_id: selectedCurrencySell?.id,
+//         currency_get_id: selectedCurrencyBuy?.id,
+//         network_id: selectedNetwork?.value?.id,
+//         bank_id: selectedBank?.value?.id,
+//         city_id: selectedCity.value?.id,
+//       })
+//     );
+//     if (!data) return;
+//     dispatch(setExchangeRate(data?.rate || null));
+//   }
+// })
 
 
 
