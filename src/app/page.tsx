@@ -97,8 +97,7 @@ export default function Home() {
                   CRYPTUS EXCHANGE
                 </h1>
                 <p className="text-16 font-medium mb-30">
-                  Обменник, которым ты всегда хотел пользоваться, но нечего было
-                  менять
+                Сервис, которым ты&nbsp;всегда хотел пользоваться.
                 </p>
               </div>
               <ProfileButton 
