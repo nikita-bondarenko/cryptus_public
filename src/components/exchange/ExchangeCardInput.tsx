@@ -8,8 +8,11 @@ import {
   selectBankOptions,
   selectBankValue,
   selectCardNumberValue,
+  selectPhoneNumberValue,
+  selectIsPhoneNumberUsed,
   selectBankError,
   selectCardNumberError,
+  selectPhoneNumberError,
   selectAreErrorsVisible,
 } from "@/redux/selectors";
 
@@ -18,9 +21,9 @@ import SectionHeading from "../ui/SectionHeading";
 import { InputWrapper } from "../ui/InputWrapper";
 import { Input } from "../ui/Input";
 import BankSelect, { BankOption } from "./BankSelect";
-import { formatWithSpacesCardNumber, normalizeInput } from "@/helpers/valueMask";
+import { formatWithSpacesCardNumber, normalizeInput, formatPhoneNumber, normalizePhoneInput } from "@/helpers/valueMask";
 import { useExchangeInput } from "@/hooks/useExchangeInput";
-import { setCardNumberValue, setSelectedBankValue } from "@/redux/slices/exchangeSlice/exchangeSlice";
+import { setCardNumberValue, setPhoneNumberValue, setSelectedBankValue } from "@/redux/slices/exchangeSlice/exchangeSlice";
 import { Currency } from "@/redux/api/types";
 
 export type ExchangeCardInputProps = {
@@ -50,8 +53,13 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
   const bankValue = useAppSelector(selectBankValue);
   const banks = useAppSelector(state => state.exchange.banks);
   const cardNumberValue = useAppSelector(selectCardNumberValue);
+  const phoneNumberValue = useAppSelector(selectPhoneNumberValue);
+  const isPhoneNumberUsed = useAppSelector(selectIsPhoneNumberUsed);
   const bankError = useAppSelector(selectBankError);
+  
+  console.log('ExchangeCardInput - isPhoneNumberUsed:', isPhoneNumberUsed, 'position:', position);
   const cardNumberError = useAppSelector(selectCardNumberError);
+  const phoneNumberError = useAppSelector(selectPhoneNumberError);
 
   const placeholder = usePlaceholder(position,"BANK");
 
@@ -64,9 +72,23 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
     }
   }, []);
 
+  const handlePhoneKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
+    const isNumber = /^[0-9]$/.test(e.key);
+
+    if (!isNumber && !allowed.includes(e.key)) {
+      e.preventDefault();
+    }
+  }, []);
+
   const handleCardNumberChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = normalizeInput(e.target.value);
     dispatch(setCardNumberValue(formatWithSpacesCardNumber(raw)));
+  }, [dispatch]);
+
+  const handlePhoneNumberChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedPhone = formatPhoneNumber(e.target.value);
+    dispatch(setPhoneNumberValue(formattedPhone));
   }, [dispatch]);
 
   useEffect(() => {
@@ -116,16 +138,29 @@ const ExchangeCardInput: React.FC<ExchangeCardInputProps> = memo(({ position }) 
       />}
       {position === "received" && (
         <div className="-mb-16">
-          <InputWrapper error={cardNumberError && areErrorsVisible ? cardNumberError : null}>
-            <Input
-              onChange={handleCardNumberChange}
-              onKeyDown={handleKeyDown}
-              value={cardNumberValue ?? ""}
-              type="text"
-              className=" border border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 w-full"
-              placeholder="Номер карты"
-            />
-          </InputWrapper>
+          {isPhoneNumberUsed ? (
+            <InputWrapper error={phoneNumberError && areErrorsVisible ? phoneNumberError : null}>
+              <Input
+                onChange={handlePhoneNumberChange}
+                onKeyDown={handlePhoneKeyDown}
+                value={phoneNumberValue ?? ""}
+                type="text"
+                className=" border border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 w-full"
+                placeholder="Введите номер телефона"
+              />
+            </InputWrapper>
+          ) : (
+            <InputWrapper error={cardNumberError && areErrorsVisible ? cardNumberError : null}>
+              <Input
+                onChange={handleCardNumberChange}
+                onKeyDown={handleKeyDown}
+                value={cardNumberValue ?? ""}
+                type="text"
+                className=" border border-neutral-gray-200 rounded-6 bg-neutral-white text-16 leading-normal px-18 py-15 w-full"
+                placeholder="Номер карты"
+              />
+            </InputWrapper>
+          )}
         </div>
       )}
     </div>

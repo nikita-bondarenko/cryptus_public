@@ -85,6 +85,16 @@ export const selectCityValue = (state: RootState) =>
 export const selectCardNumberValue = (state: RootState) =>
   state.exchange.cardNumber.value;
 
+// Phone Number Value Selector
+export const selectPhoneNumberValue = (state: RootState) =>
+  state.exchange.phoneNumber?.value;
+
+// Is Phone Number Used Selector
+export const selectIsPhoneNumberUsed = (state: RootState) => {
+  console.log('selectIsPhoneNumberUsed:', state.exchange.isPhoneNumberUsed);
+  return state.exchange.isPhoneNumberUsed;
+};
+
 // Net Value Selector
 export const selectNetValue = (state: RootState) =>
   state.exchange.selectedNetwork.value;
@@ -130,6 +140,9 @@ export const selectBankError = (state: RootState) =>
   state.exchange.selectedBank.error || null;
 export const selectCardNumberError = (state: RootState) =>
   state.exchange.cardNumber.error;
+
+export const selectPhoneNumberError = (state: RootState) =>
+  state.exchange.phoneNumber?.error;
 
 export const selectCityError = (state: RootState) =>
   state.exchange.selectedCity ? state.exchange.selectedCity.error : null;
