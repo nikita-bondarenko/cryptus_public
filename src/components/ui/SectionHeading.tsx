@@ -1,5 +1,5 @@
 import { valueMask } from "@/helpers/valueMask";
-import React, { memo } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import Icon from "../helpers/Icon";
 
@@ -23,6 +23,28 @@ export type SectionHeadingProps = {
 
 const SectionHeading: React.FC<SectionHeadingProps> = memo(
   ({ title, rate, minValue, error }) => {
+    const [isMessageOpen, setIsMessageOpen] = useState(false);
+
+    const timeout = useRef<NodeJS.Timeout>(null);
+
+    useEffect(() => {
+      if (isMessageOpen) {
+        timeout.current && clearTimeout(timeout.current);
+        timeout.current = setTimeout(() => {
+          setIsMessageOpen(false);
+        }, 3000);
+      }
+    }, [isMessageOpen]);
+
+    useEffect(() => {
+      return () => {
+        timeout.current && clearTimeout(timeout.current);
+      };
+    }, []);
+
+    const handleMinValueClick: React.MouseEventHandler = () => {
+      setIsMessageOpen(true);
+    };
     return (
       <div className="flex items-end justify-between mb-10 pl-6  gap-10">
         <h2 className="text-16 font-medium leading-normal  shrink-0 min-w-100">
@@ -41,7 +63,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = memo(
           ></span>
         )}
         {minValue && (
-          <span className="relative block pl-17 max-w-200">
+          <button onClick={handleMinValueClick} className=" block pl-17 max-w-200">
             <Icon
               src="alert.svg"
               className={clsx(
@@ -77,8 +99,24 @@ const SectionHeading: React.FC<SectionHeadingProps> = memo(
                 {valueMask(minValue)}
               </span>
             </span>
-          </span>
+          </button>
         )}
+        <div
+          className={clsx(
+            "fixed z-50 top-[121px] right-1/2 translate-x-1/2 w-[280px] px-[21px] py-[14px]  leading-[120%] border border-[#E9E9E9] bg-white rounded-[8px] transition-opacity duration-500",
+            {
+              "opacity-100 pointer-events-auto": isMessageOpen,
+              "opacity-0 pointer-events-none": !isMessageOpen,
+            }
+          )}
+        >
+          <p className="text-black mb-[5px] text-[14px]">
+            Минимальная сумма обмена может быть ниже
+          </p>
+          <span className="text-[#999999] text-[13px]">
+            Уточните подробности у оператора
+          </span>
+        </div>
       </div>
     );
   }
