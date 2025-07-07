@@ -19,7 +19,7 @@ services:
   cryptus-blue:
     build:
       context: ./app
-      dockerfile: Dockerfile.simple
+      dockerfile: Dockerfile
     container_name: cryptus-blue
     environment:
       - NODE_ENV=production
@@ -43,7 +43,7 @@ services:
   cryptus-green:
     build:
       context: ./app
-      dockerfile: Dockerfile.simple
+      dockerfile: Dockerfile
     container_name: cryptus-green
     environment:
       - NODE_ENV=production
