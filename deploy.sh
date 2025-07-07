@@ -9,7 +9,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Source the Cryptus configuration (which includes the library)
-source "$SCRIPT_DIR/cryptus-deployment-config.sh"
+source "$SCRIPT_DIR/deployment-config.sh"
 
 # ========================================
 # COMMAND FUNCTIONS
@@ -201,7 +201,7 @@ cmd_version() {
     echo "Cryptus Zero Downtime Deployment"
     echo "================================="
     zdt_version
-    echo "Configuration: cryptus-deployment-config.sh"
+    echo "Configuration: deployment-config.sh"
     echo "External URL: $ZDT_EXTERNAL_HEALTH_URL"
 }
 

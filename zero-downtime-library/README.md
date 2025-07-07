@@ -15,7 +15,7 @@
 .
 ├── lib/
 │   └── zero-downtime-lib.sh           # Основная библиотека
-├── cryptus-deployment-config.sh       # Конфигурация для Cryptus
+├── deployment-config.sh       # Конфигурация для Cryptus
 ├── deploy-simple.sh                   # Упрощенный скрипт развертывания
 ├── examples/
 │   └── generic-project-config.sh      # Пример для любого проекта
@@ -30,7 +30,7 @@
 ┌─────────────────────────────────────┐
 │        User Scripts                 │ ← deploy-simple.sh, custom scripts
 ├─────────────────────────────────────┤
-│     Project Configuration          │ ← cryptus-deployment-config.sh
+│     Project Configuration          │ ← deployment-config.sh
 ├─────────────────────────────────────┤
 │    Zero Downtime Library           │ ← lib/zero-downtime-lib.sh
 ├─────────────────────────────────────┤
@@ -419,7 +419,7 @@ test_full_deployment() {
 
 ## 📚 Дополнительные ресурсы
 
-- **Cryptus Example**: `cryptus-deployment-config.sh` - реальный пример
+- **Cryptus Example**: `deployment-config.sh` - реальный пример
 - **Generic Example**: `examples/generic-project-config.sh` - шаблон
 - **Original Implementation**: `deploy-traefik-zero-downtime.sh` - оригинальная версия
 - **Test Suite**: `test-zero-downtime.sh` - набор тестов
