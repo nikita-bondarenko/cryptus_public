@@ -1,33 +1,19 @@
 services:
-  # Main service for Traefik (активный instance)
-  cryptus-front-2025:
-    build:
-      context: ./app
-      dockerfile: Dockerfile.simple
-    container_name: cryptus-front-2025
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - INSTANCE_COLOR=active
+  # Main service for Traefik (nginx load balancer)
+  cryptus:
+    image: nginx:alpine
+    container_name: cryptus
     volumes:
-      - cryptus_logs:/app/logs
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
-      - cryptus-network
+      - coex-tma
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost/nginx-health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.cryptus-front-2025.rule=Host(`cryptus-front-2025.partners-bot.ru`)"
-      - "traefik.http.routers.cryptus-front-2025.entrypoints=websecure"
-      - "traefik.http.routers.cryptus-front-2025.tls.certresolver=myresolver"
-      - "traefik.http.services.cryptus-front-2025.loadbalancer.server.port=3000"
-      - "cryptus.instance=active"
-      - "cryptus.app=cryptus"
+      start_period: 10s
 
   # Blue instance for zero-downtime deployment
   cryptus-blue:
@@ -42,7 +28,7 @@ services:
     volumes:
       - cryptus_logs:/app/logs
     networks:
-      - cryptus-network
+      - coex-tma
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
@@ -50,9 +36,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    labels:
-      - "cryptus.instance=blue"
-      - "cryptus.app=cryptus"
     profiles:
       - blue-green
 
@@ -69,7 +52,7 @@ services:
     volumes:
       - cryptus_logs:/app/logs
     networks:
-      - cryptus-network
+      - coex-tma
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
@@ -77,31 +60,13 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    labels:
-      - "cryptus.instance=green"
-      - "cryptus.app=cryptus"
     profiles:
       - blue-green
 
-  # Redis for session management and caching
-  redis:
-    image: redis:7-alpine
-    container_name: cryptus_redis
-    networks:
-      - cryptus-network
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    volumes:
-      - redis_data:/data
-
-networks:
-  cryptus-network:
-    driver: bridge
-
 volumes:
   cryptus_logs:
-  redis_data: 
+    driver: local
+
+networks:
+  coex-tma:
+    external: true 
