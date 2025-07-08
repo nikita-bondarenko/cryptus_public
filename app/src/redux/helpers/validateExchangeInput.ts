@@ -23,6 +23,14 @@ export const validateExchangeInput: ValidateExchangeInput = ({ value, inputType,
     });
   }
 
+  if (inputType === 'phoneNumber') {
+    return (validator as any)({
+      value: value === null ? null : String(value),
+      options: { position }
+    });
+  }
+
+
   return (validator as any)({
     value: value === null ? null : String(value),
     options: { position }
