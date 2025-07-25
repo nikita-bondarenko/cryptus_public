@@ -135,6 +135,7 @@ export const {
   useRateListQuery,
   useUserListQuery,
   useUserUpdateCreateMutation,
+  useCheckPromocodeMutation
 } = injectedRtkApi;
 
 export {injectedRtkApi as cryptusApi}

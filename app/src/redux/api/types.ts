@@ -86,6 +86,7 @@ export type ExchangesCreateApiArg = {
     wallet?: string
     phone?: string
     course_title: string
+    promo_code?: string
 };
 
 export type Faq = {

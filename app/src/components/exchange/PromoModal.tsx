@@ -100,11 +100,9 @@ const PromoModal: React.FC<PromoModalProps> = ({ isOpen, handleCloseEvent, value
 
     useEffect(() => {
 
-        if (!fullScreenMode) {
             if (translateY > 50) {
                 handleCloseEvent()
             }
-        } 
     }, [translateY])
 
     return (

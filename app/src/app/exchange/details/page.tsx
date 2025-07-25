@@ -6,9 +6,10 @@ import { selectExchangeCreateData, selectExchangeDetails } from "@/redux/selecto
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ExchangePageLayout from "@/components/exchange/ExchangePageLayout";
 import { useRouter } from "next/navigation";
-import { useExchangesCreateMutation } from "@/redux/api/cryptusApi";
+import {  useCheckPromocodeMutation, useExchangesCreateMutation } from "@/redux/api/cryptusApi";
 import Icon from "@/components/helpers/Icon";
 import PromoModal from "@/components/exchange/PromoModal";
+import { setIsPromocodeValid, setPromocode } from "@/redux/slices/exchangeSlice/exchangeSlice";
 
 export default function ExchangeDetailsPage() {
   const dispatch = useAppDispatch();
@@ -17,7 +18,6 @@ export default function ExchangeDetailsPage() {
   const [isPromoApplied, setIsPromoApplied] = useState(false)
   const [isPromoModalOpen, setIsPromoModalOpen] = useState(false);
   const [promocode, setPromoCode] = useState('')
-  const [isPromocodeValid,setIsPromocodeValid] = useState(false)
   const [isPromocodeErrorShowing,setIsPromocodeErrorShowing] = useState(false)
 const timeoutId = useRef<NodeJS.Timeout>(null)
 
@@ -42,13 +42,25 @@ const timeoutId = useRef<NodeJS.Timeout>(null)
     setIsPromoModalOpen(false)
   }
 
-  const handlePromocodeSubmit = () => {
-    setIsPromocodeErrorShowing(true)
-    if (timeoutId.current )
-    clearTimeout(timeoutId.current)
-    timeoutId.current = setTimeout(() => {
-      setIsPromocodeErrorShowing(false)
-    },3000)
+  const [checkPromocode] = useCheckPromocodeMutation()
+
+  const handlePromocodeSubmit = async () => {
+
+    const response = await checkPromocode({code: promocode})
+
+    if (response.error) {
+      setIsPromocodeErrorShowing(true)
+      if (timeoutId.current )
+      clearTimeout(timeoutId.current)
+      timeoutId.current = setTimeout(() => {
+        setIsPromocodeErrorShowing(false)
+      },3000)
+    } else {
+      setIsPromoApplied(true)
+      handlePromoModalCloseEvent()
+      dispatch(setPromocode(promocode))
+      dispatch(setIsPromocodeValid(true))
+    }
   }
 
   return (
