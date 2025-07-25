@@ -213,3 +213,12 @@ export type UsersRequisites = {
   type_req?: ("BANK" | "COIN") | null;
   get_to?: string | null;
 };
+
+
+export type CheckPromocodeApiArg = {
+  code: string
+};
+
+export type CheckPromocodeApiResponse= {
+  detail: string
+};
